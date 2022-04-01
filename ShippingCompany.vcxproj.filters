@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Cargo">
+      <UniqueIdentifier>{804c67c1-9268-4f2b-bd55-383d42c7458b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="DS">
+      <UniqueIdentifier>{d133ae34-0169-41d5-a333-f9468e5eca05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Truck">
+      <UniqueIdentifier>{f0e0a641-37ae-4d0a-9c8e-4be7f6593c84}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Cargo.cpp">
+      <Filter>Cargo</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalCargo.cpp">
+      <Filter>Cargo</Filter>
+    </ClCompile>
+    <ClCompile Include="CargoList.cpp">
+      <Filter>Cargo</Filter>
+    </ClCompile>
+    <ClCompile Include="VIPCargo.cpp">
+      <Filter>Cargo</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecialCargo.cpp">
+      <Filter>Cargo</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalTruck.cpp">
+      <Filter>Truck</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecialTruck.cpp">
+      <Filter>Truck</Filter>
+    </ClCompile>
+    <ClCompile Include="VIPTruck.cpp">
+      <Filter>Truck</Filter>
+    </ClCompile>
+    <ClCompile Include="TruckList.cpp">
+      <Filter>Truck</Filter>
+    </ClCompile>
+    <ClCompile Include="Truck.cpp">
+      <Filter>Truck</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Company.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Company.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Bag.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="PiorityQueue.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Cargo.h">
+      <Filter>Cargo</Filter>
+    </ClInclude>
+    <ClInclude Include="CargoList.h">
+      <Filter>Cargo</Filter>
+    </ClInclude>
+    <ClInclude Include="VIPCargo.h">
+      <Filter>Cargo</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecialCargo.h">
+      <Filter>Cargo</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalCargo.h">
+      <Filter>Cargo</Filter>
+    </ClInclude>
+    <ClInclude Include="VIPTruck.h">
+      <Filter>Truck</Filter>
+    </ClInclude>
+    <ClInclude Include="Truck.h">
+      <Filter>Truck</Filter>
+    </ClInclude>
+    <ClInclude Include="TruckList.h">
+      <Filter>Truck</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalTruck.h">
+      <Filter>Truck</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecialTruck.h">
+      <Filter>Truck</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
