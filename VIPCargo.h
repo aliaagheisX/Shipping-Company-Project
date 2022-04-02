@@ -2,11 +2,9 @@
 #include "Cargo.h"
 class VIPCargo :public Cargo
 {
-    double PT;
-    double dist;
-    double cost;
+    int PiorityEquation;
 public:
     bool operator<(const VIPCargo& r) {
-        return(PT + dist + cost     <    r.cost + r.dist + r.PT);
+      // Waiting for the Priority Equation
     }
 };

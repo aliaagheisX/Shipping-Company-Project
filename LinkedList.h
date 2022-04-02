@@ -11,7 +11,6 @@ class LinkedList {
 public:
     //initalizers
     LinkedList(); //default constructor
-
     LinkedList(const LinkedList<T>&); //copy constructor
     LinkedList<T>& operator=(const LinkedList <T>&); //assignment operator overloading
 
@@ -30,7 +29,7 @@ public:
     //getters
     T& getFront() const;
     T& getBack() const;
-    Node<T>* getIterator() const;
+    Node<T>* getIterator() const; 
 
     bool isEmpty() const;
     int getSize() const;
@@ -113,7 +112,7 @@ void LinkedList<T>::addBack(const T& val) {
 template<typename T>
 bool LinkedList<T>::Insert(const T& val, const int& index) {
 
-    if (index > size) return false; // check if it's okay to insert
+    if (index > size) throw exception("No Index DUDE!"); // check if it's okay to insert
 
 
 
@@ -144,6 +143,7 @@ void LinkedList<T>::InsertSorted(const T& val) {
 
         if (!it->getNext())
             addBack(val);
+
         else {
             Node<T>* newNode = new Node<T>(val, it->getNext());
             it->setNext(newNode);
@@ -156,7 +156,7 @@ void LinkedList<T>::InsertSorted(const T& val) {
 
 template<typename T>
 bool LinkedList<T>::removeFront() {
-    if (size == 0) return false; // case: no elements to remove
+    if (size == 0) throw exception("Empty DUDE!"); // case: no elements to remove
 
     Node<T>* temp = head->getNext();//store  element after head
 
@@ -171,7 +171,7 @@ bool LinkedList<T>::removeFront() {
 
 template<typename T>
 bool LinkedList<T>::removeBack() {
-    if (size == 0) return false; // case: no elements to remove
+    if (size == 0) throw exception("Empty DUDE!"); // case: no elements to remove
 
     //1- get Previous tail
     Node<T>* prevTail = head;
@@ -193,7 +193,7 @@ bool LinkedList<T>::removeBack() {
 
 template<typename T>
 bool LinkedList<T>::removeIndex(int index) {
-    if (index >= size) return false; // case: index doesn't exist
+    if (index >= size) throw exception("No Index DUDE!"); // case: index doesn't exist
 
     if (index == 0) removeFront();
     else if (index == size - 1) removeBack();
@@ -220,7 +220,7 @@ bool LinkedList<T>::removeIndex(int index) {
 
 template<typename T>
 bool LinkedList<T>::removeValue(const T val) {
-    if (size == 0) return false;
+    if (size == 0) throw exception("No Value DUDE!");
 
     Node<T>* target = head; //target node with value
     Node<T>* prev = nullptr;
@@ -242,7 +242,7 @@ bool LinkedList<T>::removeValue(const T val) {
     prev->setNext(target->getNext());
 
     delete target;
-
+    size--;
     return true;
 }
 
