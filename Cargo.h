@@ -19,8 +19,8 @@ public:
 	void SetPt(const Time& t); //trucl call it
 	void SetLt(const Time& t); //read from input
 	void SetWt(const Time& t); //truck call = Truck::MT - PT
-	void SetDeliveryDist(const long& dist);
-	void SetCost(const long& ct);
+	void SetDeliveryDist(const int& dist);
+	void SetCost(const int& ct);
 	// Getters 
 	const Time& GetPt() const;
 	const Time& GetLt() const;

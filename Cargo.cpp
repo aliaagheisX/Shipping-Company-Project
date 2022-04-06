@@ -12,7 +12,7 @@ void Cargo ::  SetWt(const Time& t)
 {
 	WT = t;
 }
-void Cargo :: SetDeliveryDist(const long& dist)
+void Cargo :: SetDeliveryDist(const int& dist)
 {
 	if (dist < 0)
 	{
@@ -20,7 +20,7 @@ void Cargo :: SetDeliveryDist(const long& dist)
 	}
 	DeliveryDist = dist;
 }
-void Cargo:: SetCost(const long& ct)
+void Cargo:: SetCost(const int& ct)
 {
 	if (ct < 0)
 	{

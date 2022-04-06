@@ -3,17 +3,17 @@
 class SpecialTruck : public Truck
 {
     static float Speed;
-    static long Capcity;
+    static int Capcity;
     static int CheckUPTime;
 public:
     //constructor
-    SpecialTruck(long j);
+    SpecialTruck();
 
     //assign cargo to the Queue According to Distance
     bool AssignCargo(Cargo* c);
 
     static void SetSpeed(const float& s);
-    static void SetCapcity(const long& c);
+    static void SetCapcity(const int& c);
     static void setCheckUPTime(const int& c);
 
 

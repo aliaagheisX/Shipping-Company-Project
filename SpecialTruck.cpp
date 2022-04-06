@@ -1,11 +1,11 @@
 #include "SpecialTruck.h"
 #include "SpecialCargo.h"
 float SpecialTruck::Speed = 0;
-long SpecialTruck::Capcity = 0;
+int SpecialTruck::Capcity = 0;
+int SpecialTruck::CheckUPTime = 0;
 
-SpecialTruck::SpecialTruck(long j) :Truck(Speed, Capcity)
+SpecialTruck::SpecialTruck() :Truck(Speed, Capcity)
 {
-	SetJ(j);
 }
 
 bool SpecialTruck::AssignCargo(Cargo* c) {
@@ -23,7 +23,7 @@ void SpecialTruck::SetSpeed(const float& s)
 }
 
 
-void SpecialTruck::SetCapcity(const long& c)
+void SpecialTruck::SetCapcity(const int& c)
 {
 	Capcity = c;
 }

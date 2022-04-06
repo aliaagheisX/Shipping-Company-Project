@@ -1,11 +1,11 @@
 #include "VIPTruck.h"
 #include "VIPCargo.h"
 float VIPTruck::Speed = 0;
-long VIPTruck::Capcity = 0;
+int VIPTruck::Capcity = 0;
+int VIPTruck::CheckUPTime = 0;
 
-VIPTruck::VIPTruck(long j) :Truck( Speed, Capcity)
+VIPTruck::VIPTruck() :Truck( Speed, Capcity)
 {
-	SetJ(j);
 }
 bool VIPTruck::AssignCargo(Cargo* c) {
 	//TODO: 1- check if Queue not empty check Type
@@ -18,7 +18,7 @@ void VIPTruck::SetSpeed(const float& s)
 	Speed = s;
 }
 
-void VIPTruck::SetCapcity(const long& c)
+void VIPTruck::SetCapcity(const int& c)
 {
 	Capcity = c;
 }

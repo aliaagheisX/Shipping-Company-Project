@@ -1,11 +1,11 @@
 #include "NormalTruck.h"
 #include "NormalCargo.h"
 float NormalTruck::Speed = 0;
-long NormalTruck::Capcity = 0;
+int NormalTruck::Capcity = 0;
+int NormalTruck::CheckUPTime = 0;
 
-NormalTruck::NormalTruck(long j) :Truck(Speed, Capcity)
+NormalTruck::NormalTruck() :Truck(Speed, Capcity)
 {
-	SetJ(j);
 }
 
 bool NormalTruck::AssignCargo(Cargo* c) {
@@ -20,7 +20,7 @@ void NormalTruck::SetSpeed(const float& s)
 {
 	Speed = s;
 }
-void NormalTruck::SetCapcity(const long& c)
+void NormalTruck::SetCapcity(const int& c)
 {
 	Capcity = c;
 }
