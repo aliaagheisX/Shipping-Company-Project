@@ -5,6 +5,9 @@
 class Truck
 {
 protected:
+	static int counter;
+	int ID;
+
 	int DI; // delivery interval
 	long J; // number of max journeys before maintainc
 	PiorityQueue<Cargo*> loadedCargo; //cargos that assigned on truck
@@ -23,8 +26,6 @@ public:
 	void SetJ(const long& j);
 
 	void SetMt(const Time& t); //company call it and send the time when the truck start moving
-	void SetSpeed(const float& s);
-	void SetCapcity(const long& c);
 
 	// Getters 
 	int GetDi() const; // calculate the delivery interval and send it to company
@@ -38,5 +39,6 @@ public:
 
 	//check if there's cargo deleverid
 	bool deliverCargo(Time* t);
+
 };
 

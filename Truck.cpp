@@ -1,6 +1,10 @@
 #include "Truck.h"
-Truck ::Truck(float& s, long& c): Speed(s),Capcity(c)
+int Truck::counter = 0;
+
+
+Truck ::Truck(float& s, long& c): ID(counter + 1), Speed(s),Capcity(c)
 {
+	counter++;
 }
 
 void Truck::SetJ(const long& j)
@@ -23,16 +27,6 @@ long Truck::GetJ() const
 void Truck::SetMt(const Time& t)
 {
 	MT = t;
-}
-
-void Truck::SetSpeed(const float& s)
-{
-	Speed = s;
-}
-
-void Truck::SetCapcity(const long& c)
-{
-	Capcity = c;
 }
 
 const Time& Truck::GetMt() const

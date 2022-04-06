@@ -15,3 +15,16 @@ bool NormalTruck::AssignCargo(Cargo* c) {
 		return true;
 	return false;
 }
+
+void NormalTruck::SetSpeed(const float& s)
+{
+	Speed = s;
+}
+void NormalTruck::SetCapcity(const long& c)
+{
+	Capcity = c;
+}
+
+void NormalTruck::setCheckUPTime(const int& c) {
+	CheckUPTime = c;
+}

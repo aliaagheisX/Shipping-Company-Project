@@ -1,6 +1,5 @@
 #include "VIPTruck.h"
 #include "VIPCargo.h"
-Time VIPTruck::MT = Time();
 float VIPTruck::Speed = 0;
 long VIPTruck::Capcity = 0;
 
@@ -13,3 +12,18 @@ bool VIPTruck::AssignCargo(Cargo* c) {
 	//TODO: 2- if Empty -> VIP , Normal
 	return false;
 }
+
+void VIPTruck::SetSpeed(const float& s)
+{
+	Speed = s;
+}
+
+void VIPTruck::SetCapcity(const long& c)
+{
+	Capcity = c;
+}
+void VIPTruck::setCheckUPTime(const int& c) {
+	CheckUPTime = c;
+}
+
+// company =>

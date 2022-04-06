@@ -8,11 +8,13 @@ class Cargo
 
 	int CDT;
 
+	const int ID;
 	double DeliveryDist;
+
 	double Cost;
 
 public:
-
+	Cargo(int);
 	// Setters
 	void SetPt(const Time& t); //trucl call it
 	void SetLt(const Time& t); //read from input

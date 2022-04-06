@@ -48,5 +48,20 @@ int main() {
 		cout << it->getValue() << ' ';
 		it = it->getNext();
 	}
+
+//* 1- Data members For All Classes
+//! Company 
+////Cargos - Truck - Time
+
+//* 2- DSA ->
+//// Linked List - Queue - Piority
+////Test
+//! CargoList - TruckList
+
+//? 3 - UI CLass
+//! Load Function
+
+//? 4 - Event CLass
+//? 5 - Simple Simulator Function
 	return 0;
 }

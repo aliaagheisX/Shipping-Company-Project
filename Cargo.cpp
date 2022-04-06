@@ -1,5 +1,5 @@
 #include "Cargo.h"
-
+Cargo::Cargo(int i) : ID(i) {}
 void Cargo ::  SetPt(const Time& t)
 {
 	PT = t;

@@ -16,3 +16,18 @@ bool SpecialTruck::AssignCargo(Cargo* c) {
 	}
 	return false;
 }
+
+void SpecialTruck::SetSpeed(const float& s)
+{
+	Speed = s;
+}
+
+
+void SpecialTruck::SetCapcity(const long& c)
+{
+	Capcity = c;
+}
+
+void SpecialTruck::setCheckUPTime(const int& c) {
+	CheckUPTime = c;
+}
