@@ -6,7 +6,12 @@
 class Company
 {
 	int NormalTruckCount, SpecialTruckCount, VIPTruckCount;
-	int J;
+	int NormalCargoCount, SpecialCargoCount, VIPCargoCount;
+	int MaxW, AutoP, J; // j no of journeys till maintaince
+
+	int CargoAvgWait, PromotedCargoCount, TotalSimulationTime;
+
+
 public:
 	void load();
 };

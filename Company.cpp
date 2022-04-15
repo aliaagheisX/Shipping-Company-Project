@@ -42,7 +42,6 @@ void Company::load()
 
 	file >> J;
 
-	int MaxW, AutoP;
 	file >> MaxW;
 	file >> AutoP;
 
