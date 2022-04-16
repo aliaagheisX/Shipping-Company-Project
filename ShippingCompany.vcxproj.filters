@@ -18,6 +18,9 @@
     <Filter Include="Truck">
       <UniqueIdentifier>{f0e0a641-37ae-4d0a-9c8e-4be7f6593c84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{01c3c1a9-fb47-49a1-8fb8-7aaacec51b4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cargo.cpp">
@@ -56,21 +59,27 @@
     <ClCompile Include="Company.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="Time.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="CancellationEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="PreparationEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="PromotionEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Company.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Time.h">
@@ -123,6 +132,18 @@
     </ClInclude>
     <ClInclude Include="SpecialTruck.h">
       <Filter>Truck</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="CancellationEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="PreparationEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="PromotionEvent.h">
+      <Filter>Events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

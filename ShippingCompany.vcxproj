@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Bag.h" />
+    <ClInclude Include="CancellationEvent.h" />
     <ClInclude Include="Cargo.h" />
     <ClInclude Include="CargoList.h" />
     <ClInclude Include="Company.h" />
@@ -149,6 +150,8 @@
     <ClInclude Include="NormalCargo.h" />
     <ClInclude Include="NormalTruck.h" />
     <ClInclude Include="PiorityQueue.h" />
+    <ClInclude Include="PreparationEvent.h" />
+    <ClInclude Include="PromotionEvent.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="SpecialCargo.h" />
     <ClInclude Include="SpecialTruck.h" />
@@ -160,12 +163,15 @@
     <ClInclude Include="VIPTruck.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CancellationEvent.cpp" />
     <ClCompile Include="Cargo.cpp" />
     <ClCompile Include="CargoList.cpp" />
     <ClCompile Include="Company.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="NormalCargo.cpp" />
     <ClCompile Include="NormalTruck.cpp" />
+    <ClCompile Include="PreparationEvent.cpp" />
+    <ClCompile Include="PromotionEvent.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpecialCargo.cpp" />
     <ClCompile Include="SpecialTruck.cpp" />
