@@ -139,13 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Bag.h" />
     <ClInclude Include="CancellationEvent.h" />
     <ClInclude Include="Cargo.h" />
     <ClInclude Include="CargoList.h" />
     <ClInclude Include="Company.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="List.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NormalCargo.h" />
     <ClInclude Include="NormalTruck.h" />

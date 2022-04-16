@@ -1,5 +1,4 @@
-#ifndef _QUEUE
-#define _QUEUE
+#pragma once
 #include "LinkedList.h"
 
 template<typename T>
@@ -16,7 +15,6 @@ public:
 	bool isEmpty() const;
 	int getSize() const;
 };
-#endif
 
 template<typename T>
 void Queue<T>::enqueue(const T& val) {

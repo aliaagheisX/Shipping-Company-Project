@@ -2,9 +2,6 @@
 #include "Cargo.h"
 class VIPCargo :public Cargo
 {
-    int PiorityEquation;
 public:
-    bool operator<(const VIPCargo& r) {
-      // Waiting for the Priority Equation
-    }
+	//virtual bool operator<(const Cargo& r);
 };

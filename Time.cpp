@@ -45,3 +45,8 @@ void Time::Update(){
 	setHour(hour + 1); // in set Hour it handel if it enter new day
 
 }
+
+void Time::Read(ifstream& InFile) {
+	char buff;
+	InFile >> day >> buff >> hour;
+}

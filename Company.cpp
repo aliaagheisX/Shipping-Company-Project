@@ -1,15 +1,24 @@
 #include "Company.h"
+#include "PreparationEvent.h"
+#include"CancellationEvent.h"
+#include"PromotionEvent.h"
 #include<fstream>
+
 #include<string>
+
+
 using namespace std;
 void Company::load()
 {
 	string path="Input_File.txt";
 	ifstream file;
+
 	file.open(path);
+
 	file >> NormalTruckCount;
 	file >> SpecialTruckCount;
 	file >> VIPTruckCount;
+
 	float speed;
 	file>> speed;
 	NormalTruck::SetSpeed(speed);
@@ -47,22 +56,26 @@ void Company::load()
 
 	int EventNumber;
 	file >> EventNumber;
+	Event* newEvent = nullptr;
 	for (int i = 0; i < EventNumber; i++)
 	{
-		char temp;
-		file >> temp;
-		if (temp == 'R')
+		char eventType;
+		file >> eventType;
+		switch (eventType)
 		{
-			char t;
-
+		case 'R':
+			newEvent = new PreparationEvent;
+			break;
+		case 'X':
+			newEvent = new CancellationEvent;
+			break;
+		case 'P':
+			newEvent = new PromotionEvent;
+			break;
+		default:
+			break;
 		}
-		else if (temp == 'X')
-		{
-
-		}
-		else if(temp == 'P')
-		{
-
-		}
+		newEvent->Read(file);
+		EventList.enqueue(newEvent);
 	}
 }

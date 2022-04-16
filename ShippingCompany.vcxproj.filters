@@ -88,9 +88,6 @@
     <ClInclude Include="UI.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Bag.h">
-      <Filter>DS</Filter>
-    </ClInclude>
     <ClInclude Include="LinkedList.h">
       <Filter>DS</Filter>
     </ClInclude>
@@ -144,6 +141,9 @@
     </ClInclude>
     <ClInclude Include="PromotionEvent.h">
       <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>DS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

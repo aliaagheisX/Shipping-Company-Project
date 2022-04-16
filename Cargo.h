@@ -28,5 +28,9 @@ public:
 	double GetDist() const;
 
 	virtual double GetCost() const;
+
+	//virtual bool operator<(const Cargo& r);
+		// Waiting for the Priority Equation
+	
 };
 

@@ -3,6 +3,8 @@
 #include"VIPTruck.h"
 #include"NormalTruck.h"
 #include"SpecialTruck.h"
+#include"Event.h"
+#include"Queue.h"
 class Company
 {
 	int NormalTruckCount, SpecialTruckCount, VIPTruckCount;
@@ -10,7 +12,7 @@ class Company
 	int MaxW, AutoP, J; // j no of journeys till maintaince
 
 	int CargoAvgWait, PromotedCargoCount, TotalSimulationTime;
-
+	Queue<Event *> EventList;
 
 public:
 	void load();

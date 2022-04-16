@@ -1,7 +1,10 @@
-#ifndef H_LINKED_LIST
-#define H_LINKED_LIST
+#pragma once
 
 #include "Node.h"
+
+
+#include<exception>
+using namespace std;
 
 template<typename T>
 class LinkedList {
@@ -30,6 +33,7 @@ public:
     T& getFront() const;
     T& getBack() const;
     Node<T>* getIterator() const; 
+    T& operator[](int index) const;
 
     bool isEmpty() const;
     int getSize() const;
@@ -38,10 +42,6 @@ public:
     ~LinkedList();
 };
 
-#endif
-
-#include<exception>
-using namespace std;
 
 template<typename T>//default constructor
 LinkedList<T>::LinkedList() {
@@ -151,7 +151,16 @@ void LinkedList<T>::InsertSorted(const T& val) {
         }
     }
 }
+template<typename T>
+T& LinkedList<T>::operator[](int index) const {
+    /*if (index >= size) throw exception("OUT OF RANGE");
 
+    Node<T>* ptr = head;
+    for (int i = 0; i < index; i++)
+        ptr = ptr->next;
+    return ptr->value;*/
+    
+}
 
 
 template<typename T>
