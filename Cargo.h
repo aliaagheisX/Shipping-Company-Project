@@ -28,10 +28,8 @@ public:
 	const Time& GetLt() const;
 	const Time& GetWt() const;
 	double GetDist() const;
-
+	const int getID() const {return ID;}
 	virtual double GetCost() const;
-
-	string  Print() const;
 
 	//virtual bool operator<(const Cargo& r);
 		// Waiting for the Priority Equation

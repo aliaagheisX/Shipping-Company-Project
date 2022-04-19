@@ -2,8 +2,7 @@
 #include "Time.h"
 #include "PriorityQueue.h"
 #include "Cargo.h"
-#include"UI.h"
-enum CargoType {VIP, Special, Normal};
+enum CargoType {Normal, Special, VIP  };
 class Truck
 {
 protected:
@@ -33,8 +32,10 @@ public:
 	const Time& GetMt() const; 
 	float GetSpeed() const;
 	int GetCapcity() const;
+	const int getID() const { return ID; }
 
 	CargoType getCargoType() const; // return NULL if empty
+	const PriorityQueue<Cargo*>  & getCargoList() const;
 
 	//assign cargo to the Queue According to Distance
 	virtual bool AssignCargo(Cargo* ) = 0;
@@ -42,6 +43,5 @@ public:
 	//check if there's cargo deleverid
 	bool deliverCargo(Time* t);
 
-	string Print() const;
 };
 
