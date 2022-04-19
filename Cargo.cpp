@@ -53,3 +53,9 @@ double Cargo::GetCost() const
 {
 	return Cost;
 }
+const int Cargo::getID() const
+{
+	return ID;
+}
+
+

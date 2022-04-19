@@ -3,5 +3,7 @@
 class SpecialCargo :
     public Cargo
 {
+public:
+    SpecialCargo(int i);
 };
 

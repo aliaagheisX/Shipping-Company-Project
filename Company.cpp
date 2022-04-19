@@ -4,7 +4,6 @@
 #include"PromotionEvent.h"
 #include"UI.h"
 #include<fstream>
-
 #include<string>
 
 
@@ -89,7 +88,6 @@ void Company::load()
 		EventList.enqueue(newEvent);
 	}
 }
-
 void Company::Print()
 {
 
@@ -156,4 +154,19 @@ void Company::Print()
 		
 	uiPtr->Output("");
 	
+}
+
+LinkedList<NormalCargo*>& Company::getWaitingNormalCargo()
+{
+	return waitingNormalCargo;
+}
+
+Queue<SpecialCargo*>& Company::getWaitingSpecialCargo()
+{
+	return waitingSpecialCargo;
+}
+
+PriorityQueue<VIPCargo*>& Company::getWaitingVIPCargo()
+{
+	return waitingVIPCargo;
 }

@@ -3,5 +3,8 @@
 class NormalCargo :public Cargo
 {
 	static Time AutoP;
+
+public:
+	NormalCargo(int i);
 };
 

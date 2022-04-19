@@ -28,7 +28,7 @@ class Company
 	List< Truck *> movingTrucks;
 	List< Truck* > maintainingTrucks[3];
 
-	List<NormalCargo*> waitingNormalCargo;
+	LinkedList<NormalCargo*> waitingNormalCargo;
 	Queue<SpecialCargo*> waitingSpecialCargo;
 	PriorityQueue<VIPCargo*> waitingVIPCargo;
 
@@ -39,5 +39,8 @@ public:
 	}
 	void load();
 	void Print();
+	LinkedList<NormalCargo*>& getWaitingNormalCargo(); // as we need to remove by id
+	Queue<SpecialCargo*>& getWaitingSpecialCargo();
+	PriorityQueue<VIPCargo*>& getWaitingVIPCargo();
 };
 
