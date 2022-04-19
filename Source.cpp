@@ -1,15 +1,11 @@
 #include <iostream>
 #include<fstream>
-#include"Time.h"
-#include "LinkedList.h"
+#include "Company.h"
 using namespace std;
 int main() {
-	Time T;
-	
-	ifstream file;
-	file.open("Timee.txt");
-	T.Read(file);
-	cout << T.getDay() << " " << T.getHour();
+	Company c;
+	c.load();
+	c.Print();
 	// 
 //* 1- Data members For All Classes
 //! Company 
