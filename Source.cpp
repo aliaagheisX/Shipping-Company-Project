@@ -18,12 +18,13 @@ int main() {
 //* 2- DSA ->
 //// Linked List - Queue - Piority
 ////Test
-//! CargoList - TruckList
 
-//? 3 - UI CLass
+//? 3 - UI CLass => two Modes
 //// Load Function
 
-//? 4 - Event CLass =? Execute
+//? 4 - Event CLass => Execute
 //? 5 - Simple Simulator Function
+	//? truck creation
+
 	return 0;
 }

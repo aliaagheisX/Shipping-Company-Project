@@ -1,6 +1,6 @@
 #include"PromotionEvent.h"
 
-void PromotionEvent::Execute(CargoList& c) {
+void PromotionEvent::Execute(Company* cPtr) {
 
 }
 

@@ -15,10 +15,18 @@ void Company::load()
 
 	file.open(path);
 
-	file >> NormalTruckCount;
+	file >> NormalTruckCount; 
+	for (int i = 0; i < NormalTruckCount; i++) {
+		emptyTrucks.getEntry(Normal)->insert(i, new NormalTruck);
+	}
 	file >> SpecialTruckCount;
+	for (int i = 0; i < SpecialTruckCount; i++) {
+		emptyTrucks.getEntry(Special)->insert(i, new SpecialTruck);
+	}
 	file >> VIPTruckCount;
-
+	for (int i = 0; i < VIPTruckCount; i++) {
+		emptyTrucks.getEntry(VIP)->insert(i, new VIPTruck);
+	}
 	float speed;
 	file>> speed;
 	NormalTruck::SetSpeed(speed);
@@ -82,12 +90,14 @@ void Company::load()
 
 void Company::Print()
 {
-	int t;
-	UI* uiPtr;
+	
 	// Printing current Time in the Company
 	uiPtr->Output("Current Time (Day:Hour)"+to_string(currentTime.getDay())+":"+ to_string(currentTime.getHour())+"\n");
 
-
-	uiPtr->Output("")
+	uiPtr->Output(to_string(waitingNormalCargo.getSize() + waitingSpecialCargo.getSize() + waitingVIPCargo.getSize()) + " Waiting Cargos: ");
+	for (int i = 0; i < waitingNormalCargo.getSize(); i++){
+		//uiPtr->Output();
+	}	
+	uiPtr->Output("");
 	
 }

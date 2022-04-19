@@ -33,3 +33,7 @@ int Truck::GetCapcity() const
 {
 	return Capcity;
 }
+
+string Truck::Print() const {
+	return to_string(ID); // id truch []
+}

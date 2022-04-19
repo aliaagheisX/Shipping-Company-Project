@@ -13,7 +13,7 @@ public:
 	void setItem(const T& v);
 	void setNext(Node<T>* n);
 
-	T& getValue() const;
+	T& getValue() ;
 	Node<T>* getNext() const;
 }; 
 
@@ -41,7 +41,7 @@ void Node<T>::setNext(Node<T>* n)
 }
 
 template < typename T>
-T& Node<T>::getValue() const
+T& Node<T>::getValue() 
 {
 	return value;
 }

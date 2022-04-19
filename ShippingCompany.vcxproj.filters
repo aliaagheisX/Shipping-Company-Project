@@ -15,11 +15,11 @@
     <Filter Include="DS">
       <UniqueIdentifier>{d133ae34-0169-41d5-a333-f9468e5eca05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Truck">
-      <UniqueIdentifier>{f0e0a641-37ae-4d0a-9c8e-4be7f6593c84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Events">
       <UniqueIdentifier>{01c3c1a9-fb47-49a1-8fb8-7aaacec51b4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Truck">
+      <UniqueIdentifier>{f0e0a641-37ae-4d0a-9c8e-4be7f6593c84}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -27,9 +27,6 @@
       <Filter>Cargo</Filter>
     </ClCompile>
     <ClCompile Include="NormalCargo.cpp">
-      <Filter>Cargo</Filter>
-    </ClCompile>
-    <ClCompile Include="CargoList.cpp">
       <Filter>Cargo</Filter>
     </ClCompile>
     <ClCompile Include="VIPCargo.cpp">
@@ -45,9 +42,6 @@
       <Filter>Truck</Filter>
     </ClCompile>
     <ClCompile Include="VIPTruck.cpp">
-      <Filter>Truck</Filter>
-    </ClCompile>
-    <ClCompile Include="TruckList.cpp">
       <Filter>Truck</Filter>
     </ClCompile>
     <ClCompile Include="Truck.cpp">
@@ -94,16 +88,13 @@
     <ClInclude Include="Queue.h">
       <Filter>DS</Filter>
     </ClInclude>
-    <ClInclude Include="PiorityQueue.h">
+    <ClInclude Include="PriorityQueue.h">
       <Filter>DS</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>DS</Filter>
     </ClInclude>
     <ClInclude Include="Cargo.h">
-      <Filter>Cargo</Filter>
-    </ClInclude>
-    <ClInclude Include="CargoList.h">
       <Filter>Cargo</Filter>
     </ClInclude>
     <ClInclude Include="VIPCargo.h">
@@ -119,9 +110,6 @@
       <Filter>Truck</Filter>
     </ClInclude>
     <ClInclude Include="Truck.h">
-      <Filter>Truck</Filter>
-    </ClInclude>
-    <ClInclude Include="TruckList.h">
       <Filter>Truck</Filter>
     </ClInclude>
     <ClInclude Include="NormalTruck.h">
@@ -143,6 +131,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="List.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="PriorityKey.h">
       <Filter>DS</Filter>
     </ClInclude>
   </ItemGroup>

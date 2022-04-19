@@ -1,15 +1,17 @@
 #pragma once
 #include "Time.h"
-#include "PiorityQueue.h"
+#include "PriorityQueue.h"
 #include "Cargo.h"
+#include"UI.h"
+enum CargoType {VIP, Special, Normal};
 class Truck
 {
 protected:
 	static int counter;
 	int ID;
-
+	
 	int DI; // delivery interval
-	PiorityQueue<Cargo*> loadedCargo; //cargos that assigned on truck
+	PriorityQueue<Cargo*> loadedCargo; //cargos that assigned on truck
 	Time MT; //Moving Time
 
 	float& Speed;
@@ -17,6 +19,7 @@ protected:
 
 	int tDC; //total deliverid Cargos
 	int tAT; //total active time
+
 
 public:
 	// constructor
@@ -31,11 +34,14 @@ public:
 	float GetSpeed() const;
 	int GetCapcity() const;
 
+	CargoType getCargoType() const; // return NULL if empty
+
 	//assign cargo to the Queue According to Distance
 	virtual bool AssignCargo(Cargo* ) = 0;
 
 	//check if there's cargo deleverid
 	bool deliverCargo(Time* t);
 
+	string Print() const;
 };
 

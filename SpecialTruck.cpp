@@ -9,12 +9,7 @@ SpecialTruck::SpecialTruck() :Truck(Speed, Capcity)
 }
 
 bool SpecialTruck::AssignCargo(Cargo* c) {
-
-	if (dynamic_cast<SpecialCargo*>(c)){
-		loadedCargo.enqueue(c);
-		return true;
-	}
-	return false;
+	return true;
 }
 
 void SpecialTruck::SetSpeed(const float& s)

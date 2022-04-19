@@ -156,12 +156,12 @@ void LinkedList<T>::InsertSorted(const T& val) {
 }
 template<typename T>
 T& LinkedList<T>::operator[](int index) const {
-    /*if (index >= size) throw exception("OUT OF RANGE");
+    if (index >= size) throw exception("OUT OF RANGE");
 
     Node<T>* ptr = head;
     for (int i = 0; i < index; i++)
-        ptr = ptr->next;
-    return ptr->value;*/
+        ptr = ptr->getNext();
+    return ptr->getValue();
     
 }
 
@@ -297,10 +297,11 @@ void LinkedList<T>::Print(UI* ptr) const
     Node<T>* temp = head;
     while (temp->getNext())
     {
-        ptr->Output(temp->getValue().Print() + ",");
+        temp->getValue().Print(ptr);
+        ptr->Output(",");
         temp = temp->getNext();
     }
-        ptr->Output(temp->getValue().Print());
+    temp->getValue().Print(ptr);
 
 
 }

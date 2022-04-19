@@ -1,6 +1,6 @@
 #include "PreparationEvent.h"
 
-void PreparationEvent::Execute(CargoList& c) {
+void PreparationEvent::Execute(Company* cPtr) {
 
 }
 

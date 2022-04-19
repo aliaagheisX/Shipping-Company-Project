@@ -6,6 +6,6 @@ class PreparationEvent :public Event {
 	int LoadTime;
 	int Cost;
 public:
-	virtual void Execute(CargoList&);
+	virtual void Execute(Company* cPtr);
 	virtual void Read(ifstream& InputFile);
 };

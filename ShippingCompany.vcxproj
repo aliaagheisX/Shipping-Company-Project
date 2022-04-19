@@ -141,15 +141,15 @@
   <ItemGroup>
     <ClInclude Include="CancellationEvent.h" />
     <ClInclude Include="Cargo.h" />
-    <ClInclude Include="CargoList.h" />
     <ClInclude Include="Company.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="PriorityKey.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NormalCargo.h" />
     <ClInclude Include="NormalTruck.h" />
-    <ClInclude Include="PiorityQueue.h" />
+    <ClInclude Include="PriorityQueue.h" />
     <ClInclude Include="PreparationEvent.h" />
     <ClInclude Include="PromotionEvent.h" />
     <ClInclude Include="Queue.h" />
@@ -157,7 +157,6 @@
     <ClInclude Include="SpecialTruck.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Truck.h" />
-    <ClInclude Include="TruckList.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="VIPCargo.h" />
     <ClInclude Include="VIPTruck.h" />
@@ -165,7 +164,6 @@
   <ItemGroup>
     <ClCompile Include="CancellationEvent.cpp" />
     <ClCompile Include="Cargo.cpp" />
-    <ClCompile Include="CargoList.cpp" />
     <ClCompile Include="Company.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="NormalCargo.cpp" />
@@ -177,7 +175,6 @@
     <ClCompile Include="SpecialTruck.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Truck.cpp" />
-    <ClCompile Include="TruckList.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="VIPCargo.cpp" />
     <ClCompile Include="VIPTruck.cpp" />

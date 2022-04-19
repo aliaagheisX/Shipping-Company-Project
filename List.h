@@ -8,13 +8,13 @@ protected:
 	LinkedList<T> List;
 public:
 	
-	int  getLength() const;
+	int  getSize() const;
 	bool isEmpty() const;
 	bool insert(int newPosition, const T& newEntry);
 	bool remove(int position);
 	T getEntry(int position) const;
 	void setEntry(int position, const T& newEntry);
-	void Print() const;
+	void Print(UI* ptr) const;
 };
 
 
@@ -27,7 +27,7 @@ template<typename T>
 
 
 template<typename T>
-int List<T>::getLength() const
+int List<T>::getSize() const
  {
 	 return List.getSize();
  }
@@ -35,7 +35,7 @@ int List<T>::getLength() const
 template<typename T>
 bool List<T>::insert(int newPosition, const T& newEntry)
 {
-	List.Insert(newEntry, newPosition);
+	return List.Insert(newEntry, newPosition);
 }
 
 template<typename T>
@@ -59,7 +59,7 @@ void List<T>::setEntry(int position, const T& newEntry)
 }
 
 template<typename T>
-void List<T>::Print() const
+void List<T>::Print(UI* ptr) const
 { 
-	List.Print();
+	List.Print(ptr);
 }
