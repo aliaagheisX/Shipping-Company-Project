@@ -12,5 +12,7 @@ class Event
 public:
 	virtual void Execute(Company * cPtr) = 0;
 	virtual void Read(ifstream  & InputFile) = 0;
+	int getId() const;
+
 };
 

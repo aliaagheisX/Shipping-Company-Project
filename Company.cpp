@@ -3,7 +3,6 @@
 #include"CancellationEvent.h"
 #include"PromotionEvent.h"
 #include<fstream>
-
 #include<string>
 
 
@@ -98,6 +97,21 @@ void Company::Print()
 	for (int i = 0; i < waitingNormalCargo.getSize(); i++){
 		//uiPtr->Output();
 	}	
-	uiPtr->Output("");
+	uiPtr->Output(" ");
 	
+}
+
+LinkedList<NormalCargo*>& Company::getWaitingNormalCargo()
+{
+	return waitingNormalCargo;
+}
+
+Queue<SpecialCargo*>& Company::getWaitingSpecialCargo()
+{
+	return waitingSpecialCargo;
+}
+
+PriorityQueue<VIPCargo*>& Company::getWaitingVIPCargo()
+{
+	return waitingVIPCargo;
 }

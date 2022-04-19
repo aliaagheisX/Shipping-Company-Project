@@ -59,4 +59,9 @@ string Cargo::Print() const
 	return to_string(ID);
 }
 
+const int Cargo::getID() const
+{
+	return ID;
+}
+
 

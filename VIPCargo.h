@@ -2,6 +2,8 @@
 #include "Cargo.h"
 class VIPCargo :public Cargo
 {
+	//int PriorityEquation = GetCost() + 0.8*GetDist();
 public:
-	//virtual bool operator<(const Cargo& r);
+	VIPCargo(int i);
+	int getPriority();
 };
