@@ -5,7 +5,7 @@ template<typename T>
 class List
 {
 protected:
-	LinkedList<T> List;
+	LinkedList<T> list;
 public:
 	
 	int  getSize() const;
@@ -14,7 +14,7 @@ public:
 	bool remove(int position);
 	T getEntry(int position) const;
 	void setEntry(int position, const T& newEntry);
-	void Print(UI* ptr) const;
+	void Print(UI* ptr) ;
 };
 
 
@@ -22,44 +22,44 @@ public:
 template<typename T>
  bool List<T>::isEmpty() const
 {
-	return List.isEmpty();
+	return list.isEmpty();
 }
 
 
 template<typename T>
 int List<T>::getSize() const
  {
-	 return List.getSize();
+	 return list.getSize();
  }
 
 template<typename T>
 bool List<T>::insert(int newPosition, const T& newEntry)
 {
-	return List.Insert(newEntry, newPosition);
+	return list.Insert(newEntry, newPosition);
 }
 
 template<typename T>
 inline bool List<T>::remove(int position)
 {
-	List.removeIndex(position);
+	list.removeIndex(position);
 }
 
 template<typename T>
 T List<T>::getEntry(int position) const
 {
 
-	return List[position];
+	return list[position];
 
 }
 
 template<typename T>
 void List<T>::setEntry(int position, const T& newEntry)
 {
-	List[position] = newEntry;
+	list[position] = newEntry;
 }
 
+
 template<typename T>
-void List<T>::Print(UI* ptr) const
-{ 
-	List.Print(ptr);
+void List<T>::Print(UI* ptr)  {
+	list.Print(ptr);
 }

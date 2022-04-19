@@ -53,10 +53,3 @@ double Cargo::GetCost() const
 {
 	return Cost;
 }
-
-string Cargo::Print() const
-{
-	return to_string(ID);
-}
-
-

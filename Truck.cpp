@@ -1,4 +1,7 @@
 #include "Truck.h"
+#include"NormalCargo.h"
+#include"SpecialCargo.h"
+#include"VIPCargo.h"
 int Truck::counter = 0;
 
 
@@ -33,7 +36,12 @@ int Truck::GetCapcity() const
 {
 	return Capcity;
 }
+CargoType Truck::getCargoType() const {
+	if (dynamic_cast<NormalCargo*>(loadedCargo.peekFront())) return Normal;
+	if (dynamic_cast<SpecialCargo*>(loadedCargo.peekFront())) return Special;
+	if (dynamic_cast<VIPCargo*>(loadedCargo.peekFront())) return VIP;
+}
 
-string Truck::Print() const {
-	return to_string(ID); // id truch []
+const PriorityQueue<Cargo*> &  Truck::getCargoList() const {
+	return loadedCargo;
 }

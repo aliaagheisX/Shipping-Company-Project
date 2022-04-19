@@ -2,6 +2,7 @@
 #include "PreparationEvent.h"
 #include"CancellationEvent.h"
 #include"PromotionEvent.h"
+#include"UI.h"
 #include<fstream>
 
 #include<string>
@@ -17,15 +18,16 @@ void Company::load()
 
 	file >> NormalTruckCount; 
 	for (int i = 0; i < NormalTruckCount; i++) {
-		emptyTrucks.getEntry(Normal)->insert(i, new NormalTruck);
+		emptyTrucks[Normal].insert(i, new NormalTruck);
 	}
 	file >> SpecialTruckCount;
 	for (int i = 0; i < SpecialTruckCount; i++) {
-		emptyTrucks.getEntry(Special)->insert(i, new SpecialTruck);
+		emptyTrucks[Special].insert(i, new SpecialTruck);
 	}
 	file >> VIPTruckCount;
 	for (int i = 0; i < VIPTruckCount; i++) {
-		emptyTrucks.getEntry(VIP)->insert(i, new VIPTruck);
+		emptyTrucks[VIP].insert(i, new VIPTruck);
+
 	}
 	float speed;
 	file>> speed;
@@ -90,14 +92,68 @@ void Company::load()
 
 void Company::Print()
 {
-	
+
+	char open[3] = { '[', '(', '{' };
+	char close[3] = { ']', ')', '}' };
 	// Printing current Time in the Company
 	uiPtr->Output("Current Time (Day:Hour)"+to_string(currentTime.getDay())+":"+ to_string(currentTime.getHour())+"\n");
+	
+	//Waiting Cargos:
+	uiPtr->Output(
+		to_string(waitingNormalCargo.getSize() + waitingSpecialCargo.getSize() + waitingVIPCargo.getSize()) 
+		+ " Waiting Cargos: ["); 
+	waitingNormalCargo.Print(uiPtr);
+	uiPtr->Output("] (");
+	waitingSpecialCargo.Print(uiPtr);
+	uiPtr->Output(") {");
+	waitingVIPCargo.Print(uiPtr);
+	uiPtr->Output("}");
+	uiPtr->Line();
 
-	uiPtr->Output(to_string(waitingNormalCargo.getSize() + waitingSpecialCargo.getSize() + waitingVIPCargo.getSize()) + " Waiting Cargos: ");
-	for (int i = 0; i < waitingNormalCargo.getSize(); i++){
-		//uiPtr->Output();
-	}	
+	//emptyTrucks
+	uiPtr->Output(
+		to_string(emptyTrucks[Normal].getSize() + emptyTrucks[Special].getSize() + emptyTrucks[VIP].getSize())
+		+ " Empty Trucks: [");
+	emptyTrucks[Normal].Print(uiPtr);
+	uiPtr->Output("] (");
+	emptyTrucks[Special].Print(uiPtr);
+	uiPtr->Output(") {");
+	emptyTrucks[VIP].Print(uiPtr);
+	uiPtr->Output("}");
+	uiPtr->Line();
+
+	// Moving Cargos
+	int MovingCargoCount = 0;
+	for (int i = 0; i < movingTrucks.getSize(); i++) 
+		MovingCargoCount += movingTrucks.getEntry(i)->getCargoList().getSize();
+
+	uiPtr->Output(to_string(MovingCargoCount) + " Moving Cargos: ");
+	for (int i = 0; i < movingTrucks.getSize(); i++) {
+
+		int getCargoType = movingTrucks.getEntry(i)->getCargoType();
+
+		uiPtr->Output(to_string(movingTrucks.getEntry(i)->getID()) + open[getCargoType]);
+		movingTrucks.getEntry(i)->getCargoList().Print(uiPtr);
+		uiPtr->Output(close[getCargoType] + " ");
+
+	}
+
+	uiPtr->Line();
+
+	//IN Check-up trucks
+	uiPtr->Output(
+		to_string(maintainingTrucks[Normal].getSize() + maintainingTrucks[Special].getSize() + maintainingTrucks[VIP].getSize())
+		+ " In-Checkup Trucks: [");
+	maintainingTrucks[Normal].Print(uiPtr);
+	uiPtr->Output("] (");
+	maintainingTrucks[Special].Print(uiPtr);
+	uiPtr->Output(") {");
+	maintainingTrucks[VIP].Print(uiPtr);
+	uiPtr->Output("}");
+	uiPtr->Line();
+	
+	
+		
 	uiPtr->Output("");
 	
 }

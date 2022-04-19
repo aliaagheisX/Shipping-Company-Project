@@ -1,27 +1,13 @@
 #pragma once
-#include<exception>
 #include"PriorityKey.h"
-#include "UI.h"
-#define MAX_ARRAY 1000
+#include"UI.h"
+const int MAX_ARRAY = 1000;
+#include<exception>
+
+
 template<typename T>
 class PriorityQueue
 {
-
-public:
-	PriorityQueue(int s = MAX_ARRAY);
-
-	void enqueue(T& val, int key);
-
-	T& dequeue();
-
-	const T& peekFront() const;
-
-	int getSize() const { return size; }
-
-	void Print(UI* ptr) const;
-
-
-	~PriorityQueue();
 
 private:
 	PriorityKey<T>** arr;
@@ -37,7 +23,25 @@ private:
 	void swap(PriorityKey<T>*& val1, PriorityKey<T>*& val2);
 
 
+public:
+	PriorityQueue(int s = MAX_ARRAY);
+
+	void enqueue(T& val, int key);
+
+	T& dequeue();
+
+	const T& peekFront() const;
+
+	int getSize() const { return size; };
+
+	void Print(UI * ) const ;
+
+
+	~PriorityQueue();
+
+
 };
+
 
 template<typename T>
 PriorityQueue<T>::PriorityQueue(int s) : capacity(s), size(0) {
@@ -78,9 +82,13 @@ const T& PriorityQueue<T>::peekFront() const {
 
 template<typename T>
 void PriorityQueue<T>::Print(UI* ptr) const {
-	for(int i = 0;i < size - 1;i++)
-		ptr->Output(arr[i]->getValue().Print() + ",");
-	ptr->Output(arr[size - 1]->getValue().Print());
+	if (size == 0) return;
+	for (int i = 0; i < size - 1; i++) {
+		ptr->Print(arr[i]->getValue());
+		ptr->Output(",");
+	}
+	ptr->Print(arr[size - 1]->getValue());
+
 }
 
 template<typename T>
