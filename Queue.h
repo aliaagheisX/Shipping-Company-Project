@@ -14,6 +14,7 @@ public:
 
 	bool isEmpty() const;
 	int getSize() const;
+	void Print()  const;
 };
 
 template<typename T>
@@ -41,6 +42,12 @@ bool Queue<T>::isEmpty() const {
 template<typename T>
 int Queue<T>::getSize() const {
 	return queue.getSize();
+}
+
+template<typename T>
+void Queue<T>::Print() const
+{
+	queue.Print();
 }
 
 

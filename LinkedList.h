@@ -1,8 +1,6 @@
 #pragma once
-
 #include "Node.h"
-
-
+#include"UI.h"
 #include<exception>
 using namespace std;
 
@@ -37,6 +35,11 @@ public:
 
     bool isEmpty() const;
     int getSize() const;
+
+    //Print 
+    void Print(UI* ptr) const;
+       
+
 
     //destructor
     ~LinkedList();
@@ -285,6 +288,22 @@ bool LinkedList<T>::isEmpty() const { return size == 0; }
 
 template<typename T>
 int LinkedList<T>::getSize() const { return size; }
+
+
+template<typename T>
+void LinkedList<T>::Print(UI* ptr) const
+{
+    // Print function inside the LinkedList 
+    Node<T>* temp = head;
+    while (temp->getNext())
+    {
+        ptr->Output(temp->getValue().Print() + ",");
+        temp = temp->getNext();
+    }
+        ptr->Output(temp->getValue().Print());
+
+
+}
 
 
 

@@ -1,4 +1,6 @@
 #pragma once
+using namespace std;
+#include <string>
 #include "Time.h"
 class Cargo
 {   // Time Members in The Cargo
@@ -28,6 +30,8 @@ public:
 	double GetDist() const;
 
 	virtual double GetCost() const;
+
+	string  Print() const;
 
 	//virtual bool operator<(const Cargo& r);
 		// Waiting for the Priority Equation

@@ -14,6 +14,7 @@ public:
 	bool remove(int position);
 	T getEntry(int position) const;
 	void setEntry(int position, const T& newEntry);
+	void Print() const;
 };
 
 
@@ -55,4 +56,10 @@ template<typename T>
 void List<T>::setEntry(int position, const T& newEntry)
 {
 	List[position] = newEntry;
+}
+
+template<typename T>
+void List<T>::Print() const
+{ 
+	List.Print();
 }

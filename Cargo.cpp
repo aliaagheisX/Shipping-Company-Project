@@ -1,4 +1,6 @@
 #include "Cargo.h"
+using namespace std;
+#include<string>
 Cargo::Cargo(int i) : ID(i) {}
 void Cargo ::  SetPt(const Time& t)
 {
@@ -50,6 +52,11 @@ double Cargo::GetDist() const
 double Cargo::GetCost() const
 {
 	return Cost;
+}
+
+string Cargo::Print() const
+{
+	return to_string(ID);
 }
 
 

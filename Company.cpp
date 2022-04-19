@@ -79,3 +79,15 @@ void Company::load()
 		EventList.enqueue(newEvent);
 	}
 }
+
+void Company::Print()
+{
+	int t;
+	UI* uiPtr;
+	// Printing current Time in the Company
+	uiPtr->Output("Current Time (Day:Hour)"+to_string(currentTime.getDay())+":"+ to_string(currentTime.getHour())+"\n");
+
+
+	uiPtr->Output("")
+	
+}
