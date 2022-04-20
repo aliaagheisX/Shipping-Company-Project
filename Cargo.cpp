@@ -1,7 +1,7 @@
 #include "Cargo.h"
 using namespace std;
 #include<string>
-Cargo::Cargo(int i) : ID(i) {}
+Cargo::Cargo(int i, char c) : ID(i), cargoType(c) {}
 void Cargo ::  SetPt(const Time& t)
 {
 	PT = t;

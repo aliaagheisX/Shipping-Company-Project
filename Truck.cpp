@@ -34,12 +34,17 @@ int Truck::GetCapcity() const
 	return Capcity;
 }
 CargoType Truck::getCargoType() const {
-	/*if (dynamic_cast<NormalCargo*>(loadedCargo.peekFront())) return Normal;
+/*
+	if (dynamic_cast<NormalCargo*>(loadedCargo.peekFront())) return Normal;
 	if (dynamic_cast<SpecialCargo*>(loadedCargo.peekFront())) return Special;
-	if (dynamic_cast<VIPCargo*>(loadedCargo.peekFront())) return VIP;*/
+	if (dynamic_cast<VIPCargo*>(loadedCargo.peekFront())) return VIP;
+*/
 	return VIP;
 }
 
 const PriorityQueue<Cargo*> &  Truck::getCargoList() const {
 	return loadedCargo;
 }
+
+
+// Cargo char - simulate function - pormotion event - output - :priorityE

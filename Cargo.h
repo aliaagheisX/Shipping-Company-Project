@@ -9,6 +9,7 @@ class Cargo
 	Time WT; //waiting time
 
 	int CDT;
+	char cargoType;
 
 	const int ID;
 	double DeliveryDist;
@@ -16,9 +17,9 @@ class Cargo
 	double Cost;
 
 public:
-	Cargo(int);
+	Cargo(int, char);
 	// Setters
-	void SetPt(const Time& t); //trucl call it
+	void SetPt(const Time& t); //truck call it
 	void SetLt(const int& t); //read from input
 	void SetWt(const Time& t); //truck call = Truck::MT - PT
 	void SetDeliveryDist(const int& dist);
@@ -30,11 +31,13 @@ public:
 	double GetDist() const;
 	virtual double GetCost() const;
 
+	char getType() const { return cargoType; }
 
 	const int getID() const;
 
 	int getPriority() const { return 1; }
 
+	void setCargoType(char c) { cargoType = c; }
 	//virtual bool operator<(const Cargo& r);
 		// Waiting for the Priority Equation
 	

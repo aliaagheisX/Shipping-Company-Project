@@ -2,7 +2,7 @@
 #include"Cargo.h"
 #include"Company.h"
 void PreparationEvent::Execute(Company* cPtr) {
-	Cargo* newCargo = new Cargo(getId());
+	Cargo* newCargo = new Cargo(getId(), CargoType);
 
 	switch (CargoType)
 	{
