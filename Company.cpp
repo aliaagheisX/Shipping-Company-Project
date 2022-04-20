@@ -97,9 +97,7 @@ void Company::Print()
 	uiPtr->Output("Current Time (Day:Hour)"+to_string(currentTime.getDay())+":"+ to_string(currentTime.getHour())+"\n");
 	
 	//Waiting Cargos:
-	uiPtr->Output(
-		to_string(waitingNormalCargo.getSize() + waitingSpecialCargo.getSize() + waitingVIPCargo.getSize()) 
-		+ " Waiting Cargos: ["); 
+	uiPtr->Output( to_string(getWaitingCargosCount()) + " Waiting Cargos: ["); 
 	waitingNormalCargo.Print(uiPtr);
 	uiPtr->Output("] (");
 	waitingSpecialCargo.Print(uiPtr);
@@ -109,9 +107,7 @@ void Company::Print()
 	uiPtr->Line();
 
 	//emptyTrucks
-	uiPtr->Output(
-		to_string(emptyTrucks[Normal].getSize() + emptyTrucks[Special].getSize() + emptyTrucks[VIP].getSize())
-		+ " Empty Trucks: [");
+	uiPtr->Output( to_string(getEmptyTrucksCount()) + " Empty Trucks: [");
 	emptyTrucks[Normal].Print(uiPtr);
 	uiPtr->Output("] (");
 	emptyTrucks[Special].Print(uiPtr);
@@ -121,11 +117,9 @@ void Company::Print()
 	uiPtr->Line();
 
 	// Moving Cargos
-	int MovingCargoCount = 0;
-	for (int i = 0; i < movingTrucks.getSize(); i++) 
-		MovingCargoCount += movingTrucks.getEntry(i)->getCargoList().getSize();
 
-	uiPtr->Output(to_string(MovingCargoCount) + " Moving Cargos: ");
+	uiPtr->Output(to_string(getMovingCargosCount()) + " Moving Cargos: ");
+
 	for (int i = 0; i < movingTrucks.getSize(); i++) {
 
 		int getCargoType = movingTrucks.getEntry(i)->getCargoType();
@@ -139,9 +133,7 @@ void Company::Print()
 	uiPtr->Line();
 
 	//IN Check-up trucks
-	uiPtr->Output(
-		to_string(maintainingTrucks[Normal].getSize() + maintainingTrucks[Special].getSize() + maintainingTrucks[VIP].getSize())
-		+ " In-Checkup Trucks: [");
+	uiPtr->Output( to_string(getMaintainingTrucksCount()) + " In-Checkup Trucks: [");
 	maintainingTrucks[Normal].Print(uiPtr);
 	uiPtr->Output("] (");
 	maintainingTrucks[Special].Print(uiPtr);
@@ -156,17 +148,44 @@ void Company::Print()
 	
 }
 
-LinkedList<NormalCargo*>& Company::getWaitingNormalCargo()
+int Company::getWaitingCargosCount() const {
+
+	return waitingNormalCargo.getSize() + waitingSpecialCargo.getSize() + waitingVIPCargo.getSize();
+}
+int Company::getEmptyTrucksCount() const {
+	return emptyTrucks[Normal].getSize() + emptyTrucks[Special].getSize() + emptyTrucks[VIP].getSize();
+}
+
+
+int Company::getMovingCargosCount() const {
+	int MovingCargoCount = 0;
+	for (int i = 0; i < movingTrucks.getSize(); i++)
+		MovingCargoCount += movingTrucks.getEntry(i)->getCargoList().getSize();
+	return MovingCargoCount;
+}
+
+int Company::getMaintainingTrucksCount() const {
+	return maintainingTrucks[Normal].getSize() + maintainingTrucks[Special].getSize() + maintainingTrucks[VIP].getSize();
+}
+
+const Time & Company::getCurrentTime() const {
+	return currentTime;
+}
+
+
+
+LinkedList<Cargo*>& Company::getWaitingNormalCargo()
 {
 	return waitingNormalCargo;
 }
 
-Queue<SpecialCargo*>& Company::getWaitingSpecialCargo()
+Queue<Cargo*>& Company::getWaitingSpecialCargo()
 {
 	return waitingSpecialCargo;
 }
 
-PriorityQueue<VIPCargo*>& Company::getWaitingVIPCargo()
+PriorityQueue<Cargo*>& Company::getWaitingVIPCargo()
 {
 	return waitingVIPCargo;
 }
+

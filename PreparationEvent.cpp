@@ -1,26 +1,23 @@
 #include "PreparationEvent.h"
-#include"NormalCargo.h"
-#include"SpecialCargo.h"
-#include"VIPCargo.h"
+#include"Cargo.h"
 #include"Company.h"
 void PreparationEvent::Execute(Company* cPtr) {
-	
+	Cargo* newCargo = new Cargo(getId());
+
 	switch (CargoType)
 	{
 	case 'N':
-	{NormalCargo* normalCargo = new NormalCargo(getId());
-	cPtr->getWaitingNormalCargo().addFront(normalCargo);
-	break; 
-	}
+		cPtr->getWaitingNormalCargo().addFront(newCargo);
+		break; 
+	
 	case 'S':
-	{SpecialCargo* spectialCargo = new SpecialCargo(getId());
-	cPtr->getWaitingSpecialCargo().enqueue(spectialCargo);
-	}
+		cPtr->getWaitingSpecialCargo().enqueue(newCargo);
+		break;
+
 	case 'V':
-	{
-		VIPCargo* VipCargo = new VIPCargo(getId());
-		cPtr->getWaitingVIPCargo().enqueue(VipCargo, VipCargo->getPriority());
-	}
+		cPtr->getWaitingVIPCargo().enqueue(newCargo, newCargo->getPriority());
+		break;
+
 	default:
 		break;
 	}

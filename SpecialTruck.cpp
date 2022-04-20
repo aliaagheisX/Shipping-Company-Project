@@ -1,5 +1,4 @@
 #include "SpecialTruck.h"
-#include "SpecialCargo.h"
 float SpecialTruck::Speed = 0;
 int SpecialTruck::Capcity = 0;
 int SpecialTruck::CheckUPTime = 0;

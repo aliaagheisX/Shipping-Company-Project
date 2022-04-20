@@ -1,5 +1,4 @@
 #include "VIPTruck.h"
-#include "VIPCargo.h"
 float VIPTruck::Speed = 0;
 int VIPTruck::Capcity = 0;
 int VIPTruck::CheckUPTime = 0;

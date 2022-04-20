@@ -5,9 +5,7 @@ class UI;
 #include"VIPTruck.h"
 #include"NormalTruck.h"
 #include"SpecialTruck.h"
-#include"NormalCargo.h"
-#include"SpecialCargo.h"
-#include"VIPCargo.h"
+
 #include"Event.h"
 #include"Time.h"
 #include"Queue.h"
@@ -28,9 +26,9 @@ class Company
 	List< Truck *> movingTrucks;
 	List< Truck* > maintainingTrucks[3];
 
-	LinkedList<NormalCargo*> waitingNormalCargo;
-	Queue<SpecialCargo*> waitingSpecialCargo;
-	PriorityQueue<VIPCargo*> waitingVIPCargo;
+	LinkedList<Cargo*> waitingNormalCargo;
+	Queue<Cargo*> waitingSpecialCargo;
+	PriorityQueue<Cargo*> waitingVIPCargo;
 
 	UI *uiPtr;
 public:
@@ -39,8 +37,17 @@ public:
 	}
 	void load();
 	void Print();
-	LinkedList<NormalCargo*>& getWaitingNormalCargo(); // as we need to remove by id
-	Queue<SpecialCargo*>& getWaitingSpecialCargo();
-	PriorityQueue<VIPCargo*>& getWaitingVIPCargo();
+
+	//Getters
+
+	int getWaitingCargosCount() const;
+	int getMovingCargosCount() const;
+	int getEmptyTrucksCount() const;
+	int getMaintainingTrucksCount() const;
+	const Time& getCurrentTime() const;
+
+	LinkedList<Cargo*>& getWaitingNormalCargo(); // as we need to remove by id
+	Queue<Cargo*>& getWaitingSpecialCargo();
+	PriorityQueue<Cargo*>& getWaitingVIPCargo();
 };
 

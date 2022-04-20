@@ -1,11 +1,14 @@
 #pragma once
 #include<string>
 #include<iostream>
+using std::cout; using std::cin;using std::string;
 
 class Cargo;
 class Truck;
+class Company;
 
-using std::cout; using std::cin;using std::string;
+//char open[3] = { '[', '(', '{' };
+//char close[3] = { ']', ')', '}' };
 enum Mode { Interactive, Silent, StepByStep};
 class UI
 {
@@ -17,8 +20,11 @@ public:
 	void Output(string s);
 	void Line();
 
+	void PrintData(Company*);
 	void Print(Cargo* c);
 	void Print(Truck* t);
+
+
 
 };
 

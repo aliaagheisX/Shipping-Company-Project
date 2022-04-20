@@ -1,5 +1,7 @@
 #pragma once
 #include<fstream>
+
+class UI;
 using namespace std;
 class Time
 {
@@ -23,7 +25,9 @@ public:
 	//updates
 	void Update(); // increase hour by 1 and 
 				   //if pass 24 hr increase the day 1
+
 	void Read(ifstream& InFile);
+	void Print(UI* );
 
 
 };

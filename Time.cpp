@@ -1,4 +1,5 @@
 #include "Time.h"
+#include"UI.h"
 //get Day then Hour From Constructor
 Time::Time(int d, int h) {
 	setDay(d);
@@ -49,4 +50,8 @@ void Time::Update(){
 void Time::Read(ifstream& InFile) {
 	char buff;
 	InFile >> day >> buff >> hour;
+}
+
+void Time::Print(UI* uiPtr) {
+	uiPtr->Output(to_string(day) + ":" + to_string(hour));
 }

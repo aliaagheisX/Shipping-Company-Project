@@ -6,7 +6,7 @@ void Cargo ::  SetPt(const Time& t)
 {
 	PT = t;
 }
-void Cargo ::  SetLt(const Time& t)
+void Cargo ::  SetLt(const int& t)
 {
 	LT = t;
 }

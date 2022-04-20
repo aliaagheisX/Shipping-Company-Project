@@ -22,5 +22,9 @@ int main() {
 //? 5 - Simple Simulator Function
 	//? truck creation
 
+	//? simulation function
+	//? output
+	//? promotion
+
 	return 0;
 }

@@ -5,7 +5,8 @@
 using namespace std;
 
 template<typename T>
-class LinkedList {
+class LinkedList
+{
     Node<T>* head;
     Node<T>* tail;
     int size;
@@ -39,7 +40,7 @@ public:
     //Print 
     void Print(UI* ptr) ;
        
-
+    
 
     //destructor
     ~LinkedList();

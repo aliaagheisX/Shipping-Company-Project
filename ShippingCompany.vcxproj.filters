@@ -26,15 +26,6 @@
     <ClCompile Include="Cargo.cpp">
       <Filter>Cargo</Filter>
     </ClCompile>
-    <ClCompile Include="NormalCargo.cpp">
-      <Filter>Cargo</Filter>
-    </ClCompile>
-    <ClCompile Include="VIPCargo.cpp">
-      <Filter>Cargo</Filter>
-    </ClCompile>
-    <ClCompile Include="SpecialCargo.cpp">
-      <Filter>Cargo</Filter>
-    </ClCompile>
     <ClCompile Include="NormalTruck.cpp">
       <Filter>Truck</Filter>
     </ClCompile>
@@ -95,15 +86,6 @@
       <Filter>DS</Filter>
     </ClInclude>
     <ClInclude Include="Cargo.h">
-      <Filter>Cargo</Filter>
-    </ClInclude>
-    <ClInclude Include="VIPCargo.h">
-      <Filter>Cargo</Filter>
-    </ClInclude>
-    <ClInclude Include="SpecialCargo.h">
-      <Filter>Cargo</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalCargo.h">
       <Filter>Cargo</Filter>
     </ClInclude>
     <ClInclude Include="VIPTruck.h">
