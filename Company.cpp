@@ -43,9 +43,7 @@ void Company::Simulate() {
 			EventList.dequeue();
 		}
 
-		//	ExecuteEvent
-		// get vip - special - Normal cargo from Waiting => Deliverd
-		//
+	
 
 		uiPtr->Print(this);
 
