@@ -36,6 +36,7 @@ public:
 
 	void Print(UI * ) const ;
 
+	bool isEmpty() const;
 
 	~PriorityQueue();
 
@@ -89,6 +90,12 @@ void PriorityQueue<T>::Print(UI* ptr) const {
 	}
 	ptr->Print(arr[size - 1]->getValue());
 
+}
+
+template<typename T>
+bool PriorityQueue<T>::isEmpty() const
+{
+	return (size==0);
 }
 
 template<typename T>

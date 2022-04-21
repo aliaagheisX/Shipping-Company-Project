@@ -2,8 +2,7 @@
 #include"Cargo.h"
 #include"Company.h"
 void PreparationEvent::Execute(Company* cPtr) {
-	Cargo* newCargo = new Cargo(getId(), CargoType);
-
+	Cargo* newCargo = new Cargo(getId(), CargoType,Distances,Cost,LoadTime);
 	switch (CargoType)
 	{
 	case 'N':

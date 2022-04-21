@@ -8,3 +8,8 @@ int Event::getId() const
 {
 	return CargoID;
 }
+
+Time& Event::getEventTime() const
+{
+	return EventTime;
+}

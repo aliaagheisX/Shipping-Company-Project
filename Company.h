@@ -5,7 +5,6 @@ class UI;
 #include"VIPTruck.h"
 #include"NormalTruck.h"
 #include"SpecialTruck.h"
-
 #include"Event.h"
 #include"Time.h"
 #include"Queue.h"
@@ -44,10 +43,11 @@ public:
 	int getMovingCargosCount() const;
 	int getEmptyTrucksCount() const;
 	int getMaintainingTrucksCount() const;
-	const Time& getCurrentTime() const;
+	Time& getCurrentTime() const;
 
 	LinkedList<Cargo*>& getWaitingNormalCargo(); // as we need to remove by id
 	Queue<Cargo*>& getWaitingSpecialCargo();
 	PriorityQueue<Cargo*>& getWaitingVIPCargo();
+	Queue<Event*>& getEventList();
 };
 

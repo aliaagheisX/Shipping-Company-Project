@@ -17,6 +17,7 @@ class Cargo
 	double Cost;
 
 public:
+	Cargo(int i, char c, double Dst, double cst, int L);
 	Cargo(int, char);
 	// Setters
 	void SetPt(const Time& t); //truck call it
@@ -26,7 +27,7 @@ public:
 	void SetCost(const int& ct);
 	// Getters 
 	const Time& GetPt() const;
-	const Time& GetLt() const;
+	const int GetLt() const;
 	const Time& GetWt() const;
 	double GetDist() const;
 	virtual double GetCost() const;
