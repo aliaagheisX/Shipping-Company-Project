@@ -127,7 +127,7 @@ int Company::getMaintainingTrucksCount() const {
 	return maintainingTrucks[Normal].getSize() + maintainingTrucks[Special].getSize() + maintainingTrucks[VIP].getSize();
 }
 
-const Time & Company::getCurrentTime() const {
+ Time & Company::getCurrentTime() const {
 	return currentTime;
 }
 
@@ -144,6 +144,9 @@ PriorityQueue<Cargo*>& Company::getWaitingVIPCargo(){return waitingVIPCargo;}
 List<Cargo*>* Company::getDeliveredCargo() { return DeliveredCargos; }
 
 
+
+
 List<Truck*>* Company::getEmptyTrucks() { return emptyTrucks; }
 List< Truck*>& Company::getMovingTrucks() { return movingTrucks; }
 List< Truck*>* Company::getMaintainingTrucks() { return maintainingTrucks; }
+

@@ -2,6 +2,15 @@
 using namespace std;
 #include<string>
 Cargo::Cargo(int i, char c) : ID(i), cargoType(c) {}
+
+
+Cargo::Cargo(int i, char c, double Dst, double cst, int L) :Cargo(i,c)
+{
+	SetDeliveryDist(Dst);
+	SetCost(cst);
+	SetLt(L);
+}
+
 void Cargo ::  SetPt(const Time& t)
 {
 	PT = t;
@@ -35,7 +44,7 @@ const Time& Cargo:: GetPt() const
 {
 	return PT;
 }
-const Time& Cargo:: GetLt() const
+const int Cargo:: GetLt() const
 {
 	return LT;
 }
