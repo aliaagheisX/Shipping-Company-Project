@@ -6,7 +6,7 @@ void PreparationEvent::Execute(Company* cPtr) {
 	switch (CargoType)
 	{
 	case 'N':
-		cPtr->getWaitingNormalCargo().addFront(newCargo);
+		cPtr->getWaitingNormalCargo().addBack(newCargo);
 		break; 
 	
 	case 'S':

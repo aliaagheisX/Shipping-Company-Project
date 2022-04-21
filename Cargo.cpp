@@ -4,7 +4,7 @@ using namespace std;
 Cargo::Cargo(int i, char c) : ID(i), cargoType(c) {}
 
 
-Cargo::Cargo(int i, char c, double Dst, double cst, int L) :Cargo(i,c)
+Cargo::Cargo(int i, char c, int Dst, int cst, int L) : ID(i), cargoType(c)
 {
 	SetDeliveryDist(Dst);
 	SetCost(cst);

@@ -15,6 +15,9 @@ public:
 
 	T& getValue() ;
 	Node<T>* getNext() const;
+
+	~Node() {
+	}
 }; 
 
 

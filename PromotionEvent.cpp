@@ -9,8 +9,11 @@ void PromotionEvent::Execute(Company* cPtr) {
 	{
 		temp->getValue()->setCargoType('V');
 		temp->getValue()->SetCost(temp->getValue()->GetCost() + ExtraMoney);
+
+		Cargo* t = temp->getValue();
 		cPtr->getWaitingNormalCargo().removeValue(temp->getValue());
-		cPtr->getWaitingVIPCargo().enqueue(temp->getValue(), temp->getValue()->getPriority());
+		cPtr->getWaitingVIPCargo().enqueue(t, t->getPriority());
+
 	}
 }
 

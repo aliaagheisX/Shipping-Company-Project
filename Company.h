@@ -30,7 +30,7 @@ class Company
 	Queue<Cargo*> waitingSpecialCargo;
 	PriorityQueue<Cargo*> waitingVIPCargo;
 
-	List<Cargo*> DeliveredCargos[3];
+	Queue<Cargo*> DeliveredCargos[3];
 
 	UI *uiPtr;
 	void load();
@@ -46,10 +46,9 @@ public:
 	int getEmptyTrucksCount() const;
 	int getMaintainingTrucksCount() const;
 
-	Time& getCurrentTime() const;
+	const Time& getCurrentTime() const;
 
 	int getDeliveredCargosCount() const;
-	const Time& getCurrentTime() const;
 
 
 	LinkedList<Cargo*>& getWaitingNormalCargo(); // as we need to remove by id
@@ -57,7 +56,7 @@ public:
 	PriorityQueue<Cargo*>& getWaitingVIPCargo();
 
 
-	List<Cargo*>* getDeliveredCargo();
+	Queue<Cargo*>* getDeliveredCargo();
 
 	List<Truck*>* getEmptyTrucks();
 	List< Truck*>& getMovingTrucks();

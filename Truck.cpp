@@ -5,6 +5,7 @@ int Truck::counter = 0;
 Truck ::Truck(float& s, int& c): ID(counter + 1), Speed(s),Capcity(c)
 {
 	counter++;
+	loadedCargo = new PriorityQueue<Cargo*>(Capcity);
 }
 
 int Truck::GetDi() const
@@ -42,7 +43,7 @@ CargoType Truck::getCargoType() const {
 	return VIP;
 }
 
-const PriorityQueue<Cargo*> &  Truck::getCargoList() const {
+PriorityQueue<Cargo*>* &  Truck::getCargoList()  {
 	return loadedCargo;
 }
 

@@ -3,13 +3,13 @@ template<typename T>
 class PriorityKey
 {
 	int key;
-	T* value;
+	T value;
 public:
-	PriorityKey(T* val = nullptr, int k = 0) : key(k), value(val) {}
+	PriorityKey(T val = nullptr, int k = 0) : key(k), value(val) {}
 
 	int getKey() const { return key; }
-	T& getValue() const { return *value; }
+	const T& getValue() const { return value; }
 
 	void setKey(int k) { key = k; }
-	void setValue(T* v) { value = v; }
+	void setValue(T v) { value = v; }
 };

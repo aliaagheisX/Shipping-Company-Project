@@ -12,12 +12,12 @@ class Cargo
 	char cargoType;
 
 	const int ID;
-	double DeliveryDist;
+	int DeliveryDist;
 
-	double Cost;
+	int Cost;
 
 public:
-	Cargo(int i, char c, double Dst, double cst, int L);
+	Cargo(int i, char c, int Dst, int cst, int L);
 	Cargo(int, char);
 	// Setters
 	void SetPt(const Time& t); //truck call it
@@ -36,7 +36,7 @@ public:
 
 	const int getID() const;
 
-	int getPriority() const { return 1; }
+	int getPriority() const { return ID; }
 
 	void setCargoType(char c) { cargoType = c; }
 	//virtual bool operator<(const Cargo& r);

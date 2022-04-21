@@ -7,8 +7,11 @@ void CancellationEvent::Execute(Company* cPtr) {
 	while (temp && temp->getValue()->getID() != getId())
 		temp = temp->getNext();
 	
-	if (temp)
+	if (temp){
+		Cargo* t= temp->getValue();
 		cPtr->getWaitingNormalCargo().removeValue(temp->getValue());
+		delete t;
+	}
 }
 void CancellationEvent::Read(ifstream& InputFile) {
 	Event::Read(InputFile);

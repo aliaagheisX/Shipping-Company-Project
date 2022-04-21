@@ -9,7 +9,7 @@ int Event::getId() const
 	return CargoID;
 }
 
-Time& Event::getEventTime() const
+const Time& Event::getEventTime() const
 {
 	return EventTime;
 }

@@ -28,7 +28,7 @@ public:
 
 	void enqueue(T& val, int key);
 
-	T& dequeue();
+	bool dequeue();
 
 	const T& peekFront() const;
 
@@ -53,16 +53,14 @@ template<typename T>
 void PriorityQueue<T>::enqueue(T& val, int key) {
 	if (size == capacity) throw std::exception("Piority Queue is FULL");
 
-	PriorityKey<T>* newHeap = new PriorityKey<T>(&val, key);
+	PriorityKey<T>* newHeap = new PriorityKey<T>(val, key);
 	arr[size++] = newHeap;
 	bubbleUP();
 }
 
 template<typename T>
-T& PriorityQueue<T>::dequeue() {
+bool PriorityQueue<T>::dequeue() {
 	if (size == 0) throw std::exception("Piority Queue is Empty");
-
-	T& returnValue = arr[0]->getValue(); //get value store to return it
 
 	swap(arr[0], arr[size - 1]); //swap between root[least node]
 
@@ -71,8 +69,9 @@ T& PriorityQueue<T>::dequeue() {
 	size--;
 	bubbleDown(); //return it to binary again
 
-	return returnValue;
+	return true;
 }
+
 
 template<typename T>
 const T& PriorityQueue<T>::peekFront() const {

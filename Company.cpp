@@ -12,7 +12,41 @@ void Company::Simulate() {
 	uiPtr = new UI;
 	uiPtr->ReadMode();
 	load();
-	while(true) {//!EventList.isEmpty() && getWaitingCargosCount() != 0
+
+	
+		int i = 0;
+	while (!(EventList.isEmpty()) || !(getWaitingNormalCargo().isEmpty()) || !(getWaitingSpecialCargo().isEmpty()) || !(getWaitingVIPCargo().isEmpty()))
+	{
+		
+		if (i == 5) {
+			if (!waitingVIPCargo.isEmpty()) {
+				
+				DeliveredCargos[VIP].enqueue(waitingVIPCargo.peekFront());
+				waitingVIPCargo.dequeue();
+			}
+			if (!waitingNormalCargo.isEmpty()) {
+				DeliveredCargos[Normal].enqueue(waitingNormalCargo[0]);
+				waitingNormalCargo.removeFront();
+			}
+			if (!waitingSpecialCargo.isEmpty()) {
+				DeliveredCargos[Special].enqueue(waitingSpecialCargo.peekFront());
+				waitingSpecialCargo.dequeue();
+			}
+			i = 0;
+		}
+		i++;
+
+
+		while (!EventList.isEmpty() && currentTime == EventList.peekFront()->getEventTime())
+		{
+			EventList.peekFront()->Execute(this);
+			EventList.dequeue();
+		}
+
+		//	ExecuteEvent
+		// get vip - special - Normal cargo from Waiting => Deliverd
+		//
+
 		uiPtr->Print(this);
 
 
@@ -119,7 +153,7 @@ int Company::getEmptyTrucksCount() const {
 int Company::getMovingCargosCount() const {
 	int MovingCargoCount = 0;
 	for (int i = 0; i < movingTrucks.getSize(); i++)
-		MovingCargoCount += movingTrucks.getEntry(i)->getCargoList().getSize();
+		MovingCargoCount += movingTrucks.getEntry(i)->getCargoList()->getSize();
 	return MovingCargoCount;
 }
 
@@ -127,7 +161,7 @@ int Company::getMaintainingTrucksCount() const {
 	return maintainingTrucks[Normal].getSize() + maintainingTrucks[Special].getSize() + maintainingTrucks[VIP].getSize();
 }
 
- Time & Company::getCurrentTime() const {
+ const Time & Company::getCurrentTime() const {
 	return currentTime;
 }
 
@@ -141,7 +175,7 @@ Queue<Cargo*>& Company::getWaitingSpecialCargo() {return waitingSpecialCargo;}
 
 PriorityQueue<Cargo*>& Company::getWaitingVIPCargo(){return waitingVIPCargo;}
 
-List<Cargo*>* Company::getDeliveredCargo() { return DeliveredCargos; }
+Queue<Cargo*>* Company::getDeliveredCargo() { return DeliveredCargos; }
 
 
 

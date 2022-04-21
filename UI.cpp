@@ -3,11 +3,12 @@
 #include"Truck.h"
 #include"Company.h"
 #include<Windows.h>
+
 void UI::ReadMode() {
 	int x;
-	cout << "Choose Mode\n0 - interactive\n1 - Step By Step\n3 - Silent\nEnter Number : ";
+	cout << "Choose Mode\n0 - interactive\n1 - Step By Step\n2 - Silent\nEnter Number : ";
 	cin >> x;
-	mode = (Mode)x;
+	mode = Mode(x);
 }
 void UI::InterActiveMode(Company* cPtr) {
 	getchar();
@@ -95,7 +96,7 @@ void UI::PrintScreen(Company* Cptr) {
 		int getCargoType = Cptr->getMovingTrucks().getEntry(i)->getCargoType();
 
 		Output(to_string(Cptr->getMovingTrucks().getEntry(i)->getID()) + open[getCargoType]);
-		Cptr->getMovingTrucks().getEntry(i)->getCargoList().Print(this);
+		Cptr->getMovingTrucks().getEntry(i)->getCargoList()->Print(this);
 		Output(close[getCargoType] + " ");
 	}
 	Line();
