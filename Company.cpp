@@ -69,15 +69,15 @@ void Company::load()
 
 	file >> NormalTruckCount; 
 	for (int i = 0; i < NormalTruckCount; i++) {
-		emptyTrucks[Normal].insert(i, new NormalTruck);
+		emptyTrucks[Normal].enqueue(new NormalTruck);
 	}
 	file >> SpecialTruckCount;
 	for (int i = 0; i < SpecialTruckCount; i++) {
-		emptyTrucks[Special].insert(i, new SpecialTruck);
+		emptyTrucks[Special].enqueue( new SpecialTruck);
 	}
 	file >> VIPTruckCount;
 	for (int i = 0; i < VIPTruckCount; i++) {
-		emptyTrucks[VIP].insert(i, new VIPTruck);
+		emptyTrucks[VIP].enqueue(new VIPTruck);
 
 	}
 	float speed;
@@ -151,9 +151,9 @@ int Company::getEmptyTrucksCount() const {
 
 
 int Company::getMovingCargosCount() const {
-	int MovingCargoCount = 0;
+	/*int MovingCargoCount = 0;
 	for (int i = 0; i < movingTrucks.getSize(); i++)
-		MovingCargoCount += movingTrucks.getEntry(i)->getCargoList()->getSize();
+		MovingCargoCount += movingTrucks.getEntry(i)->getCargoList()->getSize();*/
 	return MovingCargoCount;
 }
 
@@ -180,7 +180,7 @@ Queue<Cargo*>* Company::getDeliveredCargo() { return DeliveredCargos; }
 
 
 
-List<Truck*>* Company::getEmptyTrucks() { return emptyTrucks; }
-List< Truck*>& Company::getMovingTrucks() { return movingTrucks; }
-List< Truck*>* Company::getMaintainingTrucks() { return maintainingTrucks; }
+Queue<Truck*>* Company::getEmptyTrucks() { return emptyTrucks; }
+PriorityQueue< Truck*>& Company::getMovingTrucks() { return movingTrucks; }
+Queue< Truck*>* Company::getMaintainingTrucks() { return maintainingTrucks; }
 

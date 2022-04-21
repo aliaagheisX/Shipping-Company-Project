@@ -91,14 +91,7 @@ void UI::PrintScreen(Company* Cptr) {
 	Line();
 	//							Moving Cargos:
 	Output(to_string(Cptr->getMovingCargosCount()) + " Moving Cargos: ");
-
-	for (int i = 0; i < Cptr->getMovingTrucks().getSize(); i++) {
-		int getCargoType = Cptr->getMovingTrucks().getEntry(i)->getCargoType();
-
-		Output(to_string(Cptr->getMovingTrucks().getEntry(i)->getID()) + open[getCargoType]);
-		Cptr->getMovingTrucks().getEntry(i)->getCargoList()->Print(this);
-		Output(close[getCargoType] + " ");
-	}
+	Cptr->getMovingTrucks().Print(this);
 	Line();
 	//							Check-up Cargos:
 	Output(to_string(Cptr->getMaintainingTrucksCount()) + " In-Checkup Trucks: ");
@@ -143,7 +136,18 @@ void UI::PrintScreen(Company* Cptr) {
 
 
 void UI::Print(Cargo* c) { cout << to_string(c->getID()); }
-void UI::Print(Truck* t) { cout << to_string(t->getID()); }
+void UI::Print(Truck* t) { 
+
+	cout << to_string(t->getID());
+
+	if (!t->getCargoList()->isEmpty()) {
+		char open[3] = { '[', '(', '{' };
+		char close[3] = { ']', ')', '}' };
+		cout << open[t->getCargoType()];
+		t->getCargoList()->Print(this);
+		Output(close[t->getCargoType()] + " ");
+	}
+}
 void UI::Print(Company* cPtr) {
 	switch (mode)
 	{

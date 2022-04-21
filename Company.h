@@ -18,13 +18,14 @@ class Company
 	int MaxW, AutoP, J; // j no of journeys till maintaince
 	Time currentTime;
 	int CargoAvgWait, PromotedCargoCount, TotalSimulationTime;
+	int MovingCargoCount;
 
 	Queue<Event *> EventList;
 
-	List<Truck*> emptyTrucks [3];
-	List< Truck*> movingTrucks;
-	List< Truck *> loadingTrucks;
-	List< Truck* > maintainingTrucks[3];
+	Queue<Truck *> emptyTrucks [3];
+	PriorityQueue< Truck*> movingTrucks;
+	List<Truck *> loadingTrucks[3];
+	Queue<Truck *> maintainingTrucks[3];
 
 	LinkedList<Cargo*> waitingNormalCargo;
 	Queue<Cargo*> waitingSpecialCargo;
@@ -58,9 +59,9 @@ public:
 
 	Queue<Cargo*>* getDeliveredCargo();
 
-	List<Truck*>* getEmptyTrucks();
-	List< Truck*>& getMovingTrucks();
-	List< Truck*>* getMaintainingTrucks();
+	Queue<Truck*>* getEmptyTrucks();
+	PriorityQueue< Truck*>& getMovingTrucks();
+	Queue< Truck*>* getMaintainingTrucks();
 
 };
 
