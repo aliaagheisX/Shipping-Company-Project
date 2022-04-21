@@ -4,8 +4,7 @@
 using namespace std;
 int main() {
 	Company c;
-	c.load();
-	c.Print();
+	c.Simulate();
 	// 
 //* 1- Data members For All Classes
 //! Company 

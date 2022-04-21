@@ -317,7 +317,7 @@ void LinkedList<T>::Print(UI* ptr)
 
 template<typename T>
 LinkedList<T>::~LinkedList() {
-    while (size != 0) removeFront();
+    while (head) removeFront();
 }
 
 

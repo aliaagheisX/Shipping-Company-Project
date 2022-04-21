@@ -7,24 +7,23 @@ class Cargo;
 class Truck;
 class Company;
 
-//char open[3] = { '[', '(', '{' };
-//char close[3] = { ']', ')', '}' };
-enum Mode { Interactive, Silent, StepByStep};
+enum Mode { Interactive, StepByStep, Silent};
 class UI
 {
 
 	Mode mode;
-	void ReadMode();
+	void PrintScreen(Company*);
+	void InterActiveMode(Company*);
+	void StepByStepMode(Company*);
 
 public:
-	void Output(string s);
+	void ReadMode();
 	void Line();
-
-	void PrintData(Company*);
+	void Output(string s);
 	void Print(Cargo* c);
 	void Print(Truck* t);
 
-
+	void Print(Company*);
 
 };
 
