@@ -27,7 +27,7 @@ public:
 				   //if pass 24 hr increase the day 1
 
 	void Read(ifstream& InFile);
-	void Print(UI* );
+	void Print(UI* ) const ;
 
 
 };

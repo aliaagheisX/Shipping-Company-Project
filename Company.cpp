@@ -5,9 +5,27 @@
 #include"UI.h"
 #include<fstream>
 #include<string>
-
-
 using namespace std;
+
+
+void Company::Simulate() {
+	uiPtr = new UI;
+	uiPtr->ReadMode();
+	load();
+	while(true) {//!EventList.isEmpty() && getWaitingCargosCount() != 0
+		uiPtr->Print(this);
+
+
+		currentTime.Update();
+	}
+}
+
+
+
+void Company::ExecuteEvent() {
+
+}
+
 void Company::load()
 {
 	string path="Input_File.txt";
@@ -88,65 +106,6 @@ void Company::load()
 		EventList.enqueue(newEvent);
 	}
 }
-void Company::Print()
-{
-
-	char open[3] = { '[', '(', '{' };
-	char close[3] = { ']', ')', '}' };
-	// Printing current Time in the Company
-	uiPtr->Output("Current Time (Day:Hour)"+to_string(currentTime.getDay())+":"+ to_string(currentTime.getHour())+"\n");
-	
-	//Waiting Cargos:
-	uiPtr->Output( to_string(getWaitingCargosCount()) + " Waiting Cargos: ["); 
-	waitingNormalCargo.Print(uiPtr);
-	uiPtr->Output("] (");
-	waitingSpecialCargo.Print(uiPtr);
-	uiPtr->Output(") {");
-	waitingVIPCargo.Print(uiPtr);
-	uiPtr->Output("}");
-	uiPtr->Line();
-
-	//emptyTrucks
-	uiPtr->Output( to_string(getEmptyTrucksCount()) + " Empty Trucks: [");
-	emptyTrucks[Normal].Print(uiPtr);
-	uiPtr->Output("] (");
-	emptyTrucks[Special].Print(uiPtr);
-	uiPtr->Output(") {");
-	emptyTrucks[VIP].Print(uiPtr);
-	uiPtr->Output("}");
-	uiPtr->Line();
-
-	// Moving Cargos
-
-	uiPtr->Output(to_string(getMovingCargosCount()) + " Moving Cargos: ");
-
-	for (int i = 0; i < movingTrucks.getSize(); i++) {
-
-		int getCargoType = movingTrucks.getEntry(i)->getCargoType();
-
-		uiPtr->Output(to_string(movingTrucks.getEntry(i)->getID()) + open[getCargoType]);
-		movingTrucks.getEntry(i)->getCargoList().Print(uiPtr);
-		uiPtr->Output(close[getCargoType] + " ");
-
-	}
-
-	uiPtr->Line();
-
-	//IN Check-up trucks
-	uiPtr->Output( to_string(getMaintainingTrucksCount()) + " In-Checkup Trucks: [");
-	maintainingTrucks[Normal].Print(uiPtr);
-	uiPtr->Output("] (");
-	maintainingTrucks[Special].Print(uiPtr);
-	uiPtr->Output(") {");
-	maintainingTrucks[VIP].Print(uiPtr);
-	uiPtr->Output("}");
-	uiPtr->Line();
-	
-	
-		
-	uiPtr->Output("");
-	
-}
 
 int Company::getWaitingCargosCount() const {
 
@@ -172,25 +131,22 @@ int Company::getMaintainingTrucksCount() const {
 	return currentTime;
 }
 
+int Company::getDeliveredCargosCount() const { return DeliveredCargos[Normal].getSize() + DeliveredCargos[Special].getSize() + DeliveredCargos[VIP].getSize(); }
 
 
-LinkedList<Cargo*>& Company::getWaitingNormalCargo()
-{
-	return waitingNormalCargo;
-}
 
-Queue<Cargo*>& Company::getWaitingSpecialCargo()
-{
-	return waitingSpecialCargo;
-}
+LinkedList<Cargo*>& Company::getWaitingNormalCargo() {return waitingNormalCargo;}
 
-PriorityQueue<Cargo*>& Company::getWaitingVIPCargo()
-{
-	return waitingVIPCargo;
-}
+Queue<Cargo*>& Company::getWaitingSpecialCargo() {return waitingSpecialCargo;}
 
-Queue<Event*>& Company::getEventList()
-{
-	return EventList;
-}
+PriorityQueue<Cargo*>& Company::getWaitingVIPCargo(){return waitingVIPCargo;}
+
+List<Cargo*>* Company::getDeliveredCargo() { return DeliveredCargos; }
+
+
+
+
+List<Truck*>* Company::getEmptyTrucks() { return emptyTrucks; }
+List< Truck*>& Company::getMovingTrucks() { return movingTrucks; }
+List< Truck*>* Company::getMaintainingTrucks() { return maintainingTrucks; }
 

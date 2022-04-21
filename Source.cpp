@@ -20,12 +20,16 @@ void Simulate(Company& c)
 
 int main() {
 	Company c;
-	c.load();
-	c.Print();
 
 
 ////* 1- Data members For All Classes
 ////! Company 
+
+	c.Simulate();
+	// 
+//* 1- Data members For All Classes
+//! Company 
+
 ////Cargos - Truck - Time
 
 ////* 2- DSA ->
