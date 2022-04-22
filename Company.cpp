@@ -14,17 +14,19 @@ void Company::Simulate() {
 	load();
 
 	
-		int i = 0;
+		int i = 1;
 	while (!(EventList.isEmpty()) || !(getWaitingNormalCargo().isEmpty()) || !(getWaitingSpecialCargo().isEmpty()) || !(getWaitingVIPCargo().isEmpty()))
 	{
+
 		
 		if (i == 5) {
 			if (!waitingVIPCargo.isEmpty()) {
-				
+
 				DeliveredCargos[VIP].enqueue(waitingVIPCargo.peekFront());
 				waitingVIPCargo.dequeue();
 			}
 			if (!waitingNormalCargo.isEmpty()) {
+
 				DeliveredCargos[Normal].enqueue(waitingNormalCargo[0]);
 				waitingNormalCargo.removeFront();
 			}
@@ -37,13 +39,7 @@ void Company::Simulate() {
 		i++;
 
 
-		while (!EventList.isEmpty() && currentTime == EventList.peekFront()->getEventTime())
-		{
-			EventList.peekFront()->Execute(this);
-			EventList.dequeue();
-		}
-
-	
+		ExecuteEvent();
 
 		uiPtr->Print(this);
 
@@ -55,6 +51,11 @@ void Company::Simulate() {
 
 
 void Company::ExecuteEvent() {
+	while (!EventList.isEmpty() && currentTime == EventList.peekFront()->getEventTime())
+	{
+		EventList.peekFront()->Execute(this);
+		EventList.dequeue();
+	}
 
 }
 

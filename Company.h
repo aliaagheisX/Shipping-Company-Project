@@ -35,7 +35,10 @@ class Company
 
 	UI *uiPtr;
 	void load();
+	void assign();
 	void ExecuteEvent();
+	void checkUP();
+	void AutoPromotion();
 public:
 
 	void Simulate();

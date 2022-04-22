@@ -10,7 +10,7 @@ protected:
 	int ID;
 	
 	int DI; // delivery interval
-	PriorityQueue<Cargo*>* loadedCargo; //cargos that assigned on truck
+	PriorityQueue<Cargo*> loadedCargo; //cargos that assigned on truck
 	Time MT; //Moving Time
 
 	float& Speed;
@@ -35,7 +35,7 @@ public:
 	const int getID() const { return ID; }
 
 	CargoType getCargoType() const; // return NULL if empty
-	PriorityQueue<Cargo*>*  & getCargoList() ;
+	PriorityQueue<Cargo*>  & getCargoList() ;
 
 	//assign cargo to the Queue According to Distance
 	virtual bool AssignCargo(Cargo* ) = 0;
