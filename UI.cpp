@@ -140,12 +140,13 @@ void UI::Print(Truck* t) {
 
 	cout << to_string(t->getID());
 
-	if (!t->getCargoList()->isEmpty()) {
+	if (!t->getCargoList().isEmpty()) {
 		char open[3] = { '[', '(', '{' };
 		char close[3] = { ']', ')', '}' };
+
 		cout << open[t->getCargoType()];
-		t->getCargoList()->Print(this);
-		Output(close[t->getCargoType()] + " ");
+		t->getCargoList().Print(this);
+		cout  << close[t->getCargoType()] << " ";
 	}
 }
 void UI::Print(Company* cPtr) {

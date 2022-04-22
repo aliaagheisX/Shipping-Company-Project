@@ -30,7 +30,7 @@ public:
 
 	bool dequeue();
 
-	const T& peekFront() const;
+	T& peekFront() ;
 
 	int getSize() const { return size; };
 
@@ -51,11 +51,13 @@ PriorityQueue<T>::PriorityQueue(int s) : capacity(s), size(0) {
 
 template<typename T>
 void PriorityQueue<T>::enqueue(T& val, int key) {
+
 	if (size == capacity) throw std::exception("Piority Queue is FULL");
 
 	PriorityKey<T>* newHeap = new PriorityKey<T>(val, key);
 	arr[size++] = newHeap;
 	bubbleUP();
+
 }
 
 template<typename T>
@@ -74,7 +76,7 @@ bool PriorityQueue<T>::dequeue() {
 
 
 template<typename T>
-const T& PriorityQueue<T>::peekFront() const {
+T& PriorityQueue<T>::peekFront()  {
 	if (size == 0) throw std::exception("Piority Queue is Empty");
 
 	return arr[0]->getValue();
