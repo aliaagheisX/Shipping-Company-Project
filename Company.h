@@ -34,9 +34,11 @@ class Company
 	Queue<Cargo*> DeliveredCargos[3];
 
 	UI *uiPtr;
+	bool isNightShift();
 	void load();
 	void assign();
 	void ExecuteEvent();
+	void DeliverCargos();
 	void checkUP();
 	void AutoPromotion();
 public:
