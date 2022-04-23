@@ -36,10 +36,10 @@ void Company::Simulate() {
 			}
 			i = 0;
 		}
-		i++;
 
 
 		ExecuteEvent();
+		  i++;
 
 		uiPtr->Print(this);
 

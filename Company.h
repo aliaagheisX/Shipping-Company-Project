@@ -55,7 +55,7 @@ public:
 	int getDeliveredCargosCount() const;
 
 
-	LinkedList<Cargo*>& getWaitingNormalCargo(); // as we need to remove by id
+	LinkedList<Cargo*>& getWaitingNormalCargo(); // As we need to remove by Id
 	Queue<Cargo*>& getWaitingSpecialCargo();
 	PriorityQueue<Cargo*>& getWaitingVIPCargo();
 
