@@ -5,7 +5,7 @@
 #include<Windows.h>
 
 void UI::ReadMode() {
-	int x;
+	int x= 0;
 	cout << "Choose Mode\n0 - interactive\n1 - Step By Step\n2 - Silent\nEnter Number : ";
 	cin >> x;
 	mode = Mode(x);
@@ -43,7 +43,7 @@ void UI::PrintScreen(Company* Cptr) {
 	char open[3] = { '[', '(', '{' };
 	char close[3] = { ']', ')', '}' };
 	cout << "Current Time (Day:Hour):";
-	Cptr->getCurrentTime().Print(this);
+	cout << Cptr->getCurrentTime().Print();
 	cout << '\n';
 
 	//							Waiting Cargos:

@@ -25,20 +25,18 @@ public:
 	void SetWt(const Time& t); //truck call = Truck::MT - PT
 	void SetDeliveryDist(const int& dist);
 	void SetCost(const int& ct);
+	void setCargoType(char c) { cargoType = c; }
 	// Getters 
 	const Time& GetPt() const;
 	const int GetLt() const;
 	const Time& GetWt() const;
 	double GetDist() const;
-	virtual double GetCost() const;
-
+	virtual int GetCost() const;
+	Time GetCdt() const;
 	char getType() const { return cargoType; }
-
 	const int getID() const;
-
 	int getPriority() const { return ID; }
 
-	void setCargoType(char c) { cargoType = c; }
 	//virtual bool operator<(const Cargo& r);
 		// Waiting for the Priority Equation
 	

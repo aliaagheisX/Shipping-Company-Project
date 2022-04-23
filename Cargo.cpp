@@ -3,7 +3,7 @@ using namespace std;
 #include<string>
 Cargo::Cargo(int i, char c) : ID(i), cargoType(c) {}
 
-
+// Setting Cargo Data member
 Cargo::Cargo(int i, char c, int Dst, int cst, int L) : ID(i), cargoType(c)
 {
 	SetDeliveryDist(Dst);
@@ -58,9 +58,13 @@ double Cargo::GetDist() const
 	return DeliveryDist;
 }
 
-double Cargo::GetCost() const
+int Cargo::GetCost() const
 {
 	return Cost;
+}
+Time Cargo::GetCdt() const
+{
+	return CDT;
 }
 const int Cargo::getID() const
 {

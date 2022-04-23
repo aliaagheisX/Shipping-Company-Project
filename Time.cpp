@@ -52,6 +52,6 @@ void Time::Read(ifstream& InFile) {
 	InFile >> day >> buff >> hour;
 }
 // Printing the time format
-void Time::Print(UI* uiPtr) const {
-	uiPtr->Output(to_string(day) + ":" + to_string(hour));
+string Time::Print() const {
+	return to_string(day) + ":" + to_string(hour);
 }

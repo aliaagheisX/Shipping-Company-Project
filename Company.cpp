@@ -8,8 +8,25 @@
 using namespace std;
 
 
+Company::Company()
+{
+	//Intializing the data member 
+	NormalTruckCount = 0;
+	SpecialTruckCount = 0;
+	VIPTruckCount = 0;
+	NormalCargoCount = 0;
+	SpecialCargoCount = 0;
+	VIPCargoCount = 0;
+	MaxW = 0; 
+	AutoP = 0;
+	J = 0;
+	CargoAvgWait = 0;
+	PromotedCargoCount = 0;
+	TotalSimulationTime = 0;
+	MovingCargoCount = 0;
+	uiPtr= new UI;
+}
 void Company::Simulate() {
-	uiPtr = new UI;
 	uiPtr->ReadMode();
 	load();
 
@@ -58,6 +75,25 @@ void Company::ExecuteEvent() {
 	}
 
 }
+
+//void Company::OutputFile()
+//{
+//	ofstream file;
+//	string path = "Output_File.txt";
+//	file.open(path);
+//	file << "CDT\tID\tP\tWT\tTID\n";
+//	
+//
+//}
+//
+//void Company::OutputCargo(int cargotype, ofstream file)
+//{
+//	file << getDeliveredCargo()[cargotype].peekFront()->GetCdt().Print() << "\t";
+//	file << getDeliveredCargo()[cargotype].peekFront()->getID() << "\t";
+//	file << getDeliveredCargo()[cargotype].peekFront()->GetPt().Print() << "\t";
+//	file << getDeliveredCargo()[cargotype].peekFront()->GetWt().Print() << "\t";
+//	file << "ID" << "\t";
+//}
 
 void Company::load()
 {

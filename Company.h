@@ -35,12 +35,15 @@ class Company
 
 	UI *uiPtr;
 	void load();
-	void assign();
 	void ExecuteEvent();
+	// functions to setup
+	void assign();
 	void checkUP();
 	void AutoPromotion();
+	void OutputFile();
+	void OutputCargo(int cargotype, ofstream file);
 public:
-
+	Company();
 	void Simulate();
 	void Print() { uiPtr->Print(this); }
 	//Getters
