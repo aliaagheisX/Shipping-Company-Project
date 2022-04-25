@@ -36,13 +36,19 @@ class Company
 	UI *uiPtr;
 	bool isNightShift();
 	void load();
-	void assign();
 	void ExecuteEvent();
+
+	// functions to setup
+	void assign();
+
 	void DeliverCargos();
+
 	void checkUP();
 	void AutoPromotion();
+	void OutputFile();
+	void OutputCargo(int cargotype, ofstream file);
 public:
-
+	Company();
 	void Simulate();
 	void Print() { uiPtr->Print(this); }
 	//Getters
@@ -57,7 +63,7 @@ public:
 	int getDeliveredCargosCount() const;
 
 
-	LinkedList<Cargo*>& getWaitingNormalCargo(); // as we need to remove by id
+	LinkedList<Cargo*>& getWaitingNormalCargo(); // As we need to remove by Id
 	Queue<Cargo*>& getWaitingSpecialCargo();
 	PriorityQueue<Cargo*>& getWaitingVIPCargo();
 

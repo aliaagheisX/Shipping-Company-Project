@@ -46,12 +46,12 @@ void Time::Update(){
 	setHour(hour + 1); // in set Hour it handel if it enter new day
 
 }
-
+// Reading the time from input file 
 void Time::Read(ifstream& InFile) {
 	char buff;
 	InFile >> day >> buff >> hour;
 }
-
-void Time::Print(UI* uiPtr) const {
-	uiPtr->Output(to_string(day) + ":" + to_string(hour));
+// Printing the time format
+string Time::Print() const {
+	return to_string(day) + ":" + to_string(hour);
 }

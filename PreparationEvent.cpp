@@ -2,6 +2,7 @@
 #include"Cargo.h"
 #include"Company.h"
 void PreparationEvent::Execute(Company* cPtr) {
+	//Assign Data member and put it in suitable Waitinglist
 	Cargo* newCargo = new Cargo(getId(), CargoType,Distances,Cost,LoadTime);
 	switch (CargoType)
 	{

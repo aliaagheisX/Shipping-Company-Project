@@ -24,5 +24,3 @@ void VIPTruck::SetCapcity(const int& c)
 void VIPTruck::setCheckUPTime(const int& c) {
 	CheckUPTime = c;
 }
-
-// company =>
