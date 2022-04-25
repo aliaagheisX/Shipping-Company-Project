@@ -65,6 +65,9 @@ void Company::Simulate() {
 	}
 }
 
+void Company::DeliverCargos() {
+
+}
 
 
 void Company::ExecuteEvent() {
