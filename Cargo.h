@@ -5,14 +5,15 @@ using namespace std;
 class Cargo
 {   // Time Members in The Cargo
 	Time PT; //prep. time 
-	int LT; //loading time
+	int LT; //loading time	
 	Time WT; //waiting time
-
-	int CDT;
+	Time CDT;
 	char cargoType;
 
 	const int ID;
 	int DeliveryDist;
+
+	Truck* Loadingtrcuk;
 
 	int Cost;
 
@@ -25,18 +26,19 @@ public:
 	void SetWt(const Time& t); //truck call = Truck::MT - PT
 	void SetDeliveryDist(const int& dist);
 	void SetCost(const int& ct);
+	void setCDT(Time&);
 	// Getters 
 	const Time& GetPt() const;
 	const int GetLt() const;
 	const Time& GetWt() const;
-	double GetDist() const;
-	virtual double GetCost() const;
+	int GetDist() const;
 
+	virtual int GetCost() const;
 	char getType() const { return cargoType; }
 
 	const int getID() const;
 
-	int getPriority() const { return ID; }
+	int getPriority() const;
 
 	void setCargoType(char c) { cargoType = c; }
 	//virtual bool operator<(const Cargo& r);

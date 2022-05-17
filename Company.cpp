@@ -7,49 +7,65 @@
 #include<string>
 using namespace std;
 
+Company::Company() {
+}
 
 void Company::Simulate() {
 	uiPtr = new UI;
 	uiPtr->ReadMode();
 	load();
 
-	
-		int i = 1;
-	while (!(EventList.isEmpty()) || !(getWaitingNormalCargo().isEmpty()) || !(getWaitingSpecialCargo().isEmpty()) || !(getWaitingVIPCargo().isEmpty()))
+	while (isSimulationEnd())
 	{
-
 		
-		if (i == 5) {
-			if (!waitingVIPCargo.isEmpty()) {
-
-				DeliveredCargos[VIP].enqueue(waitingVIPCargo.peekFront());
-				waitingVIPCargo.dequeue();
-			}
-			if (!waitingNormalCargo.isEmpty()) {
-
-				DeliveredCargos[Normal].enqueue(waitingNormalCargo[0]);
-				waitingNormalCargo.removeFront();
-			}
-			if (!waitingSpecialCargo.isEmpty()) {
-				DeliveredCargos[Special].enqueue(waitingSpecialCargo.peekFront());
-				waitingSpecialCargo.dequeue();
-			}
-			i = 0;
+		
+		if(currentTime.getHour() >= 5 && currentTime.getHour() <=23){
+			ExecuteEvent();
+			//Max wait 
+			//assign cargos
+			uiPtr->Print(this);
 		}
-		i++;
-
-
-		ExecuteEvent();
-
-		uiPtr->Print(this);
-
+		else {
+			//move trucks	
+			//check moving trucks if they finish => waiting||checkup truck
+			//truck finish checkups
+			//deliverCargo
+				//output
+		}
+			
 
 		currentTime.Update();
 	}
+		//TODO: [statics]
+}
+
+bool Company::isSimulationEnd() {
+	return !(
+		waitingNormalCargo.isEmpty() &&
+		waitingSpecialCargo.isEmpty() &&
+		waitingVIPCargo.isEmpty() &&
+		loadingTrucks.isEmpty() &&
+		maintainingTrucks[0].isEmpty() &&
+		maintainingTrucks[1].isEmpty() &&
+		maintainingTrucks[2].isEmpty()
+		);
 }
 
 void Company::DeliverCargos() {
+	if (!waitingVIPCargo.isEmpty()) {
+		waitingVIPCargo.peekFront()->setCDT(currentTime);
+		DeliveredCargos[VIP].enqueue(waitingVIPCargo.peekFront());
+		waitingVIPCargo.dequeue();
+	}
+	if (!waitingNormalCargo.isEmpty()) {
 
+		DeliveredCargos[Normal].enqueue(waitingNormalCargo[0]);
+		waitingNormalCargo.removeFront();
+	}
+	if (!waitingSpecialCargo.isEmpty()) {
+		DeliveredCargos[Special].enqueue(waitingSpecialCargo.peekFront());
+		waitingSpecialCargo.dequeue();
+	}
 }
 
 
@@ -186,3 +202,10 @@ Queue<Truck*>* Company::getEmptyTrucks() { return emptyTrucks; }
 PriorityQueue< Truck*>& Company::getMovingTrucks() { return movingTrucks; }
 Queue< Truck*>* Company::getMaintainingTrucks() { return maintainingTrucks; }
 
+
+
+
+Company::~Company() {
+	while (!emptyTrucks->isEmpty()) emptyTrucks->dequeue();
+	while (!emptyTrucks->isEmpty()) emptyTrucks->dequeue();
+}

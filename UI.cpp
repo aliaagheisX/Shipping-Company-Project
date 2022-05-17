@@ -43,7 +43,8 @@ void UI::PrintScreen(Company* Cptr) {
 	char open[3] = { '[', '(', '{' };
 	char close[3] = { ']', ')', '}' };
 	cout << "Current Time (Day:Hour):";
-	Cptr->getCurrentTime().Print(this);
+	
+	cout << Cptr->getCurrentTime().Print();
 	cout << '\n';
 
 	//							Waiting Cargos:

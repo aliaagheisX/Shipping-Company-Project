@@ -24,7 +24,7 @@ class Company
 
 	Queue<Truck *> emptyTrucks [3];
 	PriorityQueue< Truck*> movingTrucks;
-	List<Truck *> loadingTrucks[3];
+	List<Truck *> loadingTrucks;
 	Queue<Truck *> maintainingTrucks[3];
 
 	LinkedList<Cargo*> waitingNormalCargo;
@@ -34,6 +34,8 @@ class Company
 	Queue<Cargo*> DeliveredCargos[3];
 
 	UI *uiPtr;
+
+
 	bool isNightShift();
 	void load();
 	void assign();
@@ -41,9 +43,13 @@ class Company
 	void DeliverCargos();
 	void checkUP();
 	void AutoPromotion();
-public:
 
+
+
+public:
+	Company();
 	void Simulate();
+	bool isSimulationEnd();
 	void Print() { uiPtr->Print(this); }
 	//Getters
 

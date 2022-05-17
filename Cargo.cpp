@@ -9,6 +9,7 @@ Cargo::Cargo(int i, char c, int Dst, int cst, int L) : ID(i), cargoType(c)
 	SetDeliveryDist(Dst);
 	SetCost(cst);
 	SetLt(L);
+	Loadingtrcuk = NULL;
 }
 
 void Cargo ::  SetPt(const Time& t)
@@ -40,6 +41,8 @@ void Cargo:: SetCost(const int& ct)
 	Cost = ct;
 }
 
+void Cargo::setCDT(Time& c) { CDT = c; }
+
 const Time& Cargo:: GetPt() const
 {
 	return PT;
@@ -53,12 +56,12 @@ const Time& Cargo:: GetWt() const
 	return WT;
 }
 
-double Cargo::GetDist() const
+int Cargo::GetDist() const
 {
 	return DeliveryDist;
 }
 
-double Cargo::GetCost() const
+int Cargo::GetCost() const
 {
 	return Cost;
 }
@@ -68,3 +71,4 @@ const int Cargo::getID() const
 }
 
 
+int Cargo::getPriority() const{ return 0.5 * DeliveryDist + 0.3 * Cost + 2 * LT; }
