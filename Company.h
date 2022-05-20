@@ -26,7 +26,7 @@ class Company
 
 	Queue<Truck *> emptyTrucks [3];
 	PriorityQueue< Truck*> movingTrucks;
-	List<Truck *> loadingTrucks;
+	Queue<Truck *> loadingTrucks;
 	Queue<Truck *> maintainingTrucks[3];
 
 	LinkedList<Cargo*> waitingNormalCargo;
@@ -34,8 +34,10 @@ class Company
 	PriorityQueue<Cargo*> waitingVIPCargo;
 
 	Queue<int> DeliveredCargos;
+
 	Queue<Cargo*> DeliveredCargos_temp;
 	//WT
+
 
 	UI *uiPtr;
 
