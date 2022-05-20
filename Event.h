@@ -7,6 +7,7 @@ class Company;
 
 class Event
 {
+protected:
 	Time EventTime;
 	int CargoID;
 public:

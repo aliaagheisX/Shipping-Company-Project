@@ -17,16 +17,14 @@ class Company
 	int NormalCargoCount, SpecialCargoCount, VIPCargoCount;
 	int MaxW, AutoP, J; // j no of journeys till maintaince
 	Time currentTime;
-	Time CargoAvgWait; 
-	int TotalTruckActiveTime, TotalTruckUtilization;
-	int PromotedCargoCount, TotalSimulationTime;
+	int CargoAvgWait, PromotedCargoCount, TotalSimulationTime;
 	int MovingCargoCount;
 
 	Queue<Event *> EventList;
 
 	Queue<Truck *> emptyTrucks [3];
 	PriorityQueue< Truck*> movingTrucks;
-	Queue<Truck *> loadingTrucks;
+	List<Truck *> loadingTrucks;
 	Queue<Truck *> maintainingTrucks[3];
 
 	LinkedList<Cargo*> waitingNormalCargo;
@@ -34,10 +32,6 @@ class Company
 	PriorityQueue<Cargo*> waitingVIPCargo;
 
 	Queue<int> DeliveredCargos;
-
-	Queue<Cargo*> DeliveredCargos_temp;
-	//WT
-
 
 	UI *uiPtr;
 
@@ -48,19 +42,13 @@ class Company
 	void ExecuteEvent();
 	void DeliverCargos();
 	void checkUP();
-	void AutoPromotion();
+	void AutoPromotion(Cargo*c);
 
 
 
-
-	string IN_PATH;
-	string OUT_PATH;
 public:
 	Company();
 	void Simulate();
-	void Out_Mid();
-	void Out_Start();
-	void Out_End();
 	bool isSimulationEnd();
 	void Print() { uiPtr->Print(this); }
 	//Getters
@@ -73,8 +61,7 @@ public:
 	const Time& getCurrentTime() const;
 
 	int getDeliveredCargosCount() const;
-
-
+	bool MaxwCheck(Cargo* c);
 	LinkedList<Cargo*>& getWaitingNormalCargo(); // as we need to remove by id
 	Queue<Cargo*>& getWaitingSpecialCargo();
 	PriorityQueue<Cargo*>& getWaitingVIPCargo();

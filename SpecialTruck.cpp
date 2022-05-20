@@ -8,18 +8,7 @@ SpecialTruck::SpecialTruck() :Truck(Speed, Capcity)
 }
 
 bool SpecialTruck::AssignCargo(Cargo* c) {
-
-	if (c->getType() == 'S')
-	{
-		getCargoList().enqueue(c, c->GetDist());
-		return true;
-	}
-	else if (c->getType() == 'V')
-	{
-		getCargoList().enqueue(c, - (c->getPriority()));
-		return true;
-	}
-	return false;
+	return true;
 }
 
 void SpecialTruck::SetSpeed(const float& s)
