@@ -26,7 +26,8 @@ public:
 	void Update(); // increase hour by 1 and 
 				   //if pass 24 hr increase the day 1
 
-	void Read(ifstream& InFile);
+	void Read(ifstream& );
+	void Out(ofstream& ) const;
 	void Print(UI* ) const ;
 
 

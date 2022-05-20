@@ -4,13 +4,13 @@ using namespace std;
 Cargo::Cargo(int i, char c) : ID(i), cargoType(c) {}
 
 
-Cargo::Cargo(int i, char c, int Dst, int cst, int L,Time t) : ID(i), cargoType(c)
+Cargo::Cargo(int i, char c, int Dst, int cst, int L) : ID(i), cargoType(c)
 {
 	SetDeliveryDist(Dst);
 	SetCost(cst);
 	SetLt(L);
-	Loadingtrcuk = NULL;
-	PT = t;
+	Loadingtrcuk = NULL; 
+	TID = -1;
 }
 
 void Cargo ::  SetPt(const Time& t)
@@ -24,10 +24,6 @@ void Cargo ::  SetLt(const int& t)
 void Cargo ::  SetWt(const Time& t)
 {
 	WT = t;
-}
-void Cargo::SetStart(const Time& t)
-{
-	Start = t;
 }
 void Cargo :: SetDeliveryDist(const int& dist)
 {
@@ -48,6 +44,11 @@ void Cargo:: SetCost(const int& ct)
 
 void Cargo::setCDT(Time& c) { CDT = c; }
 
+const Time& Cargo::getCDT() const
+{
+	return CDT;
+}
+
 const Time& Cargo:: GetPt() const
 {
 	return PT;
@@ -59,11 +60,6 @@ const int Cargo:: GetLt() const
 const Time& Cargo:: GetWt() const
 {
 	return WT;
-}
-
-const Time& Cargo::GetStart() const
-{
-	return Start;
 }
 
 int Cargo::GetDist() const
@@ -82,3 +78,13 @@ const int Cargo::getID() const
 
 
 int Cargo::getPriority() const{ return 0.5 * DeliveryDist + 0.3 * Cost + 2 * LT; }
+
+int Cargo::getTID() const
+{
+	return TID;
+}
+
+void Cargo::setTID(int t)
+{
+	TID = t;
+}
