@@ -22,6 +22,7 @@ public:
 	void Output(string s);
 	void Print(Cargo* c);
 	void Print(Truck* t);
+	void Print(int n);
 
 	void Print(Company*);
 
