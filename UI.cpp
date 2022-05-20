@@ -44,7 +44,7 @@ void UI::PrintScreen(Company* Cptr) {
 	char close[3] = { ']', ')', '}' };
 	cout << "Current Time (Day:Hour):";
 	
-	cout << Cptr->getCurrentTime().Print();
+	Cptr->getCurrentTime().Print(this);
 	cout << '\n';
 
 	//							Waiting Cargos:
@@ -116,21 +116,7 @@ void UI::PrintScreen(Company* Cptr) {
 
 	//							Delivered Cargos:
 	Output(to_string(Cptr->getDeliveredCargosCount()) + " Delivered Cargos: ");
-	if (Cptr->getDeliveredCargo()[Normal].getSize() != 0) {
-		cout << '[';
-		Cptr->getDeliveredCargo()[Normal].Print(this);
-		cout << "] ";
-	}
-	if (Cptr->getDeliveredCargo()[Special].getSize() != 0) {
-		cout << '(';
-		Cptr->getDeliveredCargo()[Special].Print(this);
-		cout << ") ";
-	}
-	if (Cptr->getDeliveredCargo()[VIP].getSize() != 0) {
-		cout << '{';
-		Cptr->getDeliveredCargo()[VIP].Print(this);
-		cout << "} ";
-	}
+	Cptr->getDeliveredCargo().Print(this);
 	Line();
 
 }
@@ -149,6 +135,10 @@ void UI::Print(Truck* t) {
 		t->getCargoList().Print(this);
 		cout  << close[t->getCargoType()] << " ";
 	}
+}
+void UI::Print(int n)
+{
+	cout << n;
 }
 void UI::Print(Company* cPtr) {
 	switch (mode)

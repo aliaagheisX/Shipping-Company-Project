@@ -8,14 +8,17 @@
 using namespace std;
 
 Company::Company() {
+	string IN_PATH = "Input_File.txt";
+	string OUT_PATH="Output_File.txt";
+	
 }
 
 void Company::Simulate() {
 	uiPtr = new UI;
 	uiPtr->ReadMode();
 	load();
-
-	while (isSimulationEnd())
+	Out_Start();
+	while (!isSimulationEnd())
 	{
 		
 		
@@ -31,16 +34,62 @@ void Company::Simulate() {
 			//truck finish checkups
 			//deliverCargo
 				//output
+			Out_Mid();
+
 		}
 			
 
 		currentTime.Update();
 	}
+			Out_End();
 		//TODO: [statics]
 }
 
+
+
+
+void Company::Out_Start() {
+	ofstream file;
+	file.open(OUT_PATH);
+	file << "CDT\tID\tPT\tWT\tTID\n";
+	file.close();
+}
+
+void Company::Out_Mid() {
+	ofstream file;
+	file.open(OUT_PATH);
+	while (!DeliveredCargos_temp.isEmpty()) {
+		Cargo* temp = DeliveredCargos_temp.peekFront();
+		DeliveredCargos.enqueue(temp->getID());
+		DeliveredCargos_temp.dequeue();
+		temp->getCDT().Out(file);
+		file << '\t' << temp->getID() << '\t';
+		temp->GetPt().Out(file);
+		file << '\t';
+		temp->GetWt().Out(file);
+		file << '\t' << temp->getTID() << '\n';
+	}
+	file.close();
+}
+
+void Company::Out_End() {
+	ofstream file;
+	file.open(OUT_PATH);
+	int TotalTrucksCount = NormalTruckCount + SpecialTruckCount + VIPTruckCount;
+	file << ".........................................\n";
+	file << ".........................................\n";
+	file << "Cargos: " << DeliveredCargos.getSize() << "[N: "<<NormalCargoCount << ", S: " << SpecialCargoCount << ", V: " << VIPCargoCount  << "]";
+	file << "\nCargo Avg Wait = "; CargoAvgWait.Out(file);
+	file << "\nAuto-Promoted Cargos : " << PromotedCargoCount << "%\n";
+	file << "Trucks: " << TotalTrucksCount << "[N: " << NormalTruckCount << ", S: " << SpecialTruckCount << ", V: " << VIPTruckCount << "]";
+	file << "\nAvg Active Time = " << TotalTruckActiveTime / TotalTrucksCount * 100 << '%';
+	file << "\nAvg utilization = " << TotalTruckUtilization / TotalTrucksCount * 100 << '\n';
+	file.close();
+}
+
 bool Company::isSimulationEnd() {
-	return !(
+	return  (
+		EventList.isEmpty() &&
 		waitingNormalCargo.isEmpty() &&
 		waitingSpecialCargo.isEmpty() &&
 		waitingVIPCargo.isEmpty() &&
@@ -51,22 +100,22 @@ bool Company::isSimulationEnd() {
 		);
 }
 
-void Company::DeliverCargos() {
-	if (!waitingVIPCargo.isEmpty()) {
-		waitingVIPCargo.peekFront()->setCDT(currentTime);
-		DeliveredCargos[VIP].enqueue(waitingVIPCargo.peekFront());
-		waitingVIPCargo.dequeue();
-	}
-	if (!waitingNormalCargo.isEmpty()) {
-
-		DeliveredCargos[Normal].enqueue(waitingNormalCargo[0]);
-		waitingNormalCargo.removeFront();
-	}
-	if (!waitingSpecialCargo.isEmpty()) {
-		DeliveredCargos[Special].enqueue(waitingSpecialCargo.peekFront());
-		waitingSpecialCargo.dequeue();
-	}
-}
+//void Company::DeliverCargos() {
+//	if (!waitingVIPCargo.isEmpty()) {
+//		waitingVIPCargo.peekFront()->setCDT(currentTime);
+//		DeliveredCargos[VIP].enqueue(waitingVIPCargo.peekFront());
+//		waitingVIPCargo.dequeue();
+//	}
+//	if (!waitingNormalCargo.isEmpty()) {
+//
+//		DeliveredCargos[Normal].enqueue(waitingNormalCargo[0]);
+//		waitingNormalCargo.removeFront();
+//	}
+//	if (!waitingSpecialCargo.isEmpty()) {
+//		DeliveredCargos[Special].enqueue(waitingSpecialCargo.peekFront());
+//		waitingSpecialCargo.dequeue();
+//	}
+//}
 
 
 void Company::ExecuteEvent() {
@@ -80,10 +129,9 @@ void Company::ExecuteEvent() {
 
 void Company::load()
 {
-	string path="Input_File.txt";
 	ifstream file;
 
-	file.open(path);
+	file.open(IN_PATH);
 
 	file >> NormalTruckCount; 
 	for (int i = 0; i < NormalTruckCount; i++) {
@@ -183,7 +231,7 @@ int Company::getMaintainingTrucksCount() const {
 	return currentTime;
 }
 
-int Company::getDeliveredCargosCount() const { return DeliveredCargos[Normal].getSize() + DeliveredCargos[Special].getSize() + DeliveredCargos[VIP].getSize(); }
+ int Company::getDeliveredCargosCount() const { return DeliveredCargos.getSize(); }
 
 
 
@@ -193,7 +241,7 @@ Queue<Cargo*>& Company::getWaitingSpecialCargo() {return waitingSpecialCargo;}
 
 PriorityQueue<Cargo*>& Company::getWaitingVIPCargo(){return waitingVIPCargo;}
 
-Queue<Cargo*>* Company::getDeliveredCargo() { return DeliveredCargos; }
+Queue<int>& Company::getDeliveredCargo() { return DeliveredCargos; }
 
 
 
@@ -206,6 +254,5 @@ Queue< Truck*>* Company::getMaintainingTrucks() { return maintainingTrucks; }
 
 
 Company::~Company() {
-	while (!emptyTrucks->isEmpty()) emptyTrucks->dequeue();
 	while (!emptyTrucks->isEmpty()) emptyTrucks->dequeue();
 }
