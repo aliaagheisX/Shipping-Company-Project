@@ -24,14 +24,14 @@ class Company
 
 	Queue<Truck *> emptyTrucks [3];
 	PriorityQueue< Truck*> movingTrucks;
-	List<Truck *> loadingTrucks;
+	Queue<Truck *> loadingTrucks;
 	Queue<Truck *> maintainingTrucks[3];
 
 	LinkedList<Cargo*> waitingNormalCargo;
 	Queue<Cargo*> waitingSpecialCargo;
 	PriorityQueue<Cargo*> waitingVIPCargo;
 
-	Queue<Cargo*> DeliveredCargos[3];
+	Queue<int> DeliveredCargos;
 
 	UI *uiPtr;
 
@@ -68,11 +68,11 @@ public:
 	PriorityQueue<Cargo*>& getWaitingVIPCargo();
 
 
-	Queue<Cargo*>* getDeliveredCargo();
+	Queue<int>& getDeliveredCargo();
 
 	Queue<Truck*>* getEmptyTrucks();
 	PriorityQueue< Truck*>& getMovingTrucks();
 	Queue< Truck*>* getMaintainingTrucks();
-
+	~Company();
 };
 

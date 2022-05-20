@@ -15,7 +15,7 @@ void Company::Simulate() {
 	uiPtr->ReadMode();
 	load();
 
-	while (isSimulationEnd())
+	while (!isSimulationEnd())
 	{
 		
 		
@@ -40,7 +40,8 @@ void Company::Simulate() {
 }
 
 bool Company::isSimulationEnd() {
-	return !(
+	return  (
+		EventList.isEmpty() &&
 		waitingNormalCargo.isEmpty() &&
 		waitingSpecialCargo.isEmpty() &&
 		waitingVIPCargo.isEmpty() &&
@@ -51,22 +52,22 @@ bool Company::isSimulationEnd() {
 		);
 }
 
-void Company::DeliverCargos() {
-	if (!waitingVIPCargo.isEmpty()) {
-		waitingVIPCargo.peekFront()->setCDT(currentTime);
-		DeliveredCargos[VIP].enqueue(waitingVIPCargo.peekFront());
-		waitingVIPCargo.dequeue();
-	}
-	if (!waitingNormalCargo.isEmpty()) {
-
-		DeliveredCargos[Normal].enqueue(waitingNormalCargo[0]);
-		waitingNormalCargo.removeFront();
-	}
-	if (!waitingSpecialCargo.isEmpty()) {
-		DeliveredCargos[Special].enqueue(waitingSpecialCargo.peekFront());
-		waitingSpecialCargo.dequeue();
-	}
-}
+//void Company::DeliverCargos() {
+//	if (!waitingVIPCargo.isEmpty()) {
+//		waitingVIPCargo.peekFront()->setCDT(currentTime);
+//		DeliveredCargos[VIP].enqueue(waitingVIPCargo.peekFront());
+//		waitingVIPCargo.dequeue();
+//	}
+//	if (!waitingNormalCargo.isEmpty()) {
+//
+//		DeliveredCargos[Normal].enqueue(waitingNormalCargo[0]);
+//		waitingNormalCargo.removeFront();
+//	}
+//	if (!waitingSpecialCargo.isEmpty()) {
+//		DeliveredCargos[Special].enqueue(waitingSpecialCargo.peekFront());
+//		waitingSpecialCargo.dequeue();
+//	}
+//}
 
 
 void Company::ExecuteEvent() {
@@ -159,6 +160,118 @@ void Company::load()
 	}
 }
 
+void Company::assign()
+{
+	// vip cargo assignment 
+
+
+	// 1st case assign in vip trucks 
+	if (!emptyTrucks[VIP].isEmpty())
+	{
+		if (emptyTrucks[VIP].peekFront()->GetCapcity() <= waitingVIPCargo.getSize())
+		{
+			Truck* t = emptyTrucks[VIP].peekFront();
+
+			for (int i = 0; i < t->GetCapcity(); i++)
+			{
+				Cargo* v = waitingVIPCargo.peekFront();
+				waitingVIPCargo.dequeue();
+				t->AssignCargo(v);
+			}
+
+			loadingTrucks.enqueue(t);
+			emptyTrucks[VIP].dequeue();
+		}
+	}
+
+	// 2nd case assign in normal trucks if there is no available vip trucks 
+	if (emptyTrucks[VIP].isEmpty() && !emptyTrucks[Normal].isEmpty())
+	{
+		if (emptyTrucks[Normal].peekFront()->GetCapcity() <= waitingVIPCargo.getSize())
+		{
+			Truck* t = emptyTrucks[Normal].peekFront();
+
+			for (int i = 0; i < t->GetCapcity(); i++)
+			{
+				Cargo* v = waitingVIPCargo.peekFront();
+				waitingVIPCargo.dequeue();
+				t->AssignCargo(v);
+			}
+			loadingTrucks.enqueue(t);
+			emptyTrucks[Normal].dequeue();
+		}
+	}
+
+	//3rd case assign in special trucks
+	if (emptyTrucks[VIP].isEmpty() && emptyTrucks[Normal].isEmpty() && !emptyTrucks[Special].isEmpty())
+	{
+		if (emptyTrucks[Special].peekFront()->GetCapcity() <= waitingVIPCargo.getSize())
+		{
+			Truck* t = emptyTrucks[Special].peekFront();
+			for (int i = 0; i < t->GetCapcity(); i++)
+			{
+				Cargo* v = waitingVIPCargo.peekFront();
+				waitingVIPCargo.dequeue();
+				t->AssignCargo(v);
+			}
+			loadingTrucks.enqueue(t);
+			emptyTrucks[Special].dequeue();
+		}
+	}
+
+	//! Asignment of special cargos
+	if (!emptyTrucks[Special].isEmpty())
+	{
+		if (emptyTrucks[Special].peekFront()->GetCapcity() <= waitingSpecialCargo.getSize())
+		{
+			Truck* t = emptyTrucks[Special].peekFront();
+			for (int i = 0; i < t->GetCapcity(); i++)
+			{
+				Cargo* v = waitingSpecialCargo.peekFront();
+				waitingSpecialCargo.dequeue();
+				t->AssignCargo(v);
+			}
+			loadingTrucks.enqueue(t);
+			emptyTrucks[Special].dequeue();
+		}
+	}
+
+
+
+	if (!emptyTrucks[Normal].isEmpty())
+	{
+		if (emptyTrucks[Normal].peekFront()->GetCapcity() <= waitingNormalCargo.getSize())
+		{
+			Truck* t = emptyTrucks[Normal].peekFront();
+			for (int i = 0; i < t->GetCapcity(); i++)
+			{
+				Cargo* v = waitingNormalCargo.getFront();
+				waitingNormalCargo.removeFront();
+				t->AssignCargo(v);
+			}
+			loadingTrucks.enqueue(t);
+			emptyTrucks[Normal].dequeue();
+		}
+	}
+
+	if (emptyTrucks[Normal].isEmpty() && !emptyTrucks[VIP].isEmpty())
+	{
+		if (emptyTrucks[VIP].peekFront()->GetCapcity() <= waitingNormalCargo.getSize())
+		{
+			Truck* t = emptyTrucks[VIP].peekFront();
+			for (int i = 0; i < t->GetCapcity(); i++)
+			{
+				Cargo* v = waitingNormalCargo.getFront();
+				waitingNormalCargo.removeFront();
+				t->AssignCargo(v);
+			}
+			loadingTrucks.enqueue(t);
+			emptyTrucks[VIP].dequeue();
+		}
+	}
+
+}
+
 int Company::getWaitingCargosCount() const {
 
 	return waitingNormalCargo.getSize() + waitingSpecialCargo.getSize() + waitingVIPCargo.getSize();
@@ -183,7 +296,7 @@ int Company::getMaintainingTrucksCount() const {
 	return currentTime;
 }
 
-int Company::getDeliveredCargosCount() const { return DeliveredCargos[Normal].getSize() + DeliveredCargos[Special].getSize() + DeliveredCargos[VIP].getSize(); }
+ int Company::getDeliveredCargosCount() const { return DeliveredCargos.getSize(); }
 
 
 
@@ -193,7 +306,7 @@ Queue<Cargo*>& Company::getWaitingSpecialCargo() {return waitingSpecialCargo;}
 
 PriorityQueue<Cargo*>& Company::getWaitingVIPCargo(){return waitingVIPCargo;}
 
-Queue<Cargo*>* Company::getDeliveredCargo() { return DeliveredCargos; }
+Queue<int>& Company::getDeliveredCargo() { return DeliveredCargos; }
 
 
 
@@ -206,6 +319,5 @@ Queue< Truck*>* Company::getMaintainingTrucks() { return maintainingTrucks; }
 
 
 Company::~Company() {
-	while (!emptyTrucks->isEmpty()) emptyTrucks->dequeue();
 	while (!emptyTrucks->isEmpty()) emptyTrucks->dequeue();
 }

@@ -1,6 +1,7 @@
 #pragma once
 using namespace std;
 #include <string>
+#include "Truck.h"
 #include "Time.h"
 class Cargo
 {   // Time Members in The Cargo

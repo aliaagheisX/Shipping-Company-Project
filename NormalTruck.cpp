@@ -10,8 +10,20 @@ NormalTruck::NormalTruck() :Truck(Speed, Capcity)
 bool NormalTruck::AssignCargo(Cargo* c) {
 	//TODO: 1- check if Queue not empty check Type
 	//TODO: 2- if Empty -> VIP , Normal
-	if (static_cast<Cargo*>(c))
+	// if (static_cast<Cargo*>(c))
+		// return true;
+
+	if (c->getType() == 'N')
+	{
+		getCargoList().enqueue(c, c->GetDist());
 		return true;
+	}
+	else if (c->getType() == 'V')
+	{
+		getCargoList().enqueue(c,-(c->getPriority()));
+		return true;
+	}
+
 	return false;
 }
 
