@@ -65,7 +65,7 @@ bool Company::isSimulationEnd() {
 }
 bool Company::MaxwCheck(Cargo* c)
 {
-	return (currentTime.getDay() - c->GetStart().getDay() >= MaxW);
+	return (currentTime.getDay() - c->GetPt().getDay() >= MaxW);
 	
 }
 //void Company::DeliverCargos() {

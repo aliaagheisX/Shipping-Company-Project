@@ -10,6 +10,7 @@ Cargo::Cargo(int i, char c, int Dst, int cst, int L,Time t) : ID(i), cargoType(c
 	SetCost(cst);
 	SetLt(L);
 	Loadingtrcuk = NULL;
+	PT = t;
 }
 
 void Cargo ::  SetPt(const Time& t)
