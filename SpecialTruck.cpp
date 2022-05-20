@@ -7,9 +7,6 @@ SpecialTruck::SpecialTruck() :Truck(Speed, Capcity)
 {
 }
 
-bool SpecialTruck::AssignCargo(Cargo* c) {
-	return true;
-}
 
 void SpecialTruck::SetSpeed(const float& s)
 {

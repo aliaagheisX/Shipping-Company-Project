@@ -19,15 +19,15 @@ public:
 	int getDay() const;
 
 	//operators
-	bool operator<(const Time&);
-	bool operator==(const Time&);
+	bool operator<(const Time&) const;
+	bool operator==(const Time&) const;
 
 	//updates
 	void Update(); // increase hour by 1 and 
 				   //if pass 24 hr increase the day 1
 
 	void Read(ifstream& InFile);
-	void Print(UI* ) const ;
+	string TimePrint() const;
 
 
 };

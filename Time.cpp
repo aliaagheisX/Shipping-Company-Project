@@ -26,7 +26,7 @@ int Time::getHour() const { return hour; }
 int Time::getDay() const { return day; }
 
 //operators
-bool Time::operator<(const Time& t) {
+bool Time::operator<(const Time& t) const {
 
 	if (day == t.day) //if the same compare the hour
 		return (hour < t.hour);
@@ -34,7 +34,7 @@ bool Time::operator<(const Time& t) {
 	else return (day < t.day); // else compare day
 }
 
-bool Time::operator==(const Time& t) {
+bool Time::operator==(const Time& t)const {
 
 	return (day == t.day && hour == t.hour);
 }
@@ -52,6 +52,7 @@ void Time::Read(ifstream& InFile) {
 	InFile >> day >> buff >> hour;
 }
 
-void Time::Print(UI* uiPtr) const {
-	uiPtr->Output(to_string(day) + ":" + to_string(hour));
+string Time::TimePrint() const
+{
+	return (to_string(day) + ":" + to_string(hour));
 }

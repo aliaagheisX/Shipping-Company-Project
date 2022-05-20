@@ -2,7 +2,7 @@
 #include "Time.h"
 #include "PriorityQueue.h"
 #include "Cargo.h"
-enum CargoType {Normal, Special, VIP  };
+enum Types {Normal, Special, VIP  };
 class Truck
 {
 protected:
@@ -12,6 +12,7 @@ protected:
 	int DI; // delivery interval
 	PriorityQueue<Cargo*> loadedCargo; //cargos that assigned on truck
 	Time MT; //Moving Time
+	Time FinishingLoadingTime;
 
 	float& Speed;
 	int& Capcity;
@@ -34,11 +35,11 @@ public:
 	int GetCapcity() const;
 	const int getID() const { return ID; }
 
-	CargoType getCargoType() const; // return NULL if empty
+	Types getTypes() const; // return NULL if empty
 	PriorityQueue<Cargo*>  & getCargoList() ;
 
 	//assign cargo to the Queue According to Distance
-	virtual bool AssignCargo(Cargo* ) = 0;
+	bool AssignCargo(Cargo*,const Time &);
 
 	//check if there's cargo deleverid
 	bool deliverCargo(Time* t);

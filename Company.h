@@ -26,7 +26,7 @@ class Company
 
 	Queue<Truck *> emptyTrucks [3];
 	PriorityQueue< Truck*> movingTrucks;
-	Queue<Truck *> loadingTrucks;
+	List<Truck *> loadingTrucks;
 	Queue<Truck *> maintainingTrucks[3];
 
 	LinkedList<Cargo*> waitingNormalCargo;
@@ -50,8 +50,11 @@ class Company
 	void checkUP();
 	void AutoPromotion();
 
+	void checkLoadingTrucks();
+	bool AutoPCheck(Cargo *);
+	void Promote(Cargo *);
 
-
+	void addLoadingTruck(Types, Types);
 
 	string IN_PATH;
 	string OUT_PATH;
@@ -80,11 +83,12 @@ public:
 	PriorityQueue<Cargo*>& getWaitingVIPCargo();
 
 
-	Queue<int>& getDeliveredCargo();
+	const Queue<int>& getDeliveredCargo() const;
 
-	Queue<Truck*>* getEmptyTrucks();
-	PriorityQueue< Truck*>& getMovingTrucks();
-	Queue< Truck*>* getMaintainingTrucks();
+	const Queue<Truck*>* getEmptyTrucks() const;
+	const List<Truck*>& getLoadingTrucks() const;
+	const PriorityQueue< Truck*>& getMovingTrucks() const;
+	const Queue< Truck*>* getMaintainingTrucks() const;
 	~Company();
 };
 

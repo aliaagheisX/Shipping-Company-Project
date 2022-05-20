@@ -10,9 +10,6 @@ public:
     //constructor
     VIPTruck();
 
-    //assign cargo to the Queue According to Distance
-    bool AssignCargo(Cargo*);
-
     static void SetSpeed(const float& s);
     static void SetCapcity(const int& c);
     static void setCheckUPTime(const int& c);

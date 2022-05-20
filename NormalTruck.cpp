@@ -7,13 +7,7 @@ NormalTruck::NormalTruck() :Truck(Speed, Capcity)
 {
 }
 
-bool NormalTruck::AssignCargo(Cargo* c) {
-	//TODO: 1- check if Queue not empty check Type
-	//TODO: 2- if Empty -> VIP , Normal
-	if (static_cast<Cargo*>(c))
-		return true;
-	return false;
-}
+
 
 void NormalTruck::SetSpeed(const float& s)
 {

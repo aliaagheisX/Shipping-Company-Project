@@ -38,7 +38,7 @@ public:
     int getSize() const;
 
     //Print 
-    void Print(UI* ptr) ;
+    void Print(UI* ptr) const;
        
     
 
@@ -292,7 +292,7 @@ int LinkedList<T>::getSize() const { return size; }
 
 
 template<typename T>
-void LinkedList<T>::Print(UI* ptr) 
+void LinkedList<T>::Print(UI* ptr) const
 {
     if (size == 0) return;
     // Print function inside the LinkedList 

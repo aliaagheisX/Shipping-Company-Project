@@ -7,7 +7,7 @@ void PromotionEvent::Execute(Company* cPtr) {
 		temp = temp->getNext();
 	if (temp)
 	{
-		temp->getValue()->setCargoType('V');
+		temp->getValue()->setTypes('V');
 		temp->getValue()->SetCost(temp->getValue()->GetCost() + ExtraMoney);
 
 		Cargo* t = temp->getValue();

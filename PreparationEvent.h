@@ -1,7 +1,7 @@
 #pragma once
 #include"Event.h"
 class PreparationEvent :public Event {
-	char CargoType;
+	char Types;
 	int Distances;
 	int LoadTime;
 	int Cost;

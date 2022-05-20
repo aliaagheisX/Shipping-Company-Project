@@ -42,10 +42,7 @@ void UI::PrintScreen(Company* Cptr) {
 
 	char open[3] = { '[', '(', '{' };
 	char close[3] = { ']', ')', '}' };
-	cout << "Current Time (Day:Hour):";
-	
-	Cptr->getCurrentTime().Print(this);
-	cout << '\n';
+	cout << "Current Time (Day:Hour):" << Cptr->getCurrentTime().TimePrint() << '\n';
 
 	//							Waiting Cargos:
 	Output(to_string(Cptr->getWaitingCargosCount()) + " Waiting Cargos: ");
@@ -66,8 +63,26 @@ void UI::PrintScreen(Company* Cptr) {
 	}
 	Line();
 	//							Loading Trucks:
-	Output("0 Loading Trucks: ");
-
+	int count = 0;
+	for (int i = 0; i < Cptr->getLoadingTrucks().getSize(); i++) 
+		if(Cptr->getLoadingTrucks().getEntry(i))
+			count++;
+	cout << count << " Loading Trucks: ";
+	if (Cptr->getLoadingTrucks().getEntry(Normal)) {
+		cout << '[';
+		Cptr->getLoadingTrucks().getEntry(Normal)->getCargoList().Print(this);
+		cout << ']';
+	}
+	if (Cptr->getLoadingTrucks().getEntry(Special)) {
+		cout << '(';
+		Cptr->getLoadingTrucks().getEntry(Special)->getCargoList().Print(this);
+		cout << ')';
+	}
+	if (Cptr->getLoadingTrucks().getEntry(VIP)) {
+		cout << '{';
+		Cptr->getLoadingTrucks().getEntry(VIP)->getCargoList().Print(this);
+		cout << '}';
+	}
 	Line();
 	 
 	//							Empty Trucks:
@@ -131,9 +146,9 @@ void UI::Print(Truck* t) {
 		char open[3] = { '[', '(', '{' };
 		char close[3] = { ']', ')', '}' };
 
-		cout << open[t->getCargoType()];
+		cout << open[t->getTypes()];
 		t->getCargoList().Print(this);
-		cout  << close[t->getCargoType()] << " ";
+		cout  << close[t->getTypes()] << " ";
 	}
 }
 void UI::Print(int n)

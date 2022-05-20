@@ -2,8 +2,8 @@
 #include"Cargo.h"
 #include"Company.h"
 void PreparationEvent::Execute(Company* cPtr) {
-	Cargo* newCargo = new Cargo(getId(), CargoType,Distances,Cost,LoadTime, EventTime);
-	switch (CargoType)
+	Cargo* newCargo = new Cargo(getId(), Types,Distances,Cost,LoadTime, EventTime);
+	switch (Types)
 	{
 	case 'N':
 		cPtr->getWaitingNormalCargo().addBack(newCargo);
@@ -24,7 +24,7 @@ void PreparationEvent::Execute(Company* cPtr) {
 }
 
 void PreparationEvent::Read(ifstream& InputFile) {
-	InputFile >> CargoType;
+	InputFile >> Types;
 	Event::Read(InputFile);
 	InputFile >> Distances >> LoadTime >> Cost;
 }

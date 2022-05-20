@@ -1,10 +1,10 @@
 #include "Cargo.h"
 using namespace std;
 #include<string>
-Cargo::Cargo(int i, char c) : ID(i), cargoType(c) {}
+//Cargo::Cargo(int i, char c) : ID(i), Types(c) {}
 
 
-Cargo::Cargo(int i, char c, int Dst, int cst, int L,Time t) : ID(i), cargoType(c)
+Cargo::Cargo(int i, char c, int Dst, int cst, int L,Time t) : ID(i), Types(c)
 {
 	SetDeliveryDist(Dst);
 	SetCost(cst);
@@ -48,6 +48,15 @@ void Cargo:: SetCost(const int& ct)
 
 void Cargo::setCDT(Time& c) { CDT = c; }
 
+void Cargo::setLoadingTruck(const Truck* t)
+{
+	Loadingtrcuk = t;
+}
+
+void Cargo::setTypes(char c) {
+	Types = c;
+}
+
 const Time& Cargo:: GetPt() const
 {
 	return PT;
@@ -75,10 +84,15 @@ int Cargo::GetCost() const
 {
 	return Cost;
 }
+const Truck* Cargo::getLoadingTruck() const
+{
+	return Loadingtrcuk;
+}
 const int Cargo::getID() const
 {
 	return ID;
 }
+const Time& Cargo::getCDT() const { return CDT; }
 
 
 int Cargo::getPriority() const{ return 0.5 * DeliveryDist + 0.3 * Cost + 2 * LT; }

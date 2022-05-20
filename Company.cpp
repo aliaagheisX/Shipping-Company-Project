@@ -35,10 +35,10 @@ void Company::Simulate() {
 			//truck finish checkups [Mahmoud]
 			// 
 			//deliverCargo [Aliaa]
-		if(currentTime.getHour() >= 5 && currentTime.getHour() <=23){
-			checkLoadingTrucks();
-			assign();
 			uiPtr->Print(this);
+		if(currentTime.getHour() >= 5 && currentTime.getHour() <=23){
+			//checkLoadingTrucks();
+			//assign();
 		}
 			
 
@@ -77,7 +77,7 @@ void Company::Promote(Cargo* c)
 
 void Company::Out_Start() {
 	ofstream file;
-	file.open(OUT_PATH, std::ios_base::app);
+	file.open(OUT_PATH);
 	file << "CDT\tID\tPT\tWT\tTID\n";
 	file.close();
 }
@@ -89,7 +89,7 @@ void Company::Out_Mid() {
 		DeliveredCargos.enqueue(temp->getID());
 		DeliveredCargos_temp.dequeue();
 		file << temp->getCDT().TimePrint();
-		file << '\t' << temp->getID() << '\t' << temp->GetPt().TimePrint() << '\t' << temp->GetWt().TimePrint() << '\t' << temp->getTID() << '\n';
+		file << '\t' << temp->getID() << '\t' << temp->GetPt().TimePrint() << '\t' << temp->GetWt().TimePrint() << '\t' << temp->getLoadingTruck()->getID() << '\n';
 	}
 	file.close();
 }

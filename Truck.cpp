@@ -33,7 +33,7 @@ int Truck::GetCapcity() const
 {
 	return Capcity;
 }
-CargoType Truck::getCargoType() const {
+Types Truck::getTypes() const {
 /*
 	if (dynamic_cast<NormalCargo*>(loadedCargo.peekFront())) return Normal;
 	if (dynamic_cast<SpecialCargo*>(loadedCargo.peekFront())) return Special;
@@ -44,6 +44,18 @@ CargoType Truck::getCargoType() const {
 
 PriorityQueue<Cargo*> &  Truck::getCargoList()  {
 	return loadedCargo;
+}
+
+bool Truck::AssignCargo(Cargo* c, const Time& currentTime)
+{
+	if (currentTime < FinishingLoadingTime) return false;
+
+	c->setLoadingTruck(this);
+	FinishingLoadingTime = currentTime;
+	FinishingLoadingTime.setHour(FinishingLoadingTime.getHour() + c->GetLt());
+	loadedCargo.enqueue(c, c->GetDist());
+
+	return true;
 }
 
 

@@ -10,18 +10,19 @@ class Cargo
 	Time WT; //waiting time
 	Time Start;
 	Time CDT;
-	char cargoType;
+	char Types;
 
 	const int ID;
 	int DeliveryDist;
 
-	Truck* Loadingtrcuk;
+	const 
+		Truck* Loadingtrcuk;
 
 	int Cost;
 
 public:
 	Cargo(int i, char c, int Dst, int cst, int L,Time t);
-	Cargo(int, char);
+	//Cargo(int, char);
 	// Setters
 	void SetPt(const Time& t); //truck call it
 	void SetLt(const int& t); //read from input
@@ -30,21 +31,25 @@ public:
 	void SetDeliveryDist(const int& dist);
 	void SetCost(const int& ct);
 	void setCDT(Time&);
+	void setTypes(char c);
+	void setLoadingTruck(const Truck *);
 	// Getters 
 	const Time& GetPt() const;
 	const int GetLt() const;
 	const Time& GetWt() const;
+	const Time& getCDT() const;
 	const Time& GetStart() const;
 	int GetDist() const;
 
 	virtual int GetCost() const;
-	char getType() const { return cargoType; }
+	char getType() const { return Types; }
+	const Truck* getLoadingTruck() const;
+
 
 	const int getID() const;
 
 	int getPriority() const;
 
-	void setCargoType(char c) { cargoType = c; }
 	//virtual bool operator<(const Cargo& r);
 		// Waiting for the Priority Equation
 	
