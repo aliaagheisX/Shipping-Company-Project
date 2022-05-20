@@ -17,7 +17,9 @@ class Company
 	int NormalCargoCount, SpecialCargoCount, VIPCargoCount;
 	int MaxW, AutoP, J; // j no of journeys till maintaince
 	Time currentTime;
-	int CargoAvgWait, PromotedCargoCount, TotalSimulationTime;
+	Time CargoAvgWait; 
+	int TotalTruckActiveTime, TotalTruckUtilization;
+	int PromotedCargoCount, TotalSimulationTime;
 	int MovingCargoCount;
 
 	Queue<Event *> EventList;
@@ -33,6 +35,10 @@ class Company
 
 	Queue<int> DeliveredCargos;
 
+	Queue<Cargo*> DeliveredCargos_temp;
+	//WT
+
+
 	UI *uiPtr;
 
 
@@ -46,9 +52,15 @@ class Company
 
 
 
+
+	string IN_PATH;
+	string OUT_PATH;
 public:
 	Company();
 	void Simulate();
+	void Out_Mid();
+	void Out_Start();
+	void Out_End();
 	bool isSimulationEnd();
 	void Print() { uiPtr->Print(this); }
 	//Getters
