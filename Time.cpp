@@ -34,9 +34,31 @@ bool Time::operator<(const Time& t) const {
 	else return (day < t.day); // else compare day
 }
 
+Time Time::operator+(const Time& t) const
+{
+	Time t1;
+	t1.setDay(t.getDay() + day);
+	t1.setHour(t.getHour() + hour);
+	return t1;
+}
+
+Time Time::operator+(const int x) const
+{
+	Time t1;
+	t1.setHour(hour + x);
+	return t1;
+}
+
 bool Time::operator==(const Time& t)const {
 
 	return (day == t.day && hour == t.hour);
+}
+// return number of hours
+int Time::operator-(const Time& t)const {
+	if (day > t.day) {
+		return((day - t.day) * 24 + hour - t.hour);
+	}
+	return (hour - t.hour);
 }
 
 // increase hour by 1 and 
@@ -55,4 +77,9 @@ void Time::Read(ifstream& InFile) {
 string Time::TimePrint() const
 {
 	return (to_string(day) + ":" + to_string(hour));
+}
+
+int Time::ConvertToInt() const
+{
+	return (day*24+hour);
 }
