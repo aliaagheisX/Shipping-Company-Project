@@ -13,14 +13,13 @@ protected:
 	PriorityQueue<Cargo*> loadedCargo; //cargos that assigned on truck
 	Time MT; //Moving Time
 	Time FinishingLoadingTime;
-	Time FinishingDeliveryTime;
 
 	float& Speed;
 	int& Capcity;
 
 	int tDC; //total deliverid Cargos
 	int tAT; //total active time
-
+	int j;
 
 public:
 	// constructor
@@ -28,8 +27,9 @@ public:
 
 	// Setters
 	void SetMt(const Time& t); //company call it and send the time when the truck start moving
-	void SetDi(int x);
-	void SetFDT(const Time& t);
+
+	void Setj (int x);
+
 
 	// Getters 
 	Time GetDi() const; // calculate the delivery interval and send it to company
@@ -37,11 +37,12 @@ public:
 	float GetSpeed() const;
 	int GetCapcity() const;
 	const int getID() const { return ID; }
+
+	int Getj() const;
 	Time GetFLT() const;
-	//TODO:new data member
-	Time GetFDT() const;
 	bool move(const Time* t , bool now = false);
 
+  
 	Types getTypes() const; // return NULL if empty
 	PriorityQueue<Cargo*>  & getCargoList() ;
 

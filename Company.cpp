@@ -23,8 +23,6 @@ void Company::Simulate() {
 	Out_Start();
 	while (!isSimulationEnd())
 	{
-		
-		
 			ExecuteEvent();
 			AutoPromotion();
 			//Max wait [Mahmoud]
@@ -48,7 +46,50 @@ void Company::Simulate() {
 		//TODO: [statics]
 }
 
+void Company::Movingcheck()
+{
+	while (!movingTrucks.isEmpty()&&Checktime(movingTrucks.peekFront()))
+	{
+		movingTrucks.peekFront();
 
+	}
+	/// 
+}
+bool Company::NeedCheck(Truck* t)
+{
+	return(J >= t->Getj());
+}
+void Company::checkUP(Types trucktype)
+{
+	while (!maintainingTrucks[trucktype].isEmpty() && Checktime(maintainingTrucks[trucktype].peekFront()))
+	{
+		emptyTrucks[trucktype].enqueue(maintainingTrucks[trucktype].peekFront());
+	}
+}
+
+
+bool Company::Checktime(Truck* t)
+{
+	// check up time 
+	// casting or another idea
+	/*return (currentTime - t-> >= MaxW);*/
+}
+void Company::MaxWait()
+{
+	while (!waitingNormalCargo.isEmpty() && MaxWCheck(waitingNormalCargo.getFront()))
+	{
+		//-> bool is better
+		addLoadingTruck(Normal, Normal);
+		if (emptyTrucks[Normal].isEmpty())
+			addLoadingTruck(VIP, Normal);
+		// move truck
+	}
+	while (!waitingSpecialCargo.isEmpty() && MaxWCheck(waitingSpecialCargo.peekFront()))
+	{
+		addLoadingTruck(Special, Special);
+		// move truck
+	}
+}
 
 
 void Company::AutoPromotion() {
@@ -64,6 +105,11 @@ void Company::AutoPromotion() {
 		waitingSpecialCargo.dequeue();
 		Promote(temp);
 	}
+}
+bool Company::MaxWCheck(Cargo* c)
+{
+	return (currentTime - c->GetPt() >= MaxW);
+
 }
 bool Company::AutoPCheck(Cargo* c)
 {

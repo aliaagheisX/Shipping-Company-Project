@@ -23,6 +23,7 @@ public:
 	Time operator+(const Time&) const;
 	Time operator+(const int) const;
 	bool operator==(const Time&) const;
+	int operator-(const Time&) const;
 
 	//updates
 	void Update(); // increase hour by 1 and 
