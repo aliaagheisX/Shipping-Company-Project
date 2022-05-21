@@ -48,11 +48,15 @@ class Company
 	void ExecuteEvent();
 	void DeliverCargos();
 	void checkUP();
+	void checkMoving(Types truckType);
+	void moveTrucks(bool now = false);
 	void AutoPromotion();
 
 	void checkLoadingTrucks();
 	bool AutoPCheck(Cargo *);
 	void Promote(Cargo *);
+
+	
 
 	void addLoadingTruck(Types, Types);
 
@@ -91,4 +95,3 @@ public:
 	const Queue< Truck*>* getMaintainingTrucks() const;
 	~Company();
 };
-

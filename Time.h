@@ -9,7 +9,7 @@ class Time
 	int day;
 public:
 
-	Time(int = 1, int = 1);
+	Time(int = 0, int = 0);
 	//setters
 	void setHour(int);
 	void setDay(int);
@@ -20,6 +20,8 @@ public:
 
 	//operators
 	bool operator<(const Time&) const;
+	Time operator+(const Time&) const;
+	Time operator+(const int) const;
 	bool operator==(const Time&) const;
 
 	//updates
@@ -28,6 +30,9 @@ public:
 
 	void Read(ifstream& InFile);
 	string TimePrint() const;
+
+	//Extras
+	int ConvertToInt() const;
 
 
 };
