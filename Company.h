@@ -47,9 +47,16 @@ class Company
 	void assign();
 	void ExecuteEvent();
 	void DeliverCargos();
+
+  
 	void checkUP(Types trucktype);
 	bool Checktime(Truck* t);
 	void MaxWait();
+
+	void checkMoving(Types truckType);
+	void moveTrucks(bool now = false);
+
+ 
 	void AutoPromotion();
 
 	bool MaxWCheck(Cargo* c);
@@ -57,6 +64,8 @@ class Company
 	void checkLoadingTrucks();
 	bool AutoPCheck(Cargo *);
 	void Promote(Cargo *);
+
+	
 
 	void addLoadingTruck(Types, Types);
 
@@ -97,4 +106,3 @@ public:
 	const Queue< Truck*>* getMaintainingTrucks() const;
 	~Company();
 };
-

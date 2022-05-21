@@ -36,7 +36,7 @@ void Company::Simulate() {
 			uiPtr->Print(this);
 		if(currentTime.getHour() >= 5 && currentTime.getHour() <=23){
 			//checkLoadingTrucks();
-			//assign();
+			assign();
 		}
 			
 
@@ -67,6 +67,7 @@ void Company::checkUP(Types trucktype)
 	}
 }
 
+
 bool Company::Checktime(Truck* t)
 {
 	// check up time 
@@ -89,6 +90,8 @@ void Company::MaxWait()
 		// move truck
 	}
 }
+
+
 void Company::AutoPromotion() {
 	while (!waitingNormalCargo.isEmpty() && AutoPCheck(waitingNormalCargo.getFront()))
 	{
@@ -276,6 +279,40 @@ void Company::ExecuteEvent() {
 	}
 
 }
+// calculate the finish time of delivery
+
+
+void Company::checkMoving(Types truckType)
+{
+
+	Truck* t = loadingTrucks.getEntry(truckType);
+	loadingTrucks.setEntry(truckType, NULL);
+	movingTrucks.enqueue(t, (t->GetDi() + t->GetMt()).ConvertToInt());
+}
+
+void Company::moveTrucks(bool now)
+{
+	
+	// check if there is a loaded vip truck
+	if (loadingTrucks.getEntry(VIP))
+	{
+		if(loadingTrucks.getEntry(VIP)->move(&currentTime ,now))
+			checkMoving(VIP);
+	}
+	// check if there is a loaded Normal truck
+	if (loadingTrucks.getEntry(Normal) )
+	{
+		if (loadingTrucks.getEntry(Normal)->move(&currentTime ,now))
+			checkMoving(Normal);
+	}
+	// check if there is a loaded Special truck
+	if (loadingTrucks.getEntry(Special))
+	{
+		if (loadingTrucks.getEntry(Special)->move(&currentTime ,now))
+			checkMoving(Special);
+	}
+}
+
 
 void Company::addLoadingTruck(Types truckType, Types CargoType)
 {
@@ -318,19 +355,30 @@ void Company::checkLoadingTrucks()
 
 }
 
+
+
+
 void Company::assign() {
 	if (loadingTrucks.getEntry(Normal))
-		if(loadingTrucks.getEntry(Normal)->AssignCargo(waitingNormalCargo.getFront(), currentTime))
+		if (loadingTrucks.getEntry(Normal)->AssignCargo(waitingNormalCargo.getFront(), currentTime))
+		{   // changes to calculate the DI distance
 			waitingNormalCargo.removeFront();
-
+		}
 	if (loadingTrucks.getEntry(Special))
-		if(loadingTrucks.getEntry(Special)->AssignCargo(waitingSpecialCargo.peekFront(), currentTime))
+		if (loadingTrucks.getEntry(Special)->AssignCargo(waitingSpecialCargo.peekFront(), currentTime))
+		{
 			waitingSpecialCargo.dequeue();
+		}
 
 	if (loadingTrucks.getEntry(VIP))
-		if(loadingTrucks.getEntry(VIP)->AssignCargo(waitingVIPCargo.peekFront(), currentTime))
+		if (loadingTrucks.getEntry(VIP)->AssignCargo(waitingVIPCargo.peekFront(), currentTime))
+		{
 			waitingVIPCargo.dequeue();
+		}
 }
+
+
+
 
 int Company::getWaitingCargosCount() const {
 

@@ -7,16 +7,26 @@ Truck ::Truck(float& s, int& c): ID(counter + 1), Speed(s),Capcity(c)
 	counter++;
 }
 
-int Truck::GetDi() const
+Time Truck::GetDi() const
 {
-	//! calculate Deleviery interval
 	return DI;
 }
+
 
 
 void Truck::SetMt(const Time& t)
 {
 	MT = t;
+}
+
+void Truck::SetDi(int x)
+{
+	DI = x;
+}
+
+void Truck::SetFDT(const Time& t)
+{
+	FinishingDeliveryTime = t;
 }
 
 const Time& Truck::GetMt() const
@@ -32,6 +42,21 @@ float Truck::GetSpeed() const
 int Truck::GetCapcity() const
 {
 	return Capcity;
+}
+Time Truck::GetFLT() const
+{
+	return FinishingDeliveryTime;
+}
+Time Truck::GetFDT() const
+{
+	return FinishingDeliveryTime;
+}
+bool Truck::move(const Time* t, bool now)
+{
+	if (!now && Capcity > loadedCargo.getSize()) return false;
+	MT = *t;
+	DI = DI + loadedCargo.peekFront()->GetDist() / Speed;
+	return true;		
 }
 Types Truck::getTypes() const {
 /*
@@ -51,9 +76,9 @@ bool Truck::AssignCargo(Cargo* c, const Time& currentTime)
 	if (currentTime < FinishingLoadingTime) return false;
 
 	c->setLoadingTruck(this);
-	FinishingLoadingTime = currentTime;
-	FinishingLoadingTime.setHour(FinishingLoadingTime.getHour() + c->GetLt());
-	loadedCargo.enqueue(c, c->GetDist());
+	FinishingLoadingTime = currentTime + c->GetLt();
+	loadedCargo.enqueue(c, -1*(c->GetDist()));
+	DI = DI + c->GetLt();
 
 	return true;
 }
