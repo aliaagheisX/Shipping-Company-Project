@@ -19,7 +19,7 @@ protected:
 
 	int tDC; //total deliverid Cargos
 	int tAT; //total active time
-
+	int j;
 
 public:
 	// constructor
@@ -27,14 +27,14 @@ public:
 
 	// Setters
 	void SetMt(const Time& t); //company call it and send the time when the truck start moving
-
+	void Setj (int x);
 	// Getters 
 	int GetDi() const; // calculate the delivery interval and send it to company
 	const Time& GetMt() const; 
 	float GetSpeed() const;
 	int GetCapcity() const;
 	const int getID() const { return ID; }
-
+	int Getj() const;
 	Types getTypes() const; // return NULL if empty
 	PriorityQueue<Cargo*>  & getCargoList() ;
 

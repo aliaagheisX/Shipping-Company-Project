@@ -47,8 +47,12 @@ class Company
 	void assign();
 	void ExecuteEvent();
 	void DeliverCargos();
-	void checkUP();
+	void checkUP(Types trucktype);
+	bool Checktime(Truck* t);
+	void MaxWait();
 	void AutoPromotion();
+
+	bool MaxWCheck(Cargo* c);
 
 	void checkLoadingTrucks();
 	bool AutoPCheck(Cargo *);
@@ -61,6 +65,8 @@ class Company
 public:
 	Company();
 	void Simulate();
+	void Movingcheck();
+	bool NeedCheck(Truck* t);
 	void Out_Mid();
 	void Out_Start();
 	void Out_End();
