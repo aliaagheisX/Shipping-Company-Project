@@ -12,6 +12,7 @@ public:
     static void SetSpeed(const float& s);
     static void SetCapcity(const int& c);
     static void setCheckUPTime(const int& c);
+    virtual int GetCheckUPTime() const;
 
 
 };

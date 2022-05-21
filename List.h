@@ -14,7 +14,7 @@ public:
 	bool remove(int position);
 	T getEntry(int position) const;
 	void setEntry(int position, const T& newEntry);
-	void Print(UI* ptr) ;
+	void Print(UI* ptr) const;
 };
 
 
@@ -41,7 +41,7 @@ bool List<T>::insert(int newPosition, const T& newEntry)
 template<typename T>
 inline bool List<T>::remove(int position)
 {
-	list.removeIndex(position);
+	return list.removeIndex(position);
 }
 
 template<typename T>
@@ -60,6 +60,6 @@ void List<T>::setEntry(int position, const T& newEntry)
 
 
 template<typename T>
-void List<T>::Print(UI* ptr)  {
+void List<T>::Print(UI* ptr) const {
 	list.Print(ptr);
 }

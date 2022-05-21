@@ -68,21 +68,14 @@ void UI::PrintScreen(Company* Cptr) {
 		if(Cptr->getLoadingTrucks().getEntry(i))
 			count++;
 	cout << count << " Loading Trucks: ";
-	if (Cptr->getLoadingTrucks().getEntry(Normal)) {
-		cout << '[';
-		Cptr->getLoadingTrucks().getEntry(Normal)->getCargoList().Print(this);
-		cout << ']';
-	}
-	if (Cptr->getLoadingTrucks().getEntry(Special)) {
-		cout << '(';
-		Cptr->getLoadingTrucks().getEntry(Special)->getCargoList().Print(this);
-		cout << ')';
-	}
-	if (Cptr->getLoadingTrucks().getEntry(VIP)) {
-		cout << '{';
-		Cptr->getLoadingTrucks().getEntry(VIP)->getCargoList().Print(this);
-		cout << '}';
-	}
+	Cptr->getLoadingTrucks().Print(this);
+	/*for (int i = 0; i < Cptr->getLoadingTrucks().getSize(); i++) {
+		if (Cptr->getLoadingTrucks().getEntry(i)) {
+			cout << Cptr->getLoadingTrucks().getEntry(i)->getID();
+			cout
+		}
+
+	}*/
 	Line();
 	 
 	//							Empty Trucks:
@@ -106,7 +99,8 @@ void UI::PrintScreen(Company* Cptr) {
 	}
 	Line();
 	//							Moving Cargos:
-	Output(to_string(Cptr->getMovingCargosCount()) + " Moving Cargos: ");
+	Output(to_string(Cptr->getMovingTrucks().getSize()) + " Moving Cargos: ");
+	
 	Cptr->getMovingTrucks().Print(this);
 	Line();
 	//							Check-up Cargos:
@@ -139,7 +133,7 @@ void UI::PrintScreen(Company* Cptr) {
 
 void UI::Print(Cargo* c) { cout << to_string(c->getID()); }
 void UI::Print(Truck* t) { 
-
+	if (!t) return;
 	cout << to_string(t->getID());
 
 	if (!t->getCargoList().isEmpty()) {

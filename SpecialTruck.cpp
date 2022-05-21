@@ -22,3 +22,8 @@ void SpecialTruck::SetCapcity(const int& c)
 void SpecialTruck::setCheckUPTime(const int& c) {
 	CheckUPTime = c;
 }
+
+int SpecialTruck::GetCheckUPTime() const
+{
+	return CheckUPTime;
+}

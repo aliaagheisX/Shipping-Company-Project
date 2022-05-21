@@ -20,9 +20,10 @@ public:
 
 	//operators
 	bool operator<(const Time&) const;
+	bool operator==(const Time&) const;
+	bool operator<=(const Time&) const;
 	Time operator+(const Time&) const;
 	Time operator+(const int) const;
-	bool operator==(const Time&) const;
 	int operator-(const Time&) const;
 
 	//updates

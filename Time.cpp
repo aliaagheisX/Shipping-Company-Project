@@ -36,7 +36,7 @@ bool Time::operator<(const Time& t) const {
 
 Time Time::operator+(const Time& t) const
 {
-	Time t1;
+	Time t1 = *this;
 	t1.setDay(t.getDay() + day);
 	t1.setHour(t.getHour() + hour);
 	return t1;
@@ -44,7 +44,7 @@ Time Time::operator+(const Time& t) const
 
 Time Time::operator+(const int x) const
 {
-	Time t1;
+	Time t1 = *this;
 	t1.setHour(hour + x);
 	return t1;
 }
@@ -52,6 +52,10 @@ Time Time::operator+(const int x) const
 bool Time::operator==(const Time& t)const {
 
 	return (day == t.day && hour == t.hour);
+}
+bool Time::operator<=(const Time& t) const
+{
+	return (*this < t) || (*this == t);
 }
 // return number of hours
 int Time::operator-(const Time& t)const {

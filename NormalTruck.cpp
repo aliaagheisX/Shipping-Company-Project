@@ -21,3 +21,8 @@ void NormalTruck::SetCapcity(const int& c)
 void NormalTruck::setCheckUPTime(const int& c) {
 	CheckUPTime = c;
 }
+
+int NormalTruck::GetCheckUPTime() const
+{
+	return CheckUPTime;
+}

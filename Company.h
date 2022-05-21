@@ -25,8 +25,8 @@ class Company
 	Queue<Event *> EventList;
 
 	Queue<Truck *> emptyTrucks [3];
-	PriorityQueue< Truck*> movingTrucks;
 	List<Truck *> loadingTrucks;
+	PriorityQueue< Truck*> movingTrucks;
 	Queue<Truck *> maintainingTrucks[3];
 
 	LinkedList<Cargo*> waitingNormalCargo;
@@ -46,15 +46,16 @@ class Company
 	void load();
 	void assign();
 	void ExecuteEvent();
-	void DeliverCargos();
+	void DeliverCargos(Truck *);
 
   
-	void checkUP(Types trucktype);
-	bool Checktime(Truck* t);
+	void EndCheckUP();
+	void EndCheckUP_T(Types trucktype);
+	bool isFinishedCheckUP(Truck* t);
 	void MaxWait();
 
-	void checkMoving(Types truckType);
-	void moveTrucks(bool now = false);
+	void changeLoadToMove(Types truckType);
+	void moveTrucks();
 
  
 	void AutoPromotion();
@@ -68,6 +69,7 @@ class Company
 	
 
 	void addLoadingTruck(Types, Types);
+	void UpdateStatics();
 
 	string IN_PATH;
 	string OUT_PATH;
@@ -75,7 +77,8 @@ public:
 	Company();
 	void Simulate();
 	void Movingcheck();
-	bool NeedCheck(Truck* t);
+	bool isFinishedDelivery(Truck* t);
+	inline bool NeedCheck(Truck* t);
 	void Out_Mid();
 	void Out_Start();
 	void Out_End();
