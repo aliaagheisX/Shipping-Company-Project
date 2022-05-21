@@ -26,18 +26,15 @@ class Company
 
 	Queue<Truck *> emptyTrucks [3];
 	List<Truck *> loadingTrucks;
-	PriorityQueue< Truck*> movingTrucks;
+	PriorityQueue< Truck*>* movingTrucks;
 	Queue<Truck *> maintainingTrucks[3];
 
 	LinkedList<Cargo*> waitingNormalCargo;
 	Queue<Cargo*> waitingSpecialCargo;
 	PriorityQueue<Cargo*> waitingVIPCargo;
 
-	Queue<int> DeliveredCargos;
-
+	Queue<int> DeliveredCargos[3];
 	Queue<Cargo*> DeliveredCargos_temp;
-	//WT
-
 
 	UI *uiPtr;
 
@@ -50,12 +47,13 @@ class Company
 
   
 	void EndCheckUP();
-	void EndCheckUP_T(Types trucktype);
 	bool isFinishedCheckUP(Truck* t);
 	void MaxWait();
 
 	void changeLoadToMove(Types truckType);
 	void moveTrucks();
+
+	void DeliverCargos();
 
  
 	void AutoPromotion();
@@ -101,11 +99,12 @@ public:
 	PriorityQueue<Cargo*>& getWaitingVIPCargo();
 
 
-	const Queue<int>& getDeliveredCargo() const;
+	const Queue<int>* getDeliveredCargo() const;
 
 	const Queue<Truck*>* getEmptyTrucks() const;
 	const List<Truck*>& getLoadingTrucks() const;
-	const PriorityQueue< Truck*>& getMovingTrucks() const;
+	const PriorityQueue< Truck*>* getMovingTrucks() const;
 	const Queue< Truck*>* getMaintainingTrucks() const;
+	
 	~Company();
 };

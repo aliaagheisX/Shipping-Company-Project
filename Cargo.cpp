@@ -4,7 +4,7 @@ using namespace std;
 //Cargo::Cargo(int i, char c) : ID(i), Types(c) {}
 
 
-Cargo::Cargo(int i, char c, int Dst, int cst, int L,Time t) : ID(i), Types(c)
+Cargo::Cargo(int i, char c, int Dst, int cst, int L,Time t) : ID(i), types(c)
 {
 	SetDeliveryDist(Dst);
 	SetCost(cst);
@@ -25,10 +25,6 @@ void Cargo ::  SetWt(const Time& t)
 {
 	WT = t;
 }
-void Cargo::SetStart(const Time& t)
-{
-	Start = t;
-}
 void Cargo :: SetDeliveryDist(const int& dist)
 {
 	if (dist < 0)
@@ -46,7 +42,7 @@ void Cargo:: SetCost(const int& ct)
 	Cost = ct;
 }
 
-void Cargo::setCDT(Time& c) { CDT = c; }
+void Cargo::setCDT(const Time& c) { CDT = c; }
 
 void Cargo::setLoadingTruck(const Truck* t)
 {
@@ -54,7 +50,7 @@ void Cargo::setLoadingTruck(const Truck* t)
 }
 
 void Cargo::setTypes(char c) {
-	Types = c;
+	types = c;
 }
 
 const Time& Cargo:: GetPt() const
@@ -68,11 +64,6 @@ const int Cargo:: GetLt() const
 const Time& Cargo:: GetWt() const
 {
 	return WT;
-}
-
-const Time& Cargo::GetStart() const
-{
-	return Start;
 }
 
 int Cargo::GetDist() const
@@ -96,3 +87,9 @@ const Time& Cargo::getCDT() const { return CDT; }
 
 
 int Cargo::getPriority() const{ return 0.5 * DeliveryDist + 0.3 * Cost + 2 * LT; }
+
+void Cargo::Deliver()
+{
+	WT = Loadingtrcuk->GetMt() - PT;
+	CDT = Loadingtrcuk->GetMt() + (DeliveryDist / Loadingtrcuk->GetSpeed()) + LT;
+}

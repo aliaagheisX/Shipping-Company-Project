@@ -10,7 +10,7 @@ protected:
 	int ID;
 	
 	Time DI; // delivery interval
-	PriorityQueue<Cargo*> loadedCargo; //cargos that assigned on truck
+	PriorityQueue<Cargo*>* loadedCargo; //cargos that assigned on truck
 	Time MT; //Moving Time
 	Time FinishingLoadingTime;
 	Time FinishingCheckUPTime;
@@ -18,7 +18,6 @@ protected:
 	float& Speed;
 	int& Capcity;
 
-	int MaxCargoDist;
 	int tDC; //total deliverid Cargos
 	int tAT; //total active time
 	int totalJouneys;
@@ -45,7 +44,8 @@ public:
 	const int getID() const { return ID; }
 	virtual int GetCheckUPTime() const  = 0 ;
 	int getNumberOfJourney() const;
-	PriorityQueue<Cargo*>  & getCargoList() ;
+	PriorityQueue<Cargo*>  * getCargoList() ;
+	bool getNowMoving() const { return NowMoving; }
 
 
   
@@ -55,6 +55,8 @@ public:
 	bool AssignCargo(Cargo*,const Time &);
 	bool move(const Time* t);
 	void EndJourney();
+	Cargo* DeliverCargos(const Time &);
+	~Truck();
 	//check if there's cargo deleverid
 
 };

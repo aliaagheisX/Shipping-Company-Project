@@ -9,12 +9,12 @@ Truck::Truck(float& s, int& c): ID(counter + 1), Speed(s),Capcity(c)
 	tAT = 0;
 	tDC = 0;
 	totalJouneys = 0;
-	MaxCargoDist = 0;
 	NowMoving = false;
+	loadedCargo = new PriorityQueue<Cargo*>(Capcity);
 }
 
 //////////////////////////////////////////////Getters
-PriorityQueue<Cargo*> &  Truck::getCargoList()  {
+PriorityQueue<Cargo*> *  Truck::getCargoList()  {
 	return loadedCargo;
 }
 
@@ -59,23 +59,43 @@ Types Truck::getTypes() const {
 //////////////////////////////////////////////DOs
 bool Truck::AssignCargo(Cargo* c, const Time& currentTime)
 {
+
 	if (currentTime < FinishingLoadingTime) return false;
 
 	c->setLoadingTruck(this);
 	FinishingLoadingTime = currentTime + c->GetLt();
-	loadedCargo.enqueue(c, (c->GetDist()));
-	MaxCargoDist = (MaxCargoDist > c->GetDist()) ? MaxCargoDist : c->GetDist();
-	DI = DI + c->GetLt();
+	loadedCargo->enqueue(c, (c->GetDist()));
 
 	return true;
 }
 bool Truck::move(const Time* t)
 {
-	if (!NowMoving && Capcity > loadedCargo.getSize()) return false;
+	if (!NowMoving && Capcity > loadedCargo->getSize()) return false;
 	if (*t < FinishingLoadingTime) return false;
 	MT = *t;
-	DI = DI + 2*(MaxCargoDist / Speed);
 	numberOfJourney++;
+	//Set WT, CDT for Cargos
+	int prevLoadingTime = 0;
+	int MaxCargoDist = 0;
+	PriorityQueue<Cargo*>* aux = new PriorityQueue<Cargo*>(Capcity); //cargos that assigned on truck
+	while (!loadedCargo->isEmpty()) {
+		//handeling
+		Cargo* c = loadedCargo->peekFront();
+		loadedCargo->dequeue();
+		aux->enqueue(c, c->GetDist());
+		//handeling
+		c->SetWt(MT - c->GetWt());
+
+		prevLoadingTime += c->GetLt();
+		MaxCargoDist = MaxCargoDist > c->GetDist() ? MaxCargoDist : c->GetDist();
+		c->setCDT(MT + (c->GetDist() / Speed) + prevLoadingTime);
+
+		
+	}
+	DI.setHour(prevLoadingTime + 2 * (MaxCargoDist / Speed));
+	//handeling
+	delete loadedCargo;
+	loadedCargo = aux;
 	return true;		
 }
 
@@ -85,7 +105,6 @@ void Truck::EndJourney() {
 	totalJouneys++;
 
 	NowMoving = false;
-	MaxCargoDist = 0;
 	MT.setDay(0);
 	MT.setHour(0);
 	DI.setDay(0);
@@ -94,4 +113,19 @@ void Truck::EndJourney() {
 	FinishingLoadingTime.setHour(0);
 }
 
+Cargo* Truck::DeliverCargos(const Time& currentTime)
+{
+	if (!loadedCargo->isEmpty() && loadedCargo->peekFront()->getCDT() <= currentTime) {
+		Cargo* c = loadedCargo->peekFront();
+		//c->Deliver();
+		loadedCargo->dequeue();
+		return c;
+	}
+	return NULL;
+}
+
+
+Truck::~Truck() {
+	delete loadedCargo;
+}
 // Cargo char - simulate function - pormotion event - output - :priorityE

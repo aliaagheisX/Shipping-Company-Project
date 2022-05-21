@@ -8,15 +8,13 @@ class Cargo
 	Time PT; //prep. time 
 	int LT; //loading time	
 	Time WT; //waiting time
-	Time Start;
 	Time CDT;
-	char Types;
+	char types;
 
 	const int ID;
 	int DeliveryDist;
 
-	const 
-		Truck* Loadingtrcuk;
+	const Truck* Loadingtrcuk;
 
 	int Cost;
 
@@ -30,7 +28,7 @@ public:
 	void SetStart(const Time& t); /// time the cargo assigned
 	void SetDeliveryDist(const int& dist);
 	void SetCost(const int& ct);
-	void setCDT(Time&);
+	void setCDT(const Time&);
 	void setTypes(char c);
 	void setLoadingTruck(const Truck *);
 	// Getters 
@@ -42,14 +40,19 @@ public:
 	int GetDist() const;
 
 	virtual int GetCost() const;
-	char getType() const { return Types; }
+	int getType() const { 
+		if (types == 'N') return 0; 
+		if (types == 'V') return 2; 
+		return 1; 
+	}
 	const Truck* getLoadingTruck() const;
-
 
 	const int getID() const;
 
 	int getPriority() const;
 
+
+	void Deliver();
 	//virtual bool operator<(const Cargo& r);
 		// Waiting for the Priority Equation
 	

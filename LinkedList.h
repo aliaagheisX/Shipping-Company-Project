@@ -299,10 +299,10 @@ void LinkedList<T>::Print(UI* ptr) const
     Node<T>* temp = head;
     while (temp->getNext())
     {
-        
         ptr->Print(temp->getValue());
 
-        ptr->Output(",");
+        if (temp->getValue())
+            ptr->Output(",");
 
         temp = temp->getNext();
 

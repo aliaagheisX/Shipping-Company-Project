@@ -13,40 +13,45 @@ Company::Company() {
 	 loadingTrucks.insert(Normal, NULL);
 	 loadingTrucks.insert(Special, NULL);
 	 loadingTrucks.insert(VIP, NULL);
+	 uiPtr = new UI;
+	 uiPtr->ReadMode();
+	 load();
+	 Out_Start();
+	 movingTrucks = new PriorityQueue<Truck *>(getEmptyTrucksCount());
+	 for (int i = 0; i < NormalTruckCount; i++) {
+		 emptyTrucks[Normal].enqueue(new NormalTruck);
+	 }
+	 for (int i = 0; i < SpecialTruckCount; i++) {
+		 emptyTrucks[Special].enqueue(new SpecialTruck);
+	 }
+	 for (int i = 0; i < VIPTruckCount; i++) {
+		 emptyTrucks[VIP].enqueue(new VIPTruck);
+
+	 }
 }
 
 void Company::Simulate() {
-	uiPtr = new UI;
-	uiPtr->ReadMode();
-	load();
 
-	Out_Start();
+
 	while (!isSimulationEnd())
 	{
 			ExecuteEvent();
 
 			AutoPromotion();
-			MaxWait();
 
 			moveTrucks();
 
+			DeliverCargos();
 			Movingcheck();
 			EndCheckUP();
 
 
 			Out_Mid();
-
-			//move trucks	[Ali]
-			// 
-			//check moving trucks if they finish => waiting||checkup truck[Mahmoud]
-			//truck finish checkups [Mahmoud]
-			// 
-			//deliverCargo [Aliaa]
-			uiPtr->Print(this);
 		if(currentTime.getHour() >= 5 && currentTime.getHour() <=23){
 			checkLoadingTrucks();
 			assign();
 		}
+			uiPtr->Print(this);
 			
 
 		currentTime.Update();
@@ -65,7 +70,7 @@ bool Company::isFinishedCheckUP(Truck* t)
 	return (currentTime - (t->GetMt() + t->GetDi()) >=  t->GetCheckUPTime());
 }
 inline bool Company::isFinishedDelivery(Truck* t) {
-	return (movingTrucks.peekFront()->GetDi() + movingTrucks.peekFront()->GetMt() <= currentTime);
+	return (movingTrucks->peekFront()->GetDi() + movingTrucks->peekFront()->GetMt() <= currentTime);
 }
 inline bool Company::NeedCheck(Truck* t)
 {
@@ -78,12 +83,12 @@ void Company::Movingcheck()
 {
 	//if Finished Move 
 		//
-	while (!movingTrucks.isEmpty()&& isFinishedDelivery(movingTrucks.peekFront()))
+	while (!movingTrucks->isEmpty()&& isFinishedDelivery(movingTrucks->peekFront()))
 	{
-		Truck* temp = movingTrucks.peekFront();
-
-		movingTrucks.dequeue();
-		DeliverCargos(temp);
+		Truck* temp = movingTrucks->peekFront();
+		temp->EndJourney();
+		movingTrucks->dequeue();
+		//DeliverCargos(temp);
 		Queue<Truck *>* listAddedTo = NULL;
 
 		Types t= Normal;
@@ -117,42 +122,6 @@ void Company::EndCheckUP() {
 ///////////////////////////////////////////////////Change states of Trucks
 
 
-///////////////////////////////////////////////////MaxW
-bool Company::MaxWCheck(Cargo* c) {return (currentTime - c->GetPt() >= MaxW && !c->getLoadingTruck());}
-void Company::MaxWait()
-{
-	while (!waitingNormalCargo.isEmpty() && MaxWCheck(waitingNormalCargo.getFront()))
-	{
-		if (emptyTrucks[Normal].isEmpty() && emptyTrucks[VIP].isEmpty()) break;
-
-		Types t = Normal;
-		if (emptyTrucks[Normal].isEmpty())
-			t = VIP;
-
-		//emptyTrucks[t].peekFront()->move(&currentTime);
-		emptyTrucks[t].peekFront()->setNowMoving(true);
-
-		emptyTrucks[t].peekFront()->AssignCargo(waitingNormalCargo.getFront(), currentTime);
-
-		loadingTrucks.insert(loadingTrucks.getSize(), emptyTrucks[t].peekFront());
-
-		waitingNormalCargo.removeFront();
-		emptyTrucks[t].dequeue();
-	}
-	while (!waitingSpecialCargo.isEmpty() && !emptyTrucks[Special].isEmpty() && MaxWCheck(waitingSpecialCargo.peekFront()))
-	{
-		emptyTrucks[Special].peekFront()->setNowMoving(true);
-
-		emptyTrucks[Special].peekFront()->AssignCargo(waitingSpecialCargo.peekFront(), currentTime);
-
-		loadingTrucks.insert(loadingTrucks.getSize(), emptyTrucks[Special].peekFront());
-
-		waitingSpecialCargo.dequeue();
-		emptyTrucks[Special].dequeue();
-		// move truck
-	}
-}
-///////////////////////////////////////////////////MaxW
 
 ///////////////////////////////////////////////////AutoP
 void Company::AutoPromotion() {
@@ -194,7 +163,7 @@ void Company::Out_Mid() {
 	file.open(OUT_PATH, std::ios_base::app);
 	while (!DeliveredCargos_temp.isEmpty()) {
 		Cargo* temp = DeliveredCargos_temp.peekFront();
-		DeliveredCargos.enqueue(temp->getID());
+		DeliveredCargos[temp->getType()].enqueue(temp->getID());
 		DeliveredCargos_temp.dequeue();
 		file << temp->getCDT().TimePrint();
 		file << '\t' << temp->getID() << '\t' << temp->GetPt().TimePrint() << '\t' << temp->GetWt().TimePrint() << '\t' << temp->getLoadingTruck()->getID() << '\n';
@@ -207,7 +176,7 @@ void Company::Out_End() {
 	int TotalTrucksCount = NormalTruckCount + SpecialTruckCount + VIPTruckCount;
 	file << ".........................................\n";
 	file << ".........................................\n";
-	file << "Cargos: " << DeliveredCargos.getSize() << "[N: "<<NormalCargoCount << ", S: " << SpecialCargoCount << ", V: " << VIPCargoCount  << "]";
+	file << "Cargos: " << getDeliveredCargosCount() << "[N: " << NormalCargoCount << ", S: " << SpecialCargoCount << ", V: " << VIPCargoCount << "]";
 	file << "\nCargo Avg Wait = " << CargoAvgWait.TimePrint(); 
 	file << "\nAuto-Promoted Cargos : " << PromotedCargoCount << "%\n";
 	file << "Trucks: " << TotalTrucksCount << "[N: " << NormalTruckCount << ", S: " << SpecialTruckCount << ", V: " << VIPTruckCount << "]";
@@ -222,18 +191,9 @@ void Company::load()
 	file.open(IN_PATH);
 
 	file >> NormalTruckCount; 
-	for (int i = 0; i < NormalTruckCount; i++) {
-		emptyTrucks[Normal].enqueue(new NormalTruck);
-	}
 	file >> SpecialTruckCount;
-	for (int i = 0; i < SpecialTruckCount; i++) {
-		emptyTrucks[Special].enqueue( new SpecialTruck);
-	}
 	file >> VIPTruckCount;
-	for (int i = 0; i < VIPTruckCount; i++) {
-		emptyTrucks[VIP].enqueue(new VIPTruck);
 
-	}
 	float speed;
 	file>> speed;
 	NormalTruck::SetSpeed(speed);
@@ -310,31 +270,11 @@ bool Company::isSimulationEnd() {
 		);
 }
 
-
-
-
-//void Company::DeliverCargos() {
-//	if (!waitingVIPCargo.isEmpty()) {
-//		waitingVIPCargo.peekFront()->setCDT(currentTime);
-//		DeliveredCargos[VIP].enqueue(waitingVIPCargo.peekFront());
-//		waitingVIPCargo.dequeue();
-//	}
-//	if (!waitingNormalCargo.isEmpty()) {
-//
-//		DeliveredCargos[Normal].enqueue(waitingNormalCargo[0]);
-//		waitingNormalCargo.removeFront();
-//	}
-//	if (!waitingSpecialCargo.isEmpty()) {
-//		DeliveredCargos[Special].enqueue(waitingSpecialCargo.peekFront());
-//		waitingSpecialCargo.dequeue();
-//	}
-//}
-
-
 void Company::ExecuteEvent() {
 	while (!EventList.isEmpty() && currentTime == EventList.peekFront()->getEventTime())
 	{
 		EventList.peekFront()->Execute(this);
+		delete EventList.peekFront();
 		EventList.dequeue();
 	}
 
@@ -359,11 +299,15 @@ void Company::assign() {
 		}
 }
 
+///////////////////////////////////////////////////MaxW
+bool Company::MaxWCheck(Cargo* c) {return (currentTime - c->GetPt() >= MaxW && !c->getLoadingTruck());}
+
+///////////////////////////////////////////////////MaxW
 void Company::checkLoadingTrucks()
 {
 	// vip cargo assignment 
 	// 1st case assign in vip trucks 
-	if (!loadingTrucks.getEntry(VIP) )
+	if (!loadingTrucks.getEntry(VIP) && !waitingVIPCargo.isEmpty())
 	{
 		if (!emptyTrucks[VIP].isEmpty() && emptyTrucks[VIP].peekFront()->GetCapcity() <= waitingVIPCargo.getSize())
 			addLoadingTruck(VIP, VIP);
@@ -378,16 +322,52 @@ void Company::checkLoadingTrucks()
 	}
 
 	//! Asignment of special cargos
-	if (!loadingTrucks.getEntry(Special) && !emptyTrucks[Special].isEmpty() && emptyTrucks[Special].peekFront()->GetCapcity() <= waitingSpecialCargo.getSize())
-		addLoadingTruck(Special, Special);
+	if (!loadingTrucks.getEntry(Special) && !emptyTrucks[Special].isEmpty() && !waitingSpecialCargo.isEmpty()){
+		if (MaxWCheck(waitingSpecialCargo.peekFront())) {
+			emptyTrucks[Special].peekFront()->setNowMoving(true);
+			addLoadingTruck(Special, Special);
+/*			
+
+			emptyTrucks[Special].peekFront()->AssignCargo(waitingSpecialCargo.peekFront(), currentTime);
+
+			loadingTrucks.insert(loadingTrucks.getSize(), emptyTrucks[Special].peekFront());
+
+			waitingSpecialCargo.dequeue();
+			emptyTrucks[Special].dequeue()*/;
+		}
+
+		// 
+		else if(emptyTrucks[Special].peekFront()->GetCapcity() <= waitingSpecialCargo.getSize())
+			addLoadingTruck(Special, Special);
+	}
 
 
-	if(!loadingTrucks.getEntry(Normal)){
-		if (!emptyTrucks[Normal].isEmpty() && emptyTrucks[Normal].peekFront()->GetCapcity() <= waitingNormalCargo.getSize())
-			addLoadingTruck(Normal, Normal);
+	if(!loadingTrucks.getEntry(Normal) && !waitingNormalCargo.isEmpty()){
+		if (MaxWCheck(waitingNormalCargo.getFront()) && !(emptyTrucks[Normal].isEmpty() && emptyTrucks[VIP].isEmpty())) {
 
-		else if (emptyTrucks[Normal].isEmpty() && !emptyTrucks[VIP].isEmpty() && emptyTrucks[VIP].peekFront()->GetCapcity() <= waitingNormalCargo.getSize())
-			addLoadingTruck(VIP, Normal);
+			Types t = Normal;
+			if (emptyTrucks[Normal].isEmpty())
+				t = VIP;
+			
+			emptyTrucks[t].peekFront()->setNowMoving(true);
+			addLoadingTruck(t, Normal);
+			/*emptyTrucks[t].peekFront()->move(&currentTime);
+			emptyTrucks[t].peekFront()->setNowMoving(true);
+
+			emptyTrucks[t].peekFront()->AssignCargo(waitingNormalCargo.getFront(), currentTime);
+
+			loadingTrucks.insert(loadingTrucks.getSize(), emptyTrucks[t].peekFront());
+
+			waitingNormalCargo.removeFront();
+			emptyTrucks[t].dequeue();*/
+		}
+		else {
+			if (!emptyTrucks[Normal].isEmpty() && emptyTrucks[Normal].peekFront()->GetCapcity() <= waitingNormalCargo.getSize())
+				addLoadingTruck(Normal, Normal);
+
+			else if (emptyTrucks[Normal].isEmpty() && !emptyTrucks[VIP].isEmpty() && emptyTrucks[VIP].peekFront()->GetCapcity() <= waitingNormalCargo.getSize())
+				addLoadingTruck(VIP, Normal);
+		}
 	}
 
 }
@@ -408,20 +388,33 @@ void Company::moveTrucks()
 			else
 				loadingTrucks.remove(i);
 
-			movingTrucks.enqueue(t, (t->GetDi() + t->GetMt()).ConvertToInt());
+			movingTrucks->enqueue(t, (t->GetDi() + t->GetMt()).ConvertToInt());
+			MovingCargoCount += t->getNowMoving() ? 1 : t->GetCapcity();
 		}
 	}
 }
 // calculate the finish time of delivery
 
-void Company::DeliverCargos(Truck* t)
+void Company::DeliverCargos()
 {
-	t->EndJourney();
-	while (!t->getCargoList().isEmpty()) {
-		DeliveredCargos_temp.enqueue(t->getCargoList().peekFront());
-		t->getCargoList().dequeue();
+	PriorityQueue<Truck*>* aux = new PriorityQueue<Truck*>(getEmptyTrucksCount());
+	while (!movingTrucks->isEmpty()) {
+		//Handeling Loop
+		Truck* t = movingTrucks->peekFront();
+		movingTrucks->dequeue();
+		aux->enqueue(t, (t->GetDi() + t->GetMt()).ConvertToInt());
+
+		///Handeling DeliverCargo One By One
+		Cargo* c = t->DeliverCargos(currentTime);
+		while (c) {
+			DeliveredCargos_temp.enqueue(c);
+			c = t->DeliverCargos(currentTime);
+		}
+
 	}
-	/////Cargos
+	//t->EndJourney();
+	delete movingTrucks;
+	movingTrucks = aux;
 }
 //void Company::UpdateStatics(){}
 
@@ -439,32 +432,31 @@ int Company::getWaitingCargosCount() const {
 int Company::getEmptyTrucksCount() const {
 	return emptyTrucks[Normal].getSize() + emptyTrucks[Special].getSize() + emptyTrucks[VIP].getSize();
 }
-int Company::getMovingCargosCount() const {
-	/*int MovingCargoCount = 0;
-	for (int i = 0; i < movingTrucks.getSize(); i++)
-		MovingCargoCount += movingTrucks.getEntry(i)->getCargoList()->getSize();*/
-	return MovingCargoCount;
-}
+int Company::getMovingCargosCount() const { return MovingCargoCount; }
 int Company::getMaintainingTrucksCount() const {
 	return maintainingTrucks[Normal].getSize() + maintainingTrucks[Special].getSize() + maintainingTrucks[VIP].getSize();
 }
+int Company::getDeliveredCargosCount() const { return DeliveredCargos[0].getSize() + DeliveredCargos[1].getSize() + DeliveredCargos[2].getSize(); }
+
 const Time & Company::getCurrentTime() const {
 	return currentTime;
 }
-int Company::getDeliveredCargosCount() const { return DeliveredCargos.getSize(); }
+
 LinkedList<Cargo*>& Company::getWaitingNormalCargo() {return waitingNormalCargo;}
 Queue<Cargo*>& Company::getWaitingSpecialCargo() {return waitingSpecialCargo;}
 PriorityQueue<Cargo*>& Company::getWaitingVIPCargo(){return waitingVIPCargo;}
-
-const Queue<int>& Company::getDeliveredCargo()const { return DeliveredCargos; }
+const Queue<int>* Company::getDeliveredCargo()const { return DeliveredCargos; }
 
 
 const Queue<Truck*>* Company::getEmptyTrucks() const { return emptyTrucks; }
 const List<Truck*>& Company::getLoadingTrucks() const { return loadingTrucks; }
-const PriorityQueue< Truck*>& Company::getMovingTrucks() const { return movingTrucks; }
+const PriorityQueue< Truck*>* Company::getMovingTrucks() const { return movingTrucks; }
 const Queue< Truck*>* Company::getMaintainingTrucks() const { return maintainingTrucks; }
 
 
 Company::~Company() {
-	while (!emptyTrucks->isEmpty()) emptyTrucks->dequeue();
+	for(int i = 0;i < 3;i++)
+		while (!emptyTrucks[i].isEmpty()) emptyTrucks[i].dequeue();
+	delete movingTrucks;
+	delete uiPtr;
 }
