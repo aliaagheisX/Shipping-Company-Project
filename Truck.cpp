@@ -45,13 +45,25 @@ void Truck::resetFinishingCheckUPTime()
 
 
 
-Types Truck::getTypes() const {
+Types Truck::getTypes()  const{
 /*
 	if (dynamic_cast<NormalCargo*>(loadedCargo.peekFront())) return Normal;
 	if (dynamic_cast<SpecialCargo*>(loadedCargo.peekFront())) return Special;
 	if (dynamic_cast<VIPCargo*>(loadedCargo.peekFront())) return VIP;
 */
-	return VIP;
+	if (!loadedCargo->isEmpty())
+	{
+		Cargo* c = loadedCargo->peekFront();
+		if (c->getType() == 'V')
+			return VIP;
+		if (c->getType() == 'N')
+			return Normal;
+		if(c->getType() == 'S')
+			return Special;
+	}
+	
+
+	
 }
 
 
@@ -84,19 +96,20 @@ bool Truck::move(const Time* t)
 		loadedCargo->dequeue();
 		aux->enqueue(c, c->GetDist());
 		//handeling
-		c->SetWt(MT - c->GetWt());
+		c->SetWt(MT - c->GetPt());
 
 		prevLoadingTime += c->GetLt();
 		MaxCargoDist = MaxCargoDist > c->GetDist() ? MaxCargoDist : c->GetDist();
 		c->setCDT(MT + (c->GetDist() / Speed) + prevLoadingTime);
 
-		
+
 	}
 	DI.setHour(prevLoadingTime + 2 * (MaxCargoDist / Speed));
 	//handeling
 	delete loadedCargo;
 	loadedCargo = aux;
-	return true;		
+	return true;
+
 }
 
 void Truck::EndJourney() {
@@ -115,7 +128,7 @@ void Truck::EndJourney() {
 
 Cargo* Truck::DeliverCargos(const Time& currentTime)
 {
-	if (!loadedCargo->isEmpty() && loadedCargo->peekFront()->getCDT() <= currentTime) {
+	if (!loadedCargo->isEmpty() && loadedCargo->peekFront()->getCDT() == currentTime) {
 		Cargo* c = loadedCargo->peekFront();
 		//c->Deliver();
 		loadedCargo->dequeue();

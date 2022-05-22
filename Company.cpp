@@ -67,15 +67,15 @@ bool Company::isFinishedCheckUP(Truck* t)
 	//True = Finish isFinishedCheckUP
 	//false = otherwise
 	//t->GetMt() + t->GetDi() = time truck return to company
-	return (currentTime - (t->GetMt() + t->GetDi()) >=  t->GetCheckUPTime());
+	return ((currentTime - (t->GetMt() + t->GetDi())).ConvertToInt() >= t->GetCheckUPTime());
 }
 inline bool Company::isFinishedDelivery(Truck* t) {
-	return (movingTrucks->peekFront()->GetDi() + movingTrucks->peekFront()->GetMt() <= currentTime);
+	return (movingTrucks->peekFront()->GetDi() + movingTrucks->peekFront()->GetMt() == currentTime);
 }
 inline bool Company::NeedCheck(Truck* t)
 {
 	//True : 
-	return(J >= t->getNumberOfJourney());
+	return(J == t->getNumberOfJourney());
 }
 //////////////booleans for states
 
@@ -146,7 +146,7 @@ bool Company::AutoPCheck(Cargo* c)
 void Company::Promote(Cargo* c)
 {
 	c->setTypes('V');
-	getWaitingVIPCargo().enqueue(c, c->getPriority());
+	getWaitingVIPCargo().enqueue(c, -1*(c->getPriority()));
 }
 ///////////////////////////////////////////////////AutoP
 
@@ -300,7 +300,7 @@ void Company::assign() {
 }
 
 ///////////////////////////////////////////////////MaxW
-bool Company::MaxWCheck(Cargo* c) {return (currentTime - c->GetPt() >= MaxW && !c->getLoadingTruck());}
+bool Company::MaxWCheck(Cargo* c) {return ((currentTime - c->GetPt()).ConvertToInt() >= MaxW && !c->getLoadingTruck());}
 
 ///////////////////////////////////////////////////MaxW
 void Company::checkLoadingTrucks()
@@ -406,7 +406,7 @@ void Company::DeliverCargos()
 
 		///Handeling DeliverCargo One By One
 		Cargo* c = t->DeliverCargos(currentTime);
-		while (c) {
+		if (c) {
 			DeliveredCargos_temp.enqueue(c);
 			c = t->DeliverCargos(currentTime);
 		}

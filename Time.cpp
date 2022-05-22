@@ -15,6 +15,11 @@ void Time::setHour(int h) {
 		day++;
 	}
 	hour = h;
+	if (h < 0)
+	{
+		day--;
+		h = 24 + h;
+	}
 }
 
 void Time::setDay(int d) {
@@ -58,11 +63,12 @@ bool Time::operator<=(const Time& t) const
 	return (*this < t) || (*this == t);
 }
 // return number of hours
-int Time::operator-(const Time& t)const {
-	if (day > t.day) {
-		return((day - t.day) * 24 + hour - t.hour);
-	}
-	return (hour - t.hour);
+Time Time::operator-(const Time& t)const {
+
+	Time t1 = *this;
+	t1.setDay(day - t.day);
+	t1.setHour(hour - t.hour);
+	return t1;
 }
 
 // increase hour by 1 and 
