@@ -14,7 +14,7 @@ public:
 
 	bool isEmpty() const;
 	int getSize() const;
-	void Print(UI* ptr) const ;
+	void Print(UI* ptr, char seperator = ',') const;
 };
 
 template<typename T>
@@ -45,9 +45,9 @@ int Queue<T>::getSize() const {
 }
 
 template<typename T>
-void Queue<T>::Print(UI* ptr) const
+void Queue<T>::Print(UI* ptr, char seperator) const
 {
-	queue.Print(ptr);
+	queue.Print(ptr, seperator);
 }
 
 

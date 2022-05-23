@@ -34,7 +34,7 @@ public:
 
 	int getSize() const { return size; };
 
-	void Print(UI * ) const ;
+	void Print(UI * ,char seperator = ',') const;
 
 	bool isEmpty() const;
 
@@ -83,13 +83,12 @@ T& PriorityQueue<T>::peekFront()  {
 }
 
 template<typename T>
-void PriorityQueue<T>::Print(UI* ptr) const {
+void PriorityQueue<T>::Print(UI* ptr, char seperator) const {
 	if (size == 0) return;
 	for (int i = 0; i < size - 1; i++) {
-		ptr->Print(arr[i]->getValue());
-		ptr->Output(",");
+		ptr->Print(arr[i]->getValue(), seperator);
 	}
-	ptr->Print(arr[size - 1]->getValue());
+	ptr->Print(arr[size - 1]->getValue(), '\0');
 
 }
 

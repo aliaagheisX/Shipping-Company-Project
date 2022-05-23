@@ -17,9 +17,11 @@ class Company
 	int NormalCargoCount, SpecialCargoCount, VIPCargoCount;
 	int MaxW, AutoP, J; // j no of journeys till maintaince
 	Time currentTime;
-	Time CargoAvgWait; 
-	int TotalTruckActiveTime, TotalTruckUtilization;
-	int PromotedCargoCount, TotalSimulationTime;
+
+	//
+	Time TotalCargoWait; 
+	int TotalTruckActiveTime, PromotedCargoCount;double TotalTruckUtilization;
+	
 	int MovingCargoCount;
 
 	Queue<Event *> EventList;
@@ -40,34 +42,35 @@ class Company
 
 
 	bool isNightShift();
+
+	void ExecuteEvent();
+	//Loading
 	void load();
 	void assign();
-	void ExecuteEvent();
-	void DeliverCargos(Truck *);
 
-  
-	void EndCheckUP();
-	bool isFinishedCheckUP(Truck* t);
-	void MaxWait();
 
-	void changeLoadToMove(Types truckType);
+	//moving
 	void moveTrucks();
-
 	void DeliverCargos();
 
- 
+	//checkups
+	void EndCheckUP();
+	bool isFinishedCheckUP(Truck* t);
+
+
 	void AutoPromotion();
+	bool AutoPCheck(Cargo *);
+
+	bool CheckFailure(Truck* t);
 
 	bool MaxWCheck(Cargo* c);
-
 	void checkLoadingTrucks();
-	bool AutoPCheck(Cargo *);
 	void Promote(Cargo *);
 
 	
 
 	void addLoadingTruck(Types, Types);
-	void UpdateStatics();
+	void EndSimulation();
 
 	string IN_PATH;
 	string OUT_PATH;
@@ -86,6 +89,7 @@ public:
 
 	int getWaitingCargosCount() const;
 	int getMovingCargosCount() const;
+	int getLoadingTrucksCount() const;
 	int getEmptyTrucksCount() const;
 	int getMaintainingTrucksCount() const;
 

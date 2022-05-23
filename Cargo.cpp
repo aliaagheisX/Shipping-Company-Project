@@ -75,6 +75,12 @@ int Cargo::GetCost() const
 {
 	return Cost;
 }
+int Cargo::getType() const
+{
+	if (types == 'N') return 0;
+	if (types == 'V') return 2;
+	return 1;
+}
 const Truck* Cargo::getLoadingTruck() const
 {
 	return Loadingtrcuk;
@@ -86,10 +92,6 @@ const int Cargo::getID() const
 const Time& Cargo::getCDT() const { return CDT; }
 
 
-int Cargo::getPriority() const{ return 0.5 * DeliveryDist + 0.3 * Cost + 2 * LT; }
+int Cargo::getPriority() const{ return -1*(0.5 * DeliveryDist + 0.3 * Cost + 2 * LT); }
 
-void Cargo::Deliver()
-{
-	WT = Loadingtrcuk->GetMt() - PT;
-	CDT = Loadingtrcuk->GetMt() + (DeliveryDist / Loadingtrcuk->GetSpeed()) + LT;
-}
+

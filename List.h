@@ -14,7 +14,7 @@ public:
 	bool remove(int position);
 	T getEntry(int position) const;
 	void setEntry(int position, const T& newEntry);
-	void Print(UI* ptr) const;
+	void Print(UI* ptr,char seperator = ',') const;
 };
 
 
@@ -60,6 +60,6 @@ void List<T>::setEntry(int position, const T& newEntry)
 
 
 template<typename T>
-void List<T>::Print(UI* ptr) const {
-	list.Print(ptr);
+void List<T>::Print(UI* ptr, char seperator) const {
+	list.Print(ptr, seperator);
 }

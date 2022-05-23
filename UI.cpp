@@ -4,11 +4,14 @@
 #include"Company.h"
 #include<Windows.h>
 
-void UI::ReadMode() {
+UI::UI()
+{
 	int x;
 	cout << "Choose Mode\n0 - interactive\n1 - Step By Step\n2 - Silent\nEnter Number : ";
 	cin >> x;
 	mode = Mode(x);
+	cout << "\nSimulation Starts ...";
+	Line();
 }
 void UI::InterActiveMode(Company* cPtr) {
 	getchar();
@@ -19,6 +22,7 @@ void UI::StepByStepMode(Company* cPtr) {
 	PrintScreen(cPtr);
 	Sleep(1000);
 }
+
 
 void UI::Output(string s)
 {
@@ -63,19 +67,9 @@ void UI::PrintScreen(Company* Cptr) {
 	}
 	Line();
 	//							Loading Trucks:
-	int count = 0;
-	for (int i = 0; i < Cptr->getLoadingTrucks().getSize(); i++) 
-		if(Cptr->getLoadingTrucks().getEntry(i))
-			count++;
-	cout << count << " Loading Trucks: ";
-	Cptr->getLoadingTrucks().Print(this);
-	/*for (int i = 0; i < Cptr->getLoadingTrucks().getSize(); i++) {
-		if (Cptr->getLoadingTrucks().getEntry(i)) {
-			cout << Cptr->getLoadingTrucks().getEntry(i)->getID();
-			cout
-		}
+	cout << Cptr->getLoadingTrucksCount() << " Loading Trucks: ";
+	Cptr->getLoadingTrucks().Print(this, ' ');
 
-	}*/
 	Line();
 	 
 	//							Empty Trucks:
@@ -84,17 +78,17 @@ void UI::PrintScreen(Company* Cptr) {
 
 	if (Cptr->getEmptyTrucks()[Normal].getSize() != 0) {
 		cout << '[';
-		Cptr->getEmptyTrucks()[Normal].Print(this);
+		Cptr->getEmptyTrucks()[Normal].Print(this, ',');
 		cout << "] ";
 	}
 	if (Cptr->getEmptyTrucks()[Special].getSize() != 0) {
 		cout << '(';
-		Cptr->getEmptyTrucks()[Special].Print(this);
+		Cptr->getEmptyTrucks()[Special].Print(this, ',');
 		cout << ") ";
 	}
 	if (Cptr->getEmptyTrucks()[VIP].getSize() != 0) {
 		cout << '{';
-		Cptr->getEmptyTrucks()[VIP].Print(this);
+		Cptr->getEmptyTrucks()[VIP].Print(this, ',');
 		cout << "} ";
 	}
 	Line();
@@ -145,8 +139,8 @@ void UI::PrintScreen(Company* Cptr) {
 }
 
 
-void UI::Print(Cargo* c) { cout << to_string(c->getID()); }
-void UI::Print(Truck* t) { 
+void UI::Print(Cargo* c, char seperator) { cout << to_string(c->getID()) << seperator; }
+void UI::Print(Truck* t, char seprator) {
 	if (!t) return;
 	cout << to_string(t->getID());
 
@@ -155,13 +149,14 @@ void UI::Print(Truck* t) {
 		char close[3] = { ']', ')', '}' };
 
 		cout << open[t->getTypes()];
-		t->getCargoList()->Print(this);
-		cout  << close[t->getTypes()] << " ";
+		t->getCargoList()->Print(this, ',');
+		cout  << close[t->getTypes()] ;
 	}
+	cout << seprator;
 }
-void UI::Print(int n)
+void UI::Print(int n, char seperator)
 {
-	cout << n;
+	cout << n << seperator;
 }
 void UI::Print(Company* cPtr) {
 	switch (mode)
@@ -172,8 +167,12 @@ void UI::Print(Company* cPtr) {
 	case StepByStep:
 		StepByStepMode(cPtr);
 		break;
-	default:
-		InterActiveMode(cPtr);
-		break;
 	}
+}
+
+UI::~UI()
+{
+	cout << "\nSimulation ends, Output file created \n";
+	Line();
+
 }

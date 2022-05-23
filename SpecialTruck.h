@@ -13,6 +13,7 @@ public:
     static void SetCapcity(const int& c);
     static void setCheckUPTime(const int& c);
     virtual int GetCheckUPTime() const;
+    virtual Types getTruckType()  const { return Special; }
 
 
 };

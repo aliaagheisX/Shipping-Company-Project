@@ -12,19 +12,19 @@ protected:
 	Time DI; // delivery interval
 	PriorityQueue<Cargo*>* loadedCargo; //cargos that assigned on truck
 	Time MT; //Moving Time
-	Time FinishingLoadingTime;
-	Time FinishingCheckUPTime;
+	Time FinishingLoadingTime;//For Not Overloading loading of Cargos on Truck
+	Time FinishingCheckUPTime;//To End CheckUP
 
 	float& Speed;
 	int& Capcity;
-
 	int tDC; //total deliverid Cargos
 	int tAT; //total active time
-	int totalJouneys;
-
+	int MaxCargoDist;//maximum distance will Truck Go
 
 	int numberOfJourney;//number of journey Before CheckUP
 						//return ZERO when check
+	int totalJouneys;//number of actual journeies Done By Truck
+
 	bool NowMoving;//for not waiting in MaxWait
 public:
 	// constructor
@@ -34,7 +34,7 @@ public:
 	void SetMt(const Time& t); //company call it and send the time when the truck start moving
 	void SetNumberOfJourney(int x);
 	void setNowMoving(bool);
-	void resetFinishingCheckUPTime();
+	void endCheckUp();
 
 	// Getters 
 	Time GetDi() const; // calculate the delivery interval and send it to company
@@ -46,10 +46,10 @@ public:
 	int getNumberOfJourney() const;
 	PriorityQueue<Cargo*>  * getCargoList() ;
 	bool getNowMoving() const { return NowMoving; }
-
-
+	int getTotalActiveTime() const;
+	double getTruckUtilization(const Time&);
   
-	Types getTypes() const; // return NULL if empty
+	Types getTypes() const { return VIP; } // return NULL if empty
 
 	//assign cargo to the Queue According to Distance
 	bool AssignCargo(Cargo*,const Time &);
@@ -59,5 +59,8 @@ public:
 	~Truck();
 	//check if there's cargo deleverid
 
+	virtual Types getTruckType()  const = 0;
+	
+	bool getFailure() const;
 };
 

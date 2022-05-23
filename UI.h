@@ -17,14 +17,14 @@ class UI
 	void StepByStepMode(Company*);
 
 public:
-	void ReadMode();
+	UI();
 	void Line();
 	void Output(string s);
-	void Print(Cargo* c);
-	void Print(Truck* t);
-	void Print(int n);
+	void Print(Cargo* c, char seperator = ',');
+	void Print(Truck* t, char seprator = ' ');
+	void Print(int n, char seperator = ',');
 
 	void Print(Company*);
-
+	~UI();
 };
 
