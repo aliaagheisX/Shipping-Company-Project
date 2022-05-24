@@ -38,14 +38,18 @@ class Company
 	Queue<int> DeliveredCargos[3];
 	Queue<Cargo*> DeliveredCargos_temp;
 
+	string IN_PATH;
+	string OUT_PATH;
 	UI *uiPtr;
 
+	//bool isNightShift();
 
-	bool isNightShift();
-
-	void ExecuteEvent();
-	//Loading
 	void load();
+	void Out_Start();
+	void ExecuteEvent();
+
+	//Loading Trucks & assign
+	bool addLoadingTruck(Truck *, Types, int MinCapacity, bool Now = false);
 	void assign();
 
 
@@ -57,53 +61,52 @@ class Company
 	void EndCheckUP();
 	bool isFinishedCheckUP(Truck* t);
 
-
+	//Auto promotion
 	void AutoPromotion();
-	bool AutoPCheck(Cargo *);
-
-	bool CheckFailure(Truck* t);
-
-	bool MaxWCheck(Cargo* c);
-	void checkLoadingTrucks();
+	inline bool AutoPCheck(Cargo *);
 	void Promote(Cargo *);
 
-	
+	//Max wait
+	inline bool MaxWCheck(Cargo* c);
 
-	void addLoadingTruck(Types, Types);
-	void EndSimulation();
-
-	string IN_PATH;
-	string OUT_PATH;
-public:
-	Company();
-	void Simulate();
+	//Trucks from move to checkUP || Empty
+	void checkLoadingTrucks();
 	void Movingcheck();
 	bool isFinishedDelivery(Truck* t);
 	inline bool NeedCheck(Truck* t);
-	void Out_Mid();
-	void Out_Start();
-	void Out_End();
-	bool isSimulationEnd();
-	void Print() { uiPtr->Print(this); }
-	//Getters
 
+	bool CheckFailure(Truck* t);
+
+
+	void Out_Mid();
+
+	inline bool isSimulationEnd();
+	void EndSimulation();
+	void Out_End();
+
+	
+public:
+	Company();
+	void Simulate();
+
+
+	//Getters
 	int getWaitingCargosCount() const;
 	int getMovingCargosCount() const;
 	int getLoadingTrucksCount() const;
 	int getEmptyTrucksCount() const;
 	int getMaintainingTrucksCount() const;
+	int getDeliveredCargosCount() const;
 
 	const Time& getCurrentTime() const;
 
-	int getDeliveredCargosCount() const;
 
-
-	LinkedList<Cargo*>& getWaitingNormalCargo(); // as we need to remove by id
-	Queue<Cargo*>& getWaitingSpecialCargo();
-	PriorityQueue<Cargo*>& getWaitingVIPCargo();
-
-
+	//Getters Of Cargos
+	const LinkedList<Cargo*>& getWaitingNormalCargo()const;
+	const Queue<Cargo*>& getWaitingSpecialCargo()const;
+	const PriorityQueue<Cargo*>& getWaitingVIPCargo()const;
 	const Queue<int>* getDeliveredCargo() const;
+
 
 	const Queue<Truck*>* getEmptyTrucks() const;
 	const List<Truck*>& getLoadingTrucks() const;
