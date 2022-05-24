@@ -29,6 +29,7 @@ class Company
 	Queue<Truck *> emptyTrucks [3];
 	List<Truck *> loadingTrucks;
 	PriorityQueue< Truck*>* movingTrucks;
+	PriorityQueue< Truck*>* returnHomeTrucks;
 	Queue<Truck *> maintainingTrucks[3];
 
 	LinkedList<Cargo*> waitingNormalCargo;
@@ -59,12 +60,13 @@ class Company
 
 	//checkups
 	void EndCheckUP();
-	bool isFinishedCheckUP(Truck* t);
 
 	//Auto promotion
 	void AutoPromotion();
 	inline bool AutoPCheck(Cargo *);
 	void Promote(Cargo *);
+
+	void AddWaitingCargo(Cargo* temp);
 
 	//Max wait
 	inline bool MaxWCheck(Cargo* c);
@@ -74,8 +76,6 @@ class Company
 	void Movingcheck();
 	bool isFinishedDelivery(Truck* t);
 	inline bool NeedCheck(Truck* t);
-
-	bool CheckFailure(Truck* t);
 
 
 	void Out_Mid();

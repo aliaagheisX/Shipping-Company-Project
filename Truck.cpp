@@ -2,8 +2,14 @@
 int Truck::counter = 0;
 
 
-void Truck::Failuer(const Time* t)
+void Truck::Failuer(const Time* t, UI * uiPtr)
 {
+	srand(time(0));
+	if (rand() % 100 >90 || isFailed) return;
+
+	uiPtr->Output("Failure Happen : " + to_string(ID) + " is Failed and need maintaince.\n");
+	isFailed = true;
+
 	PriorityQueue<Cargo*>* aux = new PriorityQueue<Cargo*>(Capcity);
 	int distance = getCargoList()->peekFront()->GetDist();
 	int prev = 0;
@@ -12,13 +18,14 @@ void Truck::Failuer(const Time* t)
 		Cargo* c = getCargoList()->peekFront();
 		prev += c->GetLt();
 		getCargoList()->dequeue();
-		c->setCDT(ceil(c->GetDist() / Speed) + prev);
+		c->setCDT(*t + ceil(distance / Speed) + prev);
+
 		aux->enqueue(c,c->getCDT().ConvertToInt());
 	}
 	delete loadedCargo;
 	loadedCargo = aux;
 	MT = *t;
-	DI = distance / Speed + prev;
+	DI.setHour(ceil(distance / Speed) + prev);
 }
 
 Types Truck::getTypes() const
@@ -35,6 +42,7 @@ Truck::Truck(float& s, int& c): ID(counter + 1), Speed(s),Capcity(c)
 	tDC = 0;
 	totalJouneys = 0;
 	NowMoving = false;
+	isFailed = false;
 	MaxCargoDist = 0;
 	loadedCargo = new PriorityQueue<Cargo*>(Capcity);
 }
@@ -145,19 +153,30 @@ void Truck::EndJourney() {
 	FinishingLoadingTime.setHour(0);
 }
 
+/**
+ * @brief 
+ * Checkup => bool
+ * setFinishCheckUP
+ * 
+*/
+
+bool Truck::CheckUP(const Time & currentTime, int J) {
+	if (isFailed || numberOfJourney >= J) {
+		FinishingCheckUPTime = currentTime + GetCheckUPTime();
+		return true;
+	}
+	return false;
+}
+ bool Truck::isFinishedCheckUp(const Time& currentTime) const { return ( FinishingCheckUPTime <=currentTime ); }
 
 void Truck::endCheckUp()
 {
 	numberOfJourney = 0;
+	isFailed = false;
 	FinishingCheckUPTime.setDay(0);
 	FinishingCheckUPTime.setHour(0);
 }
 
-
-bool Truck::getFailure() const{
-	srand(time(0));
-	return (rand() % 100 < 5);
-}
 
 Truck::~Truck() {
 	delete loadedCargo;

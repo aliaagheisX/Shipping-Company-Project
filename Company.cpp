@@ -32,7 +32,8 @@ Company::Company() {
 		 emptyTrucks[VIP].enqueue(new VIPTruck);
 
 	 }
-	 movingTrucks = new PriorityQueue<Truck *>(getEmptyTrucksCount());
+	 movingTrucks = new PriorityQueue<Truck*>(getEmptyTrucksCount());
+	 returnHomeTrucks = new PriorityQueue<Truck *>(getEmptyTrucksCount());
 	 //inialize Trucks
 	 
 	 
@@ -74,13 +75,7 @@ void Company::Simulate() {
 
 ///////////////////////////////////////////////////Change states of Trucks
 //////////////booleans for states
-bool Company::isFinishedCheckUP(Truck* t)
-{
-	//True = Finish isFinishedCheckUP
-	//false = otherwise
-	//t->GetMt() + t->GetDi() = time truck return to company
-	return (currentTime - (t->GetMt() + t->GetDi()) >=  t->GetCheckUPTime());
-}
+
 inline bool Company::isFinishedDelivery(Truck* t) {
 	return (movingTrucks->peekFront()->GetDi() + movingTrucks->peekFront()->GetMt() <= currentTime);
 }
@@ -105,27 +100,19 @@ void Company::Movingcheck()
 		//DeliverCargos(temp);
 		Queue<Truck *>* listAddedTo = NULL;
 
-		Types t= Normal;
-		if (dynamic_cast<VIPTruck*>(temp))
-			t= VIP;
-		else if (dynamic_cast<SpecialTruck*>(temp))
-			t = Special;
+		Types t= temp->getTruckType();
 
-
-		if (NeedCheck(temp))
-			temp->SetNumberOfJourney(0),
-			listAddedTo = &maintainingTrucks[t];
+		if (temp->CheckUP(currentTime, J))
+			maintainingTrucks[t].enqueue(temp);
 		else
-			listAddedTo = &emptyTrucks[t];
-		
-		listAddedTo->enqueue(temp);
+			emptyTrucks[t].enqueue(temp);
 	}
 	/// 
 }
 void Company::EndCheckUP() {
 	for (int trucktype = 0; trucktype <= VIP; trucktype++) {
 
-		while (!maintainingTrucks[trucktype].isEmpty() && isFinishedCheckUP(maintainingTrucks[trucktype].peekFront()))
+		while (!maintainingTrucks[trucktype].isEmpty() && maintainingTrucks[trucktype].peekFront()->isFinishedCheckUp(currentTime))
 		{
 			emptyTrucks[trucktype].enqueue(maintainingTrucks[trucktype].peekFront());
 			maintainingTrucks[trucktype].peekFront()->endCheckUp();
@@ -336,35 +323,20 @@ void Company::assign() {
 
 
 
-bool Company::CheckFailure(Truck* t)
+void Company::AddWaitingCargo(Cargo* temp)
 {
-	if (t->getFailure())
+	if (temp->getType() == VIP)
 	{
-		t->Failuer(&currentTime);
-		while (!(t->getCargoList()->isEmpty()))
-		{
-			Cargo* temp = t->getCargoList()->peekFront();
-			t->getCargoList()->dequeue();
-			if (temp->getType() == VIP)
-			{
-				waitingVIPCargo.enqueue(temp, temp->getPriority() );
-			}
-			if (temp->getType() == Normal)
-			{
-				waitingNormalCargo.addBack(temp);
-			}
-			if (temp->getType() == Special)
-			{
-				waitingSpecialCargo.enqueue(temp);
-			}
-		}
-		Types x = t->getTruckType();
-		// t->EndJourney(); check 
-		maintainingTrucks[x].enqueue(t);
-		uiPtr->Print(191);
-		return true;
+		waitingVIPCargo.enqueue(temp, temp->getPriority() );
 	}
-	return false;
+	if (temp->getType() == Normal)
+	{
+		waitingNormalCargo.addBack(temp);
+	}
+	if (temp->getType() == Special)
+	{
+		waitingSpecialCargo.enqueue(temp);
+	}
 }
 
 ///////////////////////////////////////////////////MaxW
@@ -465,16 +437,19 @@ void Company::DeliverCargos()
 		//Handeling Loop
 		Truck* t = movingTrucks->peekFront();
 		movingTrucks->dequeue();
-		if (CheckFailure(t))
-		{
-			continue;
-		}
+		
+		t->Failuer(&currentTime, uiPtr);
+		
 		aux->enqueue(t, (t->GetDi() + t->GetMt()).ConvertToInt());
 
 		///Handeling DeliverCargo One By One
 		Cargo* c = t->DeliverCargos(currentTime);
 		while (c) {
-			DeliveredCargos_temp.enqueue(c);
+			if (t->getIsFailed())
+				AddWaitingCargo(c);
+			else
+				DeliveredCargos_temp.enqueue(c);
+			
 			MovingCargoCount--;
 			c = t->DeliverCargos(currentTime);
 		}
@@ -484,7 +459,6 @@ void Company::DeliverCargos()
 	delete movingTrucks;
 	movingTrucks = aux;
 }
-
 
 
 ///////////////////////////////////////GETTERS

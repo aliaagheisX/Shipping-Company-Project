@@ -8,7 +8,6 @@ class Truck
 protected:
 	static int counter;
 	int ID;
-	
 	Time DI; // delivery interval
 	PriorityQueue<Cargo*>* loadedCargo; //cargos that assigned on truck
 	Time MT; //Moving Time
@@ -24,6 +23,7 @@ protected:
 						//return ZERO when check
 	int totalJouneys;//number of actual journeies Done By Truck
 
+	bool isFailed;
 	bool NowMoving;//for not waiting in MaxWait
 public:
 	// constructor
@@ -33,6 +33,8 @@ public:
 	void SetMt(const Time& t); //company call it and send the time when the truck start moving
 	void SetNumberOfJourney(int x);
 	void setNowMoving(bool);
+	bool CheckUP(const Time& currentTime, int J);
+	bool isFinishedCheckUp(const Time& currentTime) const;
 	void endCheckUp();
 
 	// Getters 
@@ -47,9 +49,9 @@ public:
 	bool getNowMoving() const { return NowMoving; }
 	int getTotalActiveTime() const;
 	double getTruckUtilization(const Time&);
-	void Failuer(const Time* t);
+	void Failuer(const Time* t, UI* uiPtr);
 	Types getTypes() const;
-
+	bool getIsFailed() const { return isFailed; }
 	//assign cargo to the Queue According to Distance
 	bool AssignCargo(Cargo*,const Time &);
 	bool move(const Time* t);
@@ -60,6 +62,5 @@ public:
 
 	virtual Types getTruckType()  const = 0;
 	
-	bool getFailure() const;
 };
 
