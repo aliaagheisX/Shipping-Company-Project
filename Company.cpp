@@ -8,6 +8,7 @@
 using namespace std;
 
 Company::Company() {
+
 	//initalize IO & UI
 	 IN_PATH = "Input_File.txt";
 	 OUT_PATH="Output_File.txt";
@@ -21,7 +22,6 @@ Company::Company() {
 	 loadingTrucks.insert(Normal, NULL);
 	 loadingTrucks.insert(Special, NULL);
 	 loadingTrucks.insert(VIP, NULL);
-	 movingTrucks = new PriorityQueue<Truck *>(getEmptyTrucksCount());
 	 for (int i = 0; i < NormalTruckCount; i++) {
 		 emptyTrucks[Normal].enqueue(new NormalTruck);
 	 }
@@ -32,6 +32,7 @@ Company::Company() {
 		 emptyTrucks[VIP].enqueue(new VIPTruck);
 
 	 }
+	 movingTrucks = new PriorityQueue<Truck *>(getEmptyTrucksCount());
 	 //inialize Trucks
 	 
 	 
@@ -151,15 +152,14 @@ void Company::AutoPromotion() {
 		Promote(temp);
 	}
 }
-bool Company::AutoPCheck(Cargo* c)
+inline bool Company::AutoPCheck(Cargo* c)
 {
 	return (currentTime.getDay() - c->GetPt().getDay() >= AutoP && currentTime.getHour() == c->GetPt().getHour());
-
 }
 void Company::Promote(Cargo* c)
 {
 	c->setTypes('V');
-	getWaitingVIPCargo().enqueue(c, c->getPriority());
+	waitingVIPCargo.enqueue(c, c->getPriority());
 	PromotedCargoCount++;
 }
 ///////////////////////////////////////////////////AutoP
@@ -291,7 +291,7 @@ void Company::load()
 }
 ///////////////////////////////////////////////////I/O
 
-bool Company::isSimulationEnd() {
+inline bool Company::isSimulationEnd() {
 	return  (
 		EventList.isEmpty() &&
 		waitingNormalCargo.isEmpty() &&
@@ -368,82 +368,78 @@ bool Company::CheckFailure(Truck* t)
 }
 
 ///////////////////////////////////////////////////MaxW
-bool Company::MaxWCheck(Cargo* c) {return (currentTime - c->GetPt() >= MaxW && !c->getLoadingTruck());}
+inline bool Company::MaxWCheck(Cargo* c) {return (currentTime - c->GetPt() >= MaxW && !c->getLoadingTruck());}
 
 ///////////////////////////////////////////////////MaxW
 void Company::checkLoadingTrucks()
 {
+
 	// vip cargo assignment 
-	// 1st case assign in vip trucks 
+	// 1st assign in vip trucks 
 	if (!loadingTrucks.getEntry(VIP) && !waitingVIPCargo.isEmpty())
 	{
-		if (!emptyTrucks[VIP].isEmpty() && emptyTrucks[VIP].peekFront()->GetCapcity() <= waitingVIPCargo.getSize())
-			addLoadingTruck(VIP, VIP);
-		// 2nd case assign in normal trucks if there is no available vip trucks 
-		else if (emptyTrucks[VIP].isEmpty() && !emptyTrucks[Normal].isEmpty() && emptyTrucks[Normal].peekFront()->GetCapcity() <= waitingVIPCargo.getSize())
-			addLoadingTruck(Normal, VIP);
-		//3rd case assign in special trucks
-		else if (emptyTrucks[VIP].isEmpty() && emptyTrucks[Normal].isEmpty() && !emptyTrucks[Special].isEmpty() && emptyTrucks[Special].peekFront()->GetCapcity() <= waitingVIPCargo.getSize())
-			addLoadingTruck(Special, VIP);
-			//waitingVIPCargo.dequeue();
-			//t->AssignCargo(v);
+		////1st case assign in VIP Trucks
+		//if (!emptyTrucks[VIP].isEmpty())
+		//	truck_temp = emptyTrucks[VIP].peekFront();
+		//
+		//// 2nd case assign in normal trucks if there is no available vip trucks 
+		//else if (emptyTrucks[VIP].isEmpty() && !emptyTrucks[Normal].isEmpty())
+		//	truck_temp = emptyTrucks[Normal].peekFront();
+		//
+		////3rd case assign in special trucks
+		//else if (emptyTrucks[VIP].isEmpty() && emptyTrucks[Normal].isEmpty() && !emptyTrucks[Special].isEmpty())
+		//	truck_temp = emptyTrucks[Special].peekFront();
+		//
+		//addLoadingTruck(truck_temp, VIP, waitingVIPCargo.getSize());
+		int c = waitingVIPCargo.getSize();
+		if (!emptyTrucks[VIP].isEmpty() && !addLoadingTruck(emptyTrucks[VIP].peekFront(), VIP, c));
+		else if(!emptyTrucks[Normal].isEmpty() && !addLoadingTruck(emptyTrucks[Normal].peekFront(), VIP, c));
+		else if(!emptyTrucks[Special].isEmpty())
+			addLoadingTruck(emptyTrucks[Special].peekFront(), VIP, c);
 	}
+
 
 	//! Asignment of special cargos
 	if (!loadingTrucks.getEntry(Special) && !emptyTrucks[Special].isEmpty() && !waitingSpecialCargo.isEmpty()){
-		if (MaxWCheck(waitingSpecialCargo.peekFront())) {
-			emptyTrucks[Special].peekFront()->setNowMoving(true);
-			addLoadingTruck(Special, Special);
-/*			
-
-			emptyTrucks[Special].peekFront()->AssignCargo(waitingSpecialCargo.peekFront(), currentTime);
-
-			loadingTrucks.insert(loadingTrucks.getSize(), emptyTrucks[Special].peekFront());
-
-			waitingSpecialCargo.dequeue();
-			emptyTrucks[Special].dequeue()*/;
-		}
-
-		// 
-		else if(emptyTrucks[Special].peekFront()->GetCapcity() <= waitingSpecialCargo.getSize())
-			addLoadingTruck(Special, Special);
+		addLoadingTruck(emptyTrucks[Special].peekFront(), Special, waitingSpecialCargo.getSize(), MaxWCheck(waitingSpecialCargo.peekFront()));
 	}
 
 
 	if(!loadingTrucks.getEntry(Normal) && !waitingNormalCargo.isEmpty()){
-		if (MaxWCheck(waitingNormalCargo.getFront()) && !(emptyTrucks[Normal].isEmpty() && emptyTrucks[VIP].isEmpty())) {
+		//if (MaxWCheck(waitingNormalCargo.getFront()) && !(emptyTrucks[Normal].isEmpty() && emptyTrucks[VIP].isEmpty())) {
 
-			Types t = Normal;
-			if (emptyTrucks[Normal].isEmpty())
-				t = VIP;
-			
-			emptyTrucks[t].peekFront()->setNowMoving(true);
-			addLoadingTruck(t, Normal);
-			/*emptyTrucks[t].peekFront()->move(&currentTime);
-			emptyTrucks[t].peekFront()->setNowMoving(true);
+		//	Types t = Normal;
+		//	if (emptyTrucks[Normal].isEmpty())
+		//		t = VIP;
+		//	
+		//	emptyTrucks[t].peekFront()->setNowMoving(true);
+		//	truck_temp = emptyTrucks[t].peekFront();
+		//}
+		//else {
+		//	if (!emptyTrucks[Normal].isEmpty() && emptyTrucks[Normal].peekFront()->GetCapcity() <= waitingNormalCargo.getSize())
+		//		truck_temp = emptyTrucks[Normal].peekFront();
 
-			emptyTrucks[t].peekFront()->AssignCargo(waitingNormalCargo.getFront(), currentTime);
-
-			loadingTrucks.insert(loadingTrucks.getSize(), emptyTrucks[t].peekFront());
-
-			waitingNormalCargo.removeFront();
-			emptyTrucks[t].dequeue();*/
-		}
-		else {
-			if (!emptyTrucks[Normal].isEmpty() && emptyTrucks[Normal].peekFront()->GetCapcity() <= waitingNormalCargo.getSize())
-				addLoadingTruck(Normal, Normal);
-
-			else if (emptyTrucks[Normal].isEmpty() && !emptyTrucks[VIP].isEmpty() && emptyTrucks[VIP].peekFront()->GetCapcity() <= waitingNormalCargo.getSize())
-				addLoadingTruck(VIP, Normal);
-		}
+		//	else if (emptyTrucks[Normal].isEmpty() && !emptyTrucks[VIP].isEmpty() && emptyTrucks[VIP].peekFront()->GetCapcity() <= waitingNormalCargo.getSize())
+		//		truck_temp = emptyTrucks[VIP].peekFront();
+		//}
+		//addLoadingTruck(truck_temp, Normal);
+		bool Now = MaxWCheck(waitingNormalCargo.getFront());
+		int c = waitingNormalCargo.getSize();
+		if (!emptyTrucks[Normal].isEmpty() && !addLoadingTruck(emptyTrucks[Normal].peekFront(), Normal , c, Now));
+		else if (!emptyTrucks[VIP].isEmpty() && !addLoadingTruck(emptyTrucks[VIP].peekFront(), Normal, c, Now));
 	}
 
 }
-void Company::addLoadingTruck(Types truckType, Types CargoType)
+bool Company::addLoadingTruck(Truck * t, Types CargoType, int MinCapacity, bool Now)
 {
-	Truck *t = emptyTrucks[truckType].peekFront();
-	emptyTrucks[truckType].dequeue();
-	loadingTrucks.setEntry(CargoType, t);
+	if (!t) return false;
+	if (Now || t->GetCapcity() <= MinCapacity) {
+		emptyTrucks[t->getTruckType()].dequeue();
+		loadingTrucks.setEntry(CargoType, t);
+		t->setNowMoving(Now);
+		return true;
+	}
+	return false;
 }
 
 
@@ -519,9 +515,10 @@ const Time & Company::getCurrentTime() const {
 }
 
 ////////////////////////Cargos
-LinkedList<Cargo*>& Company::getWaitingNormalCargo() {return waitingNormalCargo;}
-Queue<Cargo*>& Company::getWaitingSpecialCargo() {return waitingSpecialCargo;}
-PriorityQueue<Cargo*>& Company::getWaitingVIPCargo(){return waitingVIPCargo;}
+ LinkedList<Cargo*>& Company::getWaitingNormalCargo() {return waitingNormalCargo;}
+ Queue<Cargo*>& Company::getWaitingSpecialCargo() {return waitingSpecialCargo;}
+ PriorityQueue<Cargo*>& Company::getWaitingVIPCargo()
+ {return waitingVIPCargo;}
 const Queue<int>* Company::getDeliveredCargo()const { return DeliveredCargos; }
 ////////////////////////Cargos
 
