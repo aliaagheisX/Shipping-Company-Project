@@ -102,9 +102,9 @@ public:
 
 
 	//Getters Of Cargos
-	const LinkedList<Cargo*>& getWaitingNormalCargo()const;
-	const Queue<Cargo*>& getWaitingSpecialCargo()const;
-	const PriorityQueue<Cargo*>& getWaitingVIPCargo()const;
+	 LinkedList<Cargo*>& getWaitingNormalCargo();
+	 Queue<Cargo*>& getWaitingSpecialCargo();
+	 PriorityQueue<Cargo*>& getWaitingVIPCargo();
 	const Queue<int>* getDeliveredCargo() const;
 
 

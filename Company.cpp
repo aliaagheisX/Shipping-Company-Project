@@ -514,9 +514,10 @@ const Time & Company::getCurrentTime() const {
 }
 
 ////////////////////////Cargos
-const LinkedList<Cargo*>& Company::getWaitingNormalCargo()const {return waitingNormalCargo;}
-const Queue<Cargo*>& Company::getWaitingSpecialCargo()const {return waitingSpecialCargo;}
-const PriorityQueue<Cargo*>& Company::getWaitingVIPCargo()const {return waitingVIPCargo;}
+ LinkedList<Cargo*>& Company::getWaitingNormalCargo() {return waitingNormalCargo;}
+ Queue<Cargo*>& Company::getWaitingSpecialCargo() {return waitingSpecialCargo;}
+ PriorityQueue<Cargo*>& Company::getWaitingVIPCargo()
+ {return waitingVIPCargo;}
 const Queue<int>* Company::getDeliveredCargo()const { return DeliveredCargos; }
 ////////////////////////Cargos
 
