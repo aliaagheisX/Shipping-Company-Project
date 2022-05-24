@@ -42,7 +42,8 @@ void Cargo:: SetCost(const int& ct)
 	Cost = ct;
 }
 
-void Cargo::setCDT(const Time& c) { CDT = c; }
+void Cargo::setCDT(const Time& c) { 
+	CDT = c; }
 
 void Cargo::setLoadingTruck(const Truck* t)
 {

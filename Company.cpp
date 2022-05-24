@@ -22,7 +22,7 @@ Company::Company() {
 	 loadingTrucks.insert(Normal, NULL);
 	 loadingTrucks.insert(Special, NULL);
 	 loadingTrucks.insert(VIP, NULL);
-	 for (int i = 0; i < NormalTruckCount; i++) {
+	 /*for (int i = 0; i < NormalTruckCount; i++) {
 		 emptyTrucks[Normal].enqueue(new NormalTruck);
 	 }
 	 for (int i = 0; i < SpecialTruckCount; i++) {
@@ -31,9 +31,8 @@ Company::Company() {
 	 for (int i = 0; i < VIPTruckCount; i++) {
 		 emptyTrucks[VIP].enqueue(new VIPTruck);
 
-	 }
+	 }*/
 	 movingTrucks = new PriorityQueue<Truck*>(getEmptyTrucksCount());
-	 returnHomeTrucks = new PriorityQueue<Truck *>(getEmptyTrucksCount());
 	 //inialize Trucks
 	 
 	 
@@ -105,7 +104,7 @@ void Company::Movingcheck()
 		if (temp->CheckUP(currentTime, J))
 			maintainingTrucks[t].enqueue(temp);
 		else
-			emptyTrucks[t].enqueue(temp);
+			emptyTrucks[t].enqueue(temp, temp->getPriority());
 	}
 	/// 
 }
@@ -114,8 +113,9 @@ void Company::EndCheckUP() {
 
 		while (!maintainingTrucks[trucktype].isEmpty() && maintainingTrucks[trucktype].peekFront()->isFinishedCheckUp(currentTime))
 		{
-			emptyTrucks[trucktype].enqueue(maintainingTrucks[trucktype].peekFront());
-			maintainingTrucks[trucktype].peekFront()->endCheckUp();
+			Truck* t = maintainingTrucks[trucktype].peekFront();
+			emptyTrucks[trucktype].enqueue(t, t->getPriority());
+			t->endCheckUp();
 			maintainingTrucks[trucktype].dequeue();
 		}
 	}
@@ -212,28 +212,22 @@ void Company::load()
 	file.open(IN_PATH);
 
 	file >> NormalTruckCount; 
+	for (int i = 0; i < NormalTruckCount; i++) {
+		Truck* t = new NormalTruck(file);
+		emptyTrucks[Normal].enqueue(t, t->getPriority());
+	}
 	file >> SpecialTruckCount;
-	file >> VIPTruckCount;
+	for (int i = 0; i < SpecialTruckCount; i++) {
+		Truck* t = new SpecialTruck(file);
+		emptyTrucks[Special].enqueue(t, t->getPriority());
+	}
+	file >> VIPTruckCount;	
+	for (int i = 0; i < VIPTruckCount; i++) {
+		Truck* t = new VIPTruck(file);
+		emptyTrucks[VIP].enqueue(t, t->getPriority());
+	}
 
-	float speed;
-	file>> speed;
-	NormalTruck::SetSpeed(speed);
-
-	file>> speed;
-	SpecialTruck::SetSpeed(speed);
-
-	file>> speed;
-	VIPTruck::SetSpeed(speed);
-
-	int capacity;
-	file >> capacity;
-	NormalTruck::SetCapcity(capacity);
-
-	file >> capacity;
-	SpecialTruck::SetCapcity(capacity);
-
-	file >> capacity;
-	VIPTruck::SetCapcity(capacity);
+	
 
 	int CheckUPTime;
 	file >> CheckUPTime;
@@ -498,7 +492,7 @@ const Queue<int>* Company::getDeliveredCargo()const { return DeliveredCargos; }
 
 
 ////////////////////////Trucks
-const Queue<Truck*>* Company::getEmptyTrucks() const { return emptyTrucks; }
+const PriorityQueue<Truck*>* Company::getEmptyTrucks() const { return emptyTrucks; }
 const List<Truck*>& Company::getLoadingTrucks() const { return loadingTrucks; }
 const PriorityQueue< Truck*>* Company::getMovingTrucks() const { return movingTrucks; }
 const Queue< Truck*>* Company::getMaintainingTrucks() const { return maintainingTrucks; }

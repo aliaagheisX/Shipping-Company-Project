@@ -2,41 +2,12 @@
 int Truck::counter = 0;
 
 
-void Truck::Failuer(const Time* t, UI * uiPtr)
-{
-	srand(time(0));
-	if (rand() % 100 >90 || isFailed) return;
 
-	uiPtr->Output("Failure Happen : " + to_string(ID) + " is Failed and need maintaince.\n");
-	isFailed = true;
 
-	PriorityQueue<Cargo*>* aux = new PriorityQueue<Cargo*>(Capcity);
-	int distance = getCargoList()->peekFront()->GetDist();
-	int prev = 0;
-	while (!getCargoList()->isEmpty())
-	{
-		Cargo* c = getCargoList()->peekFront();
-		prev += c->GetLt();
-		getCargoList()->dequeue();
-		c->setCDT(*t + ceil(distance / Speed) + prev);
-
-		aux->enqueue(c,c->getCDT().ConvertToInt());
-	}
-	delete loadedCargo;
-	loadedCargo = aux;
-	MT = *t;
-	DI.setHour(ceil(distance / Speed) + prev);
-}
-
-Types Truck::getTypes() const
-{
-		if (loadedCargo->isEmpty()) return getTruckType();
-		return (Types)loadedCargo->peekFront()->getType();
-}
-
-Truck::Truck(float& s, int& c): ID(counter + 1), Speed(s),Capcity(c)
+Truck::Truck(ifstream & InFile): ID(counter + 1)
 {
 	counter++;
+	Read(InFile);
 	numberOfJourney = 0;
 	tAT = 0;
 	tDC = 0;
@@ -47,6 +18,11 @@ Truck::Truck(float& s, int& c): ID(counter + 1), Speed(s),Capcity(c)
 	loadedCargo = new PriorityQueue<Cargo*>(Capcity);
 }
 
+Types Truck::getTypes() const
+{
+		if (loadedCargo->isEmpty()) return getTruckType();
+		return (Types)loadedCargo->peekFront()->getType();
+}
 //////////////////////////////////////////////Getters
 PriorityQueue<Cargo*> *  Truck::getCargoList()  {
 	return loadedCargo;
@@ -95,6 +71,32 @@ bool Truck::AssignCargo(Cargo* c, const Time& currentTime)
 	MaxCargoDist = MaxCargoDist > c->GetDist() ? MaxCargoDist : c->GetDist();
 	return true;
 }
+void Truck::Failuer(const Time* t, UI * uiPtr)
+{
+	srand(time(0));
+	int r = rand() % 100;
+	if (r > 0 || isFailed) return;
+	cout << r;
+	uiPtr->Output("Failure Happen : " + to_string(ID) + " is Failed and need maintaince.\n");
+	isFailed = true;
+
+	PriorityQueue<Cargo*>* aux = new PriorityQueue<Cargo*>(Capcity);
+	int distance = getCargoList()->peekFront()->GetDist();
+	int prev = 0;
+	while (!getCargoList()->isEmpty())
+	{
+		Cargo* c = getCargoList()->peekFront();
+		prev += c->GetLt();
+		getCargoList()->dequeue();
+		c->setCDT(*t + ceil(distance / Speed) + prev);
+
+		aux->enqueue(c,c->getCDT().ConvertToInt());
+	}
+	delete loadedCargo;
+	loadedCargo = aux;
+	MT = *t;
+	DI.setHour(ceil(distance / Speed) + prev);
+}
 bool Truck::move(const Time* t)
 {
 
@@ -109,13 +111,14 @@ bool Truck::move(const Time* t)
 		//handeling
 		Cargo* c = loadedCargo->peekFront();
 		loadedCargo->dequeue();
-		aux->enqueue(c, c->GetDist());
 		//handeling
 		c->SetWt( Time(0, MT.ConvertToInt() - c->GetPt().ConvertToInt()) );
 
 		prevLoadingTime += c->GetLt();
 		
+
 		c->setCDT(MT + ceil(c->GetDist() / Speed) + prevLoadingTime);
+		aux->enqueue(c, c->getCDT().ConvertToInt());
 		
 	}
 	DI.setHour(prevLoadingTime + 2 * (MaxCargoDist / Speed));
@@ -177,6 +180,17 @@ void Truck::endCheckUp()
 	FinishingCheckUPTime.setHour(0);
 }
 
+void Truck::SetSpeed(const float s){Speed = s;}
+
+void Truck::SetCapcity(const int c) {
+	Capcity = c;
+}
+
+
+void Truck::Read(ifstream& InFile)
+{
+	InFile >> Speed >> Capcity;
+}
 
 Truck::~Truck() {
 	delete loadedCargo;

@@ -26,7 +26,7 @@ class Company
 
 	Queue<Event *> EventList;
 
-	Queue<Truck *> emptyTrucks [3];
+	PriorityQueue<Truck *> emptyTrucks [3];
 	List<Truck *> loadingTrucks;
 	PriorityQueue< Truck*>* movingTrucks;
 	PriorityQueue< Truck*>* returnHomeTrucks;
@@ -108,7 +108,7 @@ public:
 	const Queue<int>* getDeliveredCargo() const;
 
 
-	const Queue<Truck*>* getEmptyTrucks() const;
+	const PriorityQueue<Truck*>* getEmptyTrucks() const;
 	const List<Truck*>& getLoadingTrucks() const;
 	const PriorityQueue< Truck*>* getMovingTrucks() const;
 	const Queue< Truck*>* getMaintainingTrucks() const;
