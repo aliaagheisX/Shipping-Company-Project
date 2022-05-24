@@ -2,6 +2,31 @@
 int Truck::counter = 0;
 
 
+void Truck::Failuer(const Time* t)
+{
+	PriorityQueue<Cargo*>* aux = new PriorityQueue<Cargo*>(Capcity);
+	int distance = getCargoList()->peekFront()->GetDist();
+	int prev = 0;
+	while (!getCargoList()->isEmpty())
+	{
+		Cargo* c = getCargoList()->peekFront();
+		prev += c->GetLt();
+		getCargoList()->dequeue();
+		c->setCDT(ceil(c->GetDist() / Speed) + prev);
+		aux->enqueue(c,c->getCDT().ConvertToInt());
+	}
+	delete loadedCargo;
+	loadedCargo = aux;
+	MT = *t;
+	DI = distance / Speed + prev;
+}
+
+Types Truck::getTypes() const
+{
+		if (loadedCargo->isEmpty()) return getTruckType();
+		return (Types)loadedCargo->peekFront()->getType();
+}
+
 Truck::Truck(float& s, int& c): ID(counter + 1), Speed(s),Capcity(c)
 {
 	counter++;
@@ -24,9 +49,9 @@ int Truck::getTotalActiveTime() const{return tAT;}
 double Truck::getTruckUtilization(const Time& Tsim)
 {
 	if (!totalJouneys) return 0;
-	return ((double)tDC / Capcity * totalJouneys) * ((double)tAT / Tsim.ConvertToInt());
+	return (double)tDC / (Capcity * totalJouneys) * ((double)tAT / Tsim.ConvertToInt());
 }
-
+ 
 int Truck::getNumberOfJourney() const {return numberOfJourney;}
 
 
@@ -45,6 +70,8 @@ void Truck::SetMt(const Time& t){MT = t;}
 void Truck::SetNumberOfJourney(int x){numberOfJourney = x;}
 
 void Truck::setNowMoving(bool n) { NowMoving = n; }
+
+
 
 
 //////////////////////////////////////////////DOs
@@ -81,7 +108,6 @@ bool Truck::move(const Time* t)
 		prevLoadingTime += c->GetLt();
 		
 		c->setCDT(MT + ceil(c->GetDist() / Speed) + prevLoadingTime);
-
 		
 	}
 	DI.setHour(prevLoadingTime + 2 * (MaxCargoDist / Speed));

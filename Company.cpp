@@ -340,6 +340,7 @@ bool Company::CheckFailure(Truck* t)
 {
 	if (t->getFailure())
 	{
+		t->Failuer(&currentTime);
 		while (!(t->getCargoList()->isEmpty()))
 		{
 			Cargo* temp = t->getCargoList()->peekFront();
@@ -468,10 +469,10 @@ void Company::DeliverCargos()
 		//Handeling Loop
 		Truck* t = movingTrucks->peekFront();
 		movingTrucks->dequeue();
-		//if (CheckFailure(t))
-		//{
-		//	return;
-		//}
+		if (CheckFailure(t))
+		{
+			continue;
+		}
 		aux->enqueue(t, (t->GetDi() + t->GetMt()).ConvertToInt());
 
 		///Handeling DeliverCargo One By One
@@ -498,7 +499,7 @@ int Company::getWaitingCargosCount() const {
 	return waitingNormalCargo.getSize() + waitingSpecialCargo.getSize() + waitingVIPCargo.getSize();
 }
 int Company::getEmptyTrucksCount() const {
-	return emptyTrucks[Normal].getSize() + emptyTrucks[Special].getSize() + emptyTrucks[VIP].getSize();
+	return NormalTruckCount+ SpecialTruckCount + VIPTruckCount;
 }
 int Company::getMovingCargosCount() const { return MovingCargoCount;}
 int Company::getLoadingTrucksCount() const { 
