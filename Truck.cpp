@@ -5,7 +5,7 @@ int Truck::counter = 0;
 void Truck::Failuer(const Time* t, UI * uiPtr)
 {
 	srand(time(0));
-	if (rand() % 100 >90 || isFailed) return;
+	if (rand() % 100 >0 || isFailed) return;
 
 	uiPtr->Output("Failure Happen : " + to_string(ID) + " is Failed and need maintaince.\n");
 	isFailed = true;
@@ -109,13 +109,13 @@ bool Truck::move(const Time* t)
 		//handeling
 		Cargo* c = loadedCargo->peekFront();
 		loadedCargo->dequeue();
-		aux->enqueue(c, c->GetDist());
 		//handeling
 		c->SetWt( Time(0, MT.ConvertToInt() - c->GetPt().ConvertToInt()) );
 
 		prevLoadingTime += c->GetLt();
 		
 		c->setCDT(MT + ceil(c->GetDist() / Speed) + prevLoadingTime);
+		aux->enqueue(c, c->getCDT().ConvertToInt());
 		
 	}
 	DI.setHour(prevLoadingTime + 2 * (MaxCargoDist / Speed));

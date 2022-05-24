@@ -10,7 +10,7 @@ using namespace std;
 Company::Company() {
 
 	//initalize IO & UI
-	 IN_PATH = "Input_File.txt";
+	 IN_PATH = "InputFile_1.txt";
 	 OUT_PATH="Output_File.txt";
 	 uiPtr = new UI;
 	 load();
