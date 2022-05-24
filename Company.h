@@ -73,10 +73,7 @@ class Company
 
 	//Trucks from move to checkUP || Empty
 	void checkLoadingTrucks();
-	void Movingcheck();
-	bool isFinishedDelivery(Truck* t);
-	inline bool NeedCheck(Truck* t);
-
+	void TrucksReturnBack();
 
 	void Out_Mid();
 

@@ -74,7 +74,7 @@ public:
 	void Read(ifstream& InFile);
 	////
 	int getPriority() const { return -1 * (0.5*Speed + 8*Capcity); }
-
+	bool isFinishedDelivery(const Time& currentTime) const;
 	~Truck();
 	//check if there's cargo deleverid
 

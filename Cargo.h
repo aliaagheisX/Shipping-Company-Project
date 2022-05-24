@@ -42,8 +42,10 @@ public:
 	const Truck* getLoadingTruck() const;
 
 	const int getID() const;
-
+	inline bool AutoPCheck(const Time & currentTime, int  AutoP);
 	int getPriority() const;
+	inline bool MaxWCheck(const Time & currentTime, int MaxW);
+
 	//virtual bool operator<(const Cargo& r);
 		// Waiting for the Priority Equation
 	

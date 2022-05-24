@@ -90,9 +90,18 @@ const int Cargo::getID() const
 {
 	return ID;
 }
+inline bool Cargo::AutoPCheck(const Time& currentTime, int  AutoP)
+{
+	return (currentTime.getDay() - GetPt().getDay() >= AutoP && currentTime.getHour() == c->GetPt().getHour());
+}
 const Time& Cargo::getCDT() const { return CDT; }
 
 
 int Cargo::getPriority() const{ return -1*(0.5 * DeliveryDist + 0.3 * Cost + 2 * LT); }
+
+inline bool Cargo::MaxWCheck(const Time& currentTime, int MaxW)
+{
+	 return (currentTime - PT >= MaxW && !Loadingtrcuk); 
+}
 
 

@@ -192,6 +192,11 @@ void Truck::Read(ifstream& InFile)
 	InFile >> Speed >> Capcity;
 }
 
+bool Truck::isFinishedDelivery(const Time& currentTime ) const
+{
+	return DI + MT <= currentTime;
+}
+
 Truck::~Truck() {
 	delete loadedCargo;
 }
