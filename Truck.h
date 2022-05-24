@@ -14,7 +14,6 @@ protected:
 	Time MT; //Moving Time
 	Time FinishingLoadingTime;//For Not Overloading loading of Cargos on Truck
 	Time FinishingCheckUPTime;//To End CheckUP
-
 	float& Speed;
 	int& Capcity;
 	int tDC; //total deliverid Cargos
@@ -48,8 +47,8 @@ public:
 	bool getNowMoving() const { return NowMoving; }
 	int getTotalActiveTime() const;
 	double getTruckUtilization(const Time&);
-  
-	Types getTypes() const { return VIP; } // return NULL if empty
+	void Failuer(const Time* t);
+	Types getTypes() const;
 
 	//assign cargo to the Queue According to Distance
 	bool AssignCargo(Cargo*,const Time &);
