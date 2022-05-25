@@ -169,9 +169,9 @@ void UI::Print(Truck* t, char seprator) {
 		char open[3] = { '[', '(', '{' };
 		char close[3] = { ']', ')', '}' };
 
-		cout << open[t->getTypes()];
+		cout << open[t->getCargoType()];
 		t->getCargoList()->Print(this, ',');
-		cout  << close[t->getTypes()] ;
+		cout  << close[t->getCargoType()] ;
 	}
 	cout << seprator;
 }

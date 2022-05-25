@@ -16,7 +16,6 @@ Company::Company() {
 	 OUT_PATH="Output_File.txt";
 	 uiPtr = new UI;
 	 load();
-	 Out_Start();
 	//initalize IO & UI
 
 
@@ -30,9 +29,11 @@ Company::Company() {
 	 
 	 
 	 //inialize Counters
-	 NormalCargoCount = SpecialCargoCount = VIPCargoCount = 0;
 	 TotalTruckActiveTime = TotalTruckUtilization = PromotedCargoCount = 0;
 
+	 //inialize output file
+	 out_file.open(OUT_PATH);
+	 out_file << "CDT\tID\tPT\tWT\tTID\n";
 
 }
 
@@ -47,23 +48,13 @@ void Company::Simulate() {
 			DeliverCargos();
 			TrucksReturnBack();
 			EndCheckUP();
-			Out_Mid();
 			checkLoadingTrucks();
 			assign(NightMode());
 			uiPtr->Print(this);
-			
-
 		currentTime.Update();
 	}
 	EndSimulation();
-		//TODO: [statics]
 }
-
-
-///////////////////////////////////////////////////Change states of Trucks
-//////////////booleans for states
-
-//////////////booleans for states
 
 
 ///////////////////////////////////////////////////Change states of Trucks
@@ -134,67 +125,8 @@ void Company::Promote(Cargo* c)
 ///////////////////////////////////////////////////AutoP
 
 
-///////////////////////////////////////////////////I/O
-void Company::Out_Start() {
-	ofstream file;
-	file.open(OUT_PATH);
-	file << "CDT\tID\tPT\tWT\tTID\n";
-	file.close();
-}
-void Company::Out_Mid() {
-	ofstream file;
-	file.open(OUT_PATH, std::ios_base::app);
-	while (!DeliveredCargos_temp.isEmpty()) {
+/////////////////////////////////////////////////// I|O
 
-		Cargo* temp = DeliveredCargos_temp.peekFront();
-
-		DeliveredCargos[temp->getType()].enqueue(temp->getID());
-
-		DeliveredCargos_temp.dequeue();
-
-		file << temp->getCDT().TimePrint();
-		TotalCargoWait = TotalCargoWait + temp->GetWt();
-		file << '\t' << temp->getID() << '\t' << temp->GetPt().TimePrint() << '\t' << temp->GetWt().TimePrint() << '\t' << temp->getLoadingTruck()->getID() << '\n';
-	}
-	file.close();
-}
-
-void Company::EndSimulation(){
-	for(int i = 0;i < 3;i++){
-		while (!emptyTrucks[i].isEmpty()) {
-			Truck* t = emptyTrucks[i].peekFront();
-			TotalTruckActiveTime += t->getTotalActiveTime();
-			TotalTruckUtilization += t->getTruckUtilization(currentTime);
-			emptyTrucks[i].dequeue();
-		}
-	}
-
-	for (int i = 0; i < 3; i++) {
-		while (!NightTrucks[i].isEmpty()) {
-			Truck* t = NightTrucks[i].peekFront();
-			TotalTruckActiveTime += t->getTotalActiveTime();
-			TotalTruckUtilization += t->getTruckUtilization(currentTime);
-			NightTrucks[i].dequeue();
-		}
-	}
-
-	Out_End();
-	
-}
-
-void Company::Out_End() {
-	ofstream file;
-	file.open(OUT_PATH, std::ios_base::app);
-	file << ".........................................\n";
-	file << ".........................................\n";
-	file << "Cargos: " << getDeliveredCargosCount() << "[N: " << DeliveredCargos[0].getSize() << ", S: " << DeliveredCargos[1].getSize() << ", V: " << DeliveredCargos[2].getSize() << "]";
-	file << "\nCargo Avg Wait = " << Time(0,TotalCargoWait.ConvertToInt() / getDeliveredCargosCount()).TimePrint();
-	file << "\nAuto-Promoted Cargos : " << PromotedCargoCount/ getDeliveredCargosCount()*100 << "%\n";
-	file << "Trucks: " << getTotalTruckCount() << "[N: " << NormalTruckCount << ", S: " << SpecialTruckCount << ", V: " << VIPTruckCount << "]";
-	file << "\nAvg Active Time = " << TotalTruckActiveTime  / ((double)currentTime.ConvertToInt() * getTotalTruckCount()) * 100 << '%';
-	file << "\nAvg utilization = " << TotalTruckUtilization / getTotalTruckCount() * 100 << "%\n";
-	file.close();
-}
 void Company::load()
 {
 	ifstream file;
@@ -269,6 +201,43 @@ void Company::load()
 	}
 	file.close();
 }
+
+
+void Company::EndSimulation(){
+	for(int i = 0;i < 3;i++){
+		while (!emptyTrucks[i].isEmpty()) {
+			Truck* t = emptyTrucks[i].peekFront();
+			TotalTruckActiveTime += t->getTotalActiveTime();
+			TotalTruckUtilization += t->getTruckUtilization(currentTime);
+			emptyTrucks[i].dequeue();
+		}
+	}
+
+	for (int i = 0; i < 3; i++) {
+		while (!NightTrucks[i].isEmpty()) {
+			Truck* t = NightTrucks[i].peekFront();
+			TotalTruckActiveTime += t->getTotalActiveTime();
+			TotalTruckUtilization += t->getTruckUtilization(currentTime);
+			NightTrucks[i].dequeue();
+		}
+	}
+
+	Out_End();
+	
+}
+
+void Company::Out_End() {
+	out_file << ".........................................\n";
+	out_file << ".........................................\n";
+	out_file << "Cargos: " << getDeliveredCargosCount() << "[N: " << DeliveredCargos[0].getSize() << ", S: " << DeliveredCargos[1].getSize() << ", V: " << DeliveredCargos[2].getSize() << "]";
+	out_file << "\nCargo Avg Wait = " << Time(0,TotalCargoWait.ConvertToInt() / getDeliveredCargosCount()).TimePrint();
+	out_file << "\nAuto-Promoted Cargos : " << PromotedCargoCount/ getDeliveredCargosCount()*100 << "%\n";
+	out_file << "Trucks: " << getTotalTruckCount() << "[N: " << NormalTruckCount << ", S: " << SpecialTruckCount << ", V: " << VIPTruckCount << "]";
+	out_file << "\nAvg Active Time = " << TotalTruckActiveTime  / ((double)currentTime.ConvertToInt() * getTotalTruckCount()) * 100 << '%';
+	out_file << "\nAvg utilization = " << TotalTruckUtilization / getTotalTruckCount() * 100 << "%\n";
+
+}
+
 ///////////////////////////////////////////////////I/O
 
 inline bool Company::isSimulationEnd() {
@@ -441,8 +410,12 @@ void Company::DeliverCargos()
 		while (c) {
 			if (t->getIsFailed())
 				AddWaitingCargo(c);
-			else
-				DeliveredCargos_temp.enqueue(c);
+			else {
+				DeliveredCargos[c->getType()].enqueue(c->getID());
+				c->output(out_file);
+				TotalCargoWait = TotalCargoWait + c->GetWt();
+				delete c;
+			}
 			
 			MovingCargoCount--;
 			c = t->DeliverCargos(currentTime);
@@ -511,6 +484,7 @@ bool Company::NightMode() const
 	return currentTime.getHour() < 5 || currentTime.getHour() > 23;
 }
 Company::~Company() {
+	out_file.close();
 	delete movingTrucks;
 	delete uiPtr;
 }

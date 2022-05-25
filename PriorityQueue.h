@@ -55,8 +55,8 @@ void PriorityQueue<T>::enqueue(T& val, int key) {
 	if (size == capacity) throw std::exception("Piority Queue is FULL");
 
 	PriorityKey<T>* newHeap = new PriorityKey<T>(val, key);
-	arr[size++] = newHeap;
-	bubbleUP();
+	arr[size++] = newHeap;//add new node in heap at most left leve
+	bubbleUP();//swap up till best position
 
 }
 
@@ -69,7 +69,7 @@ bool PriorityQueue<T>::dequeue() {
 	delete arr[size - 1]; //delete the least node
 
 	size--;
-	bubbleDown(); //return it to binary again
+	bubbleDown();//swap down till best position
 
 	return true;
 }
@@ -105,15 +105,21 @@ PriorityQueue<T>::~PriorityQueue() {
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////
+//...............................Private Functions.................................//
+/////////////////////////////////////////////////////////////////////////////////////
 
 
 template<typename T>
 void PriorityQueue<T>::bubbleUP() {
 	int index = size - 1;
 	int parent = (index - 1) / 2;
-
+	//swap up till 
+		//be parent of all nodes
+		//or it's parent be smaller than it
 	while (index > 0 && arr[index]->getKey() < arr[parent]->getKey()) { ///Change Here if you Want MAX HEAP
 		swap(arr[index], arr[parent]);
+		
 		index = parent;
 		parent = (index - 1) / 2;
 
@@ -123,6 +129,7 @@ void PriorityQueue<T>::bubbleUP() {
 template<typename T>
 void PriorityQueue<T>::bubbleDown() {
 	int index = 0;
+	//get [Right || Left] child of parent Node depend on how is minimum
 	int minchild = minChild(index); // get smaller child of index
 
 	while (arr[minchild]->getKey() < arr[index]->getKey()) { // check if it's valid
@@ -136,10 +143,11 @@ void PriorityQueue<T>::bubbleDown() {
 
 template<typename T>
 int PriorityQueue<T>::minChild(int index) { // return same index if no child
-
+	//2 * index + 1 =  [ left child ]
+	//2 * index + 2 =  [ right child ]
 	if (2 * index + 1 >= size) return index; // no left child => no child
 	///Change Here if you Want MAX HEAP
-	if (2 * index + 2 >= size)  return 2 * index + 1;
+	if (2 * index + 2 >= size)  return 2 * index + 1; // if no right child
 	else  return (arr[2 * index + 2]->getKey() < arr[2 * index + 1]->getKey()) ? 2 * index + 2 : 2 * index + 1;
 };
 

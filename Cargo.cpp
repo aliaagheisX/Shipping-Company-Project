@@ -90,7 +90,7 @@ const int Cargo::getID() const
 {
 	return ID;
 }
- bool Cargo::AutoPCheck(const Time& currentTime, int  AutoP)
+ bool Cargo::AutoPCheck(const Time& currentTime, int  AutoP)const
 {
 	return (currentTime.getDay() -PT.getDay() >= AutoP && currentTime.getHour() == PT.getHour());
 }
@@ -99,9 +99,14 @@ const Time& Cargo::getCDT() const { return CDT; }
 
 int Cargo::getPriority() const{ return -1*(0.5 * DeliveryDist + 0.3 * Cost + 2 * LT); }
 
- bool Cargo::MaxWCheck(const Time& currentTime, int MaxW)
+ bool Cargo::MaxWCheck(const Time& currentTime, int MaxW)const
 {
-	 return (currentTime - PT >= MaxW && !Loadingtrcuk); 
+	 return ((currentTime - PT).ConvertToInt() >= MaxW && !Loadingtrcuk);
 }
+
+ void Cargo::output(ofstream& outfile) const
+ {
+	 outfile << CDT.TimePrint() << '\t' << ID << '\t' << PT.TimePrint() << '\t' << WT.TimePrint() << '\t' << Loadingtrcuk->getID() << '\n';
+ }
 
 

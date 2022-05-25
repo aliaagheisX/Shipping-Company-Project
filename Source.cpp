@@ -8,9 +8,11 @@ int main() {
 	Company c;
 
 
+
 ////* 1- Data members For All Classes
 ////! Company 
-
+	
+	//PlaySound(TEXT("SystemStart"), NULL, SND_ALIAS);
 	c.Simulate();
 	// 
 //* 1- Data members For All Classes

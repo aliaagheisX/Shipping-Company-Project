@@ -30,24 +30,28 @@ public:
 	void setCDT(const Time&);
 	void setTypes(char c);
 	void setLoadingTruck(const Truck *);
-	// Getters 
+	//......... Getters .........//
+	
+	//Get Time
 	const Time& GetPt() const;
 	const int GetLt() const;
 	const Time& GetWt() const;
 	const Time& getCDT() const;
-	int GetDist() const;
 
-	virtual int GetCost() const;
+	//Get Cargo Properties
+	int GetCost() const;
+	int GetDist() const;
 	int getType() const;
+	const int getID() const;
+	int getPriority() const;
 	const Truck* getLoadingTruck() const;
 
-	const int getID() const;
-	bool AutoPCheck(const Time & currentTime, int  AutoP);
-	int getPriority() const;
-	bool MaxWCheck(const Time & currentTime, int MaxW);
+	//Get Checkers
+	bool AutoPCheck(const Time & currentTime, int  AutoP) const;
+	bool MaxWCheck(const Time & currentTime, int MaxW)const;
 
-	//virtual bool operator<(const Cargo& r);
-		// Waiting for the Priority Equation
+	//Output
+	void output(ofstream&) const;
 	
 };
 

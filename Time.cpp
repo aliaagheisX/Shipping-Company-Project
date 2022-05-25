@@ -58,12 +58,14 @@ bool Time::operator<=(const Time& t) const
 	return (*this < t) || (*this == t);
 }
 // return number of hours
-int Time::operator-(const Time& t)const {
+Time Time::operator-(const Time& t)const {
 	if (day > t.day) {
-		return((day - t.day) * 24 + hour - t.hour);
+		return Time(0, (day - t.day) * 24 + hour - t.hour);
 	}
-	return (hour - t.hour);
+	return Time(0, hour - t.hour);
 }
+
+
 
 // increase hour by 1 and 
 //if pass 24 hr increase the day 1
