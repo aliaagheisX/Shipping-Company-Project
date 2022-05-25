@@ -92,7 +92,7 @@ const int Cargo::getID() const
 }
 inline bool Cargo::AutoPCheck(const Time& currentTime, int  AutoP)
 {
-	return (currentTime.getDay() - GetPt().getDay() >= AutoP && currentTime.getHour() == c->GetPt().getHour());
+	return (currentTime.getDay() - GetPt().getDay() >= AutoP && currentTime.getHour() == this->GetPt().getHour());
 }
 const Time& Cargo::getCDT() const { return CDT; }
 

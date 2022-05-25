@@ -97,6 +97,15 @@ void Truck::Failuer(const Time* t, UI * uiPtr)
 	MT = *t;
 	DI.setHour(ceil(distance / Speed) + prev);
 }
+
+bool Truck::isApart()
+{
+	srand(time(0));
+	int r = rand() % 100;
+	if (r > 0) return false;
+	return true;
+}
+
 bool Truck::move(const Time* t)
 {
 

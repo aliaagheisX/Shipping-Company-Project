@@ -25,6 +25,7 @@ protected:
 
 	bool isFailed;
 	bool NowMoving;//for not waiting in MaxWait
+	bool aPartMantainance;
 public:
 	// constructor
 	Truck(ifstream& InFile);
@@ -61,6 +62,8 @@ public:
 	void EndJourney();
 	Cargo* DeliverCargos(const Time &);
 	void Failuer(const Time* t, UI* uiPtr);
+	bool isApart();
+
 
 	bool CheckUP(const Time& currentTime, int J);
 	bool isFinishedCheckUp(const Time& currentTime) const;
