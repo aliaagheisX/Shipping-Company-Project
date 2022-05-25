@@ -25,6 +25,7 @@ protected:
 
 	bool isFailed;
 	bool NowMoving;//for not waiting in MaxWait
+	bool isNightShift;//for Bonus : Night Shift
 public:
 	// constructor
 	Truck(ifstream& InFile);
@@ -56,7 +57,7 @@ public:
 
 
 	//assign cargo to the Queue According to Distance
-	bool AssignCargo(Cargo*,const Time &);
+	bool AssignCargo(Cargo*,const Time &, bool isNightAlready = false);
 	bool move(const Time* t);
 	void EndJourney();
 	Cargo* DeliverCargos(const Time &);
@@ -73,8 +74,11 @@ public:
 	////
 	void Read(ifstream& InFile);
 	////
-	int getPriority() const { return -1 * (0.5*Speed + 8*Capcity); }
 	bool isFinishedDelivery(const Time& currentTime) const;
+	int getPriority() const { return -1 * (0.5*Speed + 8*Capcity); }
+	bool getIsNightShift() const { return isNightShift; }
+	void setIsNightShift(bool n) {  isNightShift = n; }
+
 	~Truck();
 	//check if there's cargo deleverid
 

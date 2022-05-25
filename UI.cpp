@@ -92,6 +92,27 @@ void UI::PrintScreen(Company* Cptr) {
 		cout << "} ";
 	}
 	Line();
+	//							Night Trucks:
+
+	Output(to_string(Cptr->getNightTrucksCount()) + " Night Trucks: ");
+
+	if (Cptr->getNightTrucks()[Normal].getSize() != 0) {
+		cout << '[';
+		Cptr->getNightTrucks()[Normal].Print(this, ',');
+		cout << "] ";
+	}
+	if (Cptr->getNightTrucks()[Special].getSize() != 0) {
+		cout << '(';
+		Cptr->getNightTrucks()[Special].Print(this, ',');
+		cout << ") ";
+	}
+	if (Cptr->getNightTrucks()[VIP].getSize() != 0) {
+		cout << '{';
+		Cptr->getNightTrucks()[VIP].Print(this, ',');
+		cout << "} ";
+	}
+	Line();
+	//
 	//							Moving Cargos:
 	Output(to_string(Cptr->getMovingCargosCount()) + " Moving Cargos: ");
 	

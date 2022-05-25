@@ -27,9 +27,13 @@ class Company
 	Queue<Event *> EventList;
 
 	PriorityQueue<Truck *> emptyTrucks [3];
+	PriorityQueue<Truck*> NightTrucks[3];
+	
+	const Types Cargo_VIP_PRIORITY[3] = { VIP, Normal, Special };
+	const Types Cargo_NORMAL_PRIORITY[2] = { Normal, VIP };
+
 	List<Truck *> loadingTrucks;
 	PriorityQueue< Truck*>* movingTrucks;
-	PriorityQueue< Truck*>* returnHomeTrucks;
 	Queue<Truck *> maintainingTrucks[3];
 
 	LinkedList<Cargo*> waitingNormalCargo;
@@ -42,7 +46,9 @@ class Company
 	string IN_PATH;
 	string OUT_PATH;
 	UI *uiPtr;
+	//
 
+	Types priority_VIP_cargos[3] = {VIP, Normal, Special};
 	//bool isNightShift();
 
 	void load();
@@ -51,7 +57,9 @@ class Company
 
 	//Loading Trucks & assign
 	bool addLoadingTruck(Truck *, Types, int MinCapacity, bool Now = false);
-	void assign();
+	void assign(bool isNight = false);
+
+	//void NightAddLoadTrucks();
 
 
 	//moving
@@ -66,6 +74,9 @@ class Company
 
 	void Promote(Cargo *);
 
+
+	//int getMinCapacity(Types CargoType) const;
+
 	void AddWaitingCargo(Cargo* temp);
 
 	//Max wait
@@ -73,6 +84,7 @@ class Company
 
 	//Trucks from move to checkUP || Empty
 	void checkLoadingTrucks();
+	bool addLoadingTruck(Truck* t, Types CargoType, int MinCapacity, bool Now, PriorityQueue<Truck*>* choosenTruckList);
 	void TrucksReturnBack();
 
 	void Out_Mid();
@@ -81,7 +93,12 @@ class Company
 	void EndSimulation();
 	void Out_End();
 
-	
+
+
+
+	//
+	int getTotalTruckCount() const;
+	bool NightMode() const;
 public:
 	Company();
 	void Simulate();
@@ -92,6 +109,7 @@ public:
 	int getMovingCargosCount() const;
 	int getLoadingTrucksCount() const;
 	int getEmptyTrucksCount() const;
+	int getNightTrucksCount() const;
 	int getMaintainingTrucksCount() const;
 	int getDeliveredCargosCount() const;
 
@@ -106,6 +124,7 @@ public:
 
 
 	const PriorityQueue<Truck*>* getEmptyTrucks() const;
+	const PriorityQueue<Truck*>* getNightTrucks() const;
 	const List<Truck*>& getLoadingTrucks() const;
 	const PriorityQueue< Truck*>* getMovingTrucks() const;
 	const Queue< Truck*>* getMaintainingTrucks() const;

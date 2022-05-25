@@ -59,10 +59,10 @@ void Truck::setNowMoving(bool n) { NowMoving = n; }
 
 
 //////////////////////////////////////////////DOs
-bool Truck::AssignCargo(Cargo* c, const Time& currentTime)
+bool Truck::AssignCargo(Cargo* c, const Time& currentTime, bool isNightAlready)
 {
-	tAT++;
-	if (currentTime < FinishingLoadingTime) return false;
+
+	if ((isNightAlready && !isNightShift) || currentTime < FinishingLoadingTime) return false;
 
 	c->setLoadingTruck(this);
 
@@ -121,7 +121,10 @@ bool Truck::move(const Time* t)
 		aux->enqueue(c, c->getCDT().ConvertToInt());
 		
 	}
-	DI.setHour(prevLoadingTime + 2 * (MaxCargoDist / Speed));
+
+
+	tAT += 2 * prevLoadingTime + ceil(MaxCargoDist / Speed);
+	DI.setHour(prevLoadingTime + 2 * ceil(MaxCargoDist / Speed));
 	//handeling
 	delete loadedCargo;
 	loadedCargo = aux;
@@ -131,7 +134,6 @@ bool Truck::move(const Time* t)
 Cargo* Truck::DeliverCargos(const Time& currentTime)
 {
 	if (loadedCargo->isEmpty()) return NULL;
-	tAT++;
 	if (loadedCargo->peekFront()->getCDT() <= currentTime) {
 		Cargo* c = loadedCargo->peekFront();
 		tDC++;
@@ -189,7 +191,7 @@ void Truck::SetCapcity(const int c) {
 
 void Truck::Read(ifstream& InFile)
 {
-	InFile >> Speed >> Capcity;
+	InFile >> Speed >> Capcity >> isNightShift;
 }
 
 bool Truck::isFinishedDelivery(const Time& currentTime ) const
