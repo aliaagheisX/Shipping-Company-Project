@@ -10,7 +10,7 @@ using namespace std;
 Company::Company() {
 
 	//initalize IO & UI
-	 IN_PATH = "InputFile_1.txt";
+	 IN_PATH = "1.txt";
 	 OUT_PATH="Output_File.txt";
 	 uiPtr = new UI;
 	 load();
@@ -350,24 +350,13 @@ void Company::checkLoadingTrucks()
 	// 1st assign in vip trucks 
 	if (!loadingTrucks.getEntry(VIP) && !waitingVIPCargo.isEmpty())
 	{
-		////1st case assign in VIP Trucks
-		//if (!emptyTrucks[VIP].isEmpty())
-		//	truck_temp = emptyTrucks[VIP].peekFront();
-		//
-		//// 2nd case assign in normal trucks if there is no available vip trucks 
-		//else if (emptyTrucks[VIP].isEmpty() && !emptyTrucks[Normal].isEmpty())
-		//	truck_temp = emptyTrucks[Normal].peekFront();
-		//
-		////3rd case assign in special trucks
-		//else if (emptyTrucks[VIP].isEmpty() && emptyTrucks[Normal].isEmpty() && !emptyTrucks[Special].isEmpty())
-		//	truck_temp = emptyTrucks[Special].peekFront();
-		//
-		//addLoadingTruck(truck_temp, VIP, waitingVIPCargo.getSize());
+		bool Now = MaxWCheck(waitingVIPCargo.peekFront());
+
 		int c = waitingVIPCargo.getSize();
-		if (!emptyTrucks[VIP].isEmpty() && !addLoadingTruck(emptyTrucks[VIP].peekFront(), VIP, c));
-		else if(!emptyTrucks[Normal].isEmpty() && !addLoadingTruck(emptyTrucks[Normal].peekFront(), VIP, c));
+		if (!emptyTrucks[VIP].isEmpty() && addLoadingTruck(emptyTrucks[VIP].peekFront(), VIP, c, Now));
+		else if(!emptyTrucks[Normal].isEmpty() && addLoadingTruck(emptyTrucks[Normal].peekFront(), VIP, c, Now));
 		else if(!emptyTrucks[Special].isEmpty())
-			addLoadingTruck(emptyTrucks[Special].peekFront(), VIP, c);
+			addLoadingTruck(emptyTrucks[Special].peekFront(), VIP, c, Now);
 	}
 
 
@@ -397,8 +386,10 @@ void Company::checkLoadingTrucks()
 		//addLoadingTruck(truck_temp, Normal);
 		bool Now = MaxWCheck(waitingNormalCargo.getFront());
 		int c = waitingNormalCargo.getSize();
-		if (!emptyTrucks[Normal].isEmpty() && !addLoadingTruck(emptyTrucks[Normal].peekFront(), Normal , c, Now));
-		else if (!emptyTrucks[VIP].isEmpty() && !addLoadingTruck(emptyTrucks[VIP].peekFront(), Normal, c, Now));
+		
+		if (!emptyTrucks[Normal].isEmpty() && addLoadingTruck(emptyTrucks[Normal].peekFront(), Normal , c, Now));
+		else if (!emptyTrucks[VIP].isEmpty())
+			addLoadingTruck(emptyTrucks[VIP].peekFront(), Normal, c, Now);
 	}
 
 }
@@ -469,7 +460,7 @@ int Company::getWaitingCargosCount() const {
 	return waitingNormalCargo.getSize() + waitingSpecialCargo.getSize() + waitingVIPCargo.getSize();
 }
 int Company::getEmptyTrucksCount() const {
-	return NormalTruckCount+ SpecialTruckCount + VIPTruckCount;
+	return emptyTrucks[0].getSize() + emptyTrucks[1].getSize() + emptyTrucks[2].getSize();
 }
 int Company::getMovingCargosCount() const { return MovingCargoCount;}
 int Company::getLoadingTrucksCount() const { 
