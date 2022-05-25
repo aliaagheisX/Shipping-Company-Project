@@ -63,7 +63,7 @@ class Company
 
 	//Auto promotion
 	void AutoPromotion();
-	inline bool AutoPCheck(Cargo *);
+
 	void Promote(Cargo *);
 
 	void AddWaitingCargo(Cargo* temp);

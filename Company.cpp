@@ -367,11 +367,13 @@ bool Company::addLoadingTruck(Truck * t, Types CargoType, int MinCapacity, bool 
 	*	
 	*/
 
-	//Handeling if Truck Null
+	//1-Handeling if Truck Null
 	if (!t) return false;
-	//if 
+	//2-Handeling MaxW || Capacity
 	if (Now || t->GetCapcity() <= MinCapacity) {
+		//1-first Remove From empty Trucks
 		emptyTrucks[t->getTruckType()].dequeue();
+		//2-inserted it in loading Trucks in position of 
 		loadingTrucks.setEntry(CargoType, t);
 		t->setNowMoving(Now);
 		return true;
