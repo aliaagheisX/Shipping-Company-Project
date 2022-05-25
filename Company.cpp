@@ -391,62 +391,10 @@ bool Company::addLoadingTruck(Truck * t, Types CargoType, int MinCapacity, bool 
 	}
 	return false;
 }
-//int Company::getMinCapacity(Types CargoType) const{
-//	if (CargoType == Normal) return waitingNormalCargo.getSize();
-//	else if (CargoType == Special) return waitingSpecialCargo.getSize();
-//	return waitingVIPCargo.getSize();
-//}
-//void Company::NightAddLoadTrucks() {
-//	// 1-First VIP
-//	Truck* t = nullptr;
-//	PriorityQueue<Truck*>* aux[3];
-//
-//	if (!loadingTrucks.getEntry(VIP) && !waitingVIPCargo.isEmpty())
-//	{
-//		//get the min capcity of Any Suitable Truck according to assignment Rule
-//		int c = waitingVIPCargo.getSize();
-//		bool Now = waitingVIPCargo.peekFront()->MaxWCheck(currentTime, MaxW);
-//		//First: Check VIP Trucks
-//		int i = 0;
-//		while (i <= 2) {
-//			if (emptyTrucks[Cargo_VIP_PRIORITY[i]].isEmpty()) { i++; continue; }
-//			t = emptyTrucks[Cargo_VIP_PRIORITY[i]].peekFront();
-//
-//			if (t && t->getIsNightShift()) {
-//				addLoadingTruck(t, VIP, c, Now);
-//				break;
-//			}
-//
-//			aux[Cargo_VIP_PRIORITY[i]]->enqueue(t, t->getPriority());
-//			emptyTrucks[Cargo_VIP_PRIORITY[i]].dequeue();
-//
-//		}
-//	}
-//
-//	while(!aux[0]->isEmpty()) aux[0]->enqueue(aux[0])
-//}
 
-
-void Company::AddWaitingCargo(Cargo* temp)
-{
-	if (temp->getType() == VIP)
-	{
-		waitingVIPCargo.enqueue(temp, temp->getPriority() );
-	}
-	else if (temp->getType() == Normal)
-	{
-		waitingNormalCargo.addBack(temp);
-	}
-	else
-	{
-		waitingSpecialCargo.enqueue(temp);
-	}
-}
 
 
 ///////////////////////////////////////////////////MaxW
-
-
 
 void Company::moveTrucks()
 {
