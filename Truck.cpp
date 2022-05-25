@@ -75,8 +75,7 @@ void Truck::Failuer(const Time* t, UI * uiPtr)
 {
 	srand(time(0));
 	int r = rand() % 100;
-	if (r > 0 || isFailed) return;
-	cout << r;
+	if (r >= 0 || isFailed) return;
 	uiPtr->Output("Failure Happen : " + to_string(ID) + " is Failed and need maintaince.\n");
 	isFailed = true;
 
@@ -165,9 +164,14 @@ void Truck::EndJourney() {
  * 
 */
 
-bool Truck::CheckUP(const Time & currentTime, int J) {
-	if (isFailed || numberOfJourney >= J) {
+bool Truck::CheckUP(const Time & currentTime, int J , UI*uiptr) {
+	srand(time(0));
+	bool maintainP;
+	maintainP = rand() % 100 < 5;
+	if (maintainP || isFailed || numberOfJourney >= J) {
 		FinishingCheckUPTime = currentTime + GetCheckUPTime();
+		if (maintainP)
+			uiptr->Output("Maintiance apart happened to truck Number:"+to_string(ID) + "\n");
 		return true;
 	}
 	return false;

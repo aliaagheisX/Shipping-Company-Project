@@ -63,7 +63,7 @@ public:
 	Cargo* DeliverCargos(const Time &);
 	void Failuer(const Time* t, UI* uiPtr);
 
-	bool CheckUP(const Time& currentTime, int J);
+	bool CheckUP(const Time& currentTime, int J, UI* uiptr);
 	bool isFinishedCheckUp(const Time& currentTime) const;
 	void endCheckUp();
 
@@ -78,6 +78,8 @@ public:
 	int getPriority() const { return -1 * (0.5*Speed + 8*Capcity); }
 	bool getIsNightShift() const { return isNightShift; }
 	void setIsNightShift(bool n) {  isNightShift = n; }
+	
+
 
 	~Truck();
 	//check if there's cargo deleverid

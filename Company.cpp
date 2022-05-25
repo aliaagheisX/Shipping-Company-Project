@@ -80,7 +80,7 @@ void Company::TrucksReturnBack()
 
 		Types t= temp->getTruckType();
 
-		if (temp->CheckUP(currentTime, J))
+		if (temp->CheckUP(currentTime, J,uiPtr))
 			maintainingTrucks[t].enqueue(temp);
 		else if(temp->getIsNightShift())
 			NightTrucks[t].enqueue(temp, temp->getPriority());
@@ -295,24 +295,6 @@ void Company::ExecuteEvent() {
 
 }
 
-void Company::assign(bool isNight) {
-	if (loadingTrucks.getEntry(Normal) && !waitingNormalCargo.isEmpty())
-		if (loadingTrucks.getEntry(Normal)->AssignCargo(waitingNormalCargo.getFront(), currentTime, isNight))
-		{   // changes to calculate the DI distance
-			waitingNormalCargo.removeFront();
-		}
-	if (loadingTrucks.getEntry(Special) && !waitingSpecialCargo.isEmpty())
-		if (loadingTrucks.getEntry(Special)->AssignCargo(waitingSpecialCargo.peekFront(), currentTime, isNight))
-		{
-			waitingSpecialCargo.dequeue();
-		}
-
-	if (loadingTrucks.getEntry(VIP) && !waitingVIPCargo.isEmpty())
-		if (loadingTrucks.getEntry(VIP)->AssignCargo(waitingVIPCargo.peekFront(), currentTime, isNight))
-		{
-			waitingVIPCargo.dequeue();
-		}
-}
 
 void Company::checkLoadingTrucks()
 {
@@ -390,6 +372,24 @@ bool Company::addLoadingTruck(Truck * t, Types CargoType, int MinCapacity, bool 
 		return true;
 	}
 	return false;
+}
+void Company::assign(bool isNight) {
+	if (loadingTrucks.getEntry(Normal) && !waitingNormalCargo.isEmpty())
+		if (loadingTrucks.getEntry(Normal)->AssignCargo(waitingNormalCargo.getFront(), currentTime, isNight))
+		{   // changes to calculate the DI distance
+			waitingNormalCargo.removeFront();
+		}
+	if (loadingTrucks.getEntry(Special) && !waitingSpecialCargo.isEmpty())
+		if (loadingTrucks.getEntry(Special)->AssignCargo(waitingSpecialCargo.peekFront(), currentTime, isNight))
+		{
+			waitingSpecialCargo.dequeue();
+		}
+
+	if (loadingTrucks.getEntry(VIP) && !waitingVIPCargo.isEmpty())
+		if (loadingTrucks.getEntry(VIP)->AssignCargo(waitingVIPCargo.peekFront(), currentTime, isNight))
+		{
+			waitingVIPCargo.dequeue();
+		}
 }
 
 
