@@ -409,7 +409,21 @@ void Company::moveTrucks()
 	}
 }
 // calculate the finish time of delivery
-
+void Company::AddWaitingCargo(Cargo* temp)
+{
+	if (temp->getType() == VIP)
+	{
+		waitingVIPCargo.enqueue(temp, temp->getPriority());
+	}
+	if (temp->getType() == Normal)
+	{
+		waitingNormalCargo.addBack(temp);
+	}
+	if (temp->getType() == Special)
+	{
+		waitingSpecialCargo.enqueue(temp);
+	}
+}
 void Company::DeliverCargos()
 {
 	PriorityQueue<Truck*>* aux = new PriorityQueue<Truck*>(getTotalTruckCount());
@@ -439,7 +453,6 @@ void Company::DeliverCargos()
 	delete movingTrucks;
 	movingTrucks = aux;
 }
-
 
 ///////////////////////////////////////GETTERS
 

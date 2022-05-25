@@ -47,8 +47,6 @@ class Company
 	string OUT_PATH;
 	UI *uiPtr;
 	//
-
-	Types priority_VIP_cargos[3] = {VIP, Normal, Special};
 	//bool isNightShift();
 
 	void load();
@@ -56,7 +54,6 @@ class Company
 	void ExecuteEvent();
 
 	//Loading Trucks & assign
-	bool addLoadingTruck(Truck *, Types, int MinCapacity, bool Now = false);
 	void assign(bool isNight = false);
 
 	//void NightAddLoadTrucks();
@@ -64,6 +61,7 @@ class Company
 
 	//moving
 	void moveTrucks();
+	void AddWaitingCargo(Cargo* temp);
 	void DeliverCargos();
 
 	//checkups
@@ -75,13 +73,6 @@ class Company
 	void Promote(Cargo *);
 
 
-	//int getMinCapacity(Types CargoType) const;
-
-	void AddWaitingCargo(Cargo* temp);
-
-	//Max wait
-	inline bool MaxWCheck(Cargo* c);
-
 	//Trucks from move to checkUP || Empty
 	void checkLoadingTrucks();
 	bool addLoadingTruck(Truck* t, Types CargoType, int MinCapacity, bool Now, PriorityQueue<Truck*>* choosenTruckList);
@@ -92,9 +83,6 @@ class Company
 	inline bool isSimulationEnd();
 	void EndSimulation();
 	void Out_End();
-
-
-
 
 	//
 	int getTotalTruckCount() const;
