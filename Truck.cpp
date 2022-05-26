@@ -31,7 +31,7 @@ float Truck::GetSpeed() const
 int Truck::getID() const { return ID; }
 bool Truck::getIsNightShift() const { return isNightShift; }
 const Time& Truck::getFinishingCheckUPTime() const { return FinishingCheckUPTime; }
-int Truck::getPriority() const { return -1 * (0.5 * Speed + 8 * Capcity); }
+int Truck::getPriority() const { return  (-0.5 * Speed + 80 * Capcity); }
 
 ///getters of truck properties in journey
 //calculated Times
@@ -172,14 +172,14 @@ void Truck::Failuer(const Time* t, UI * uiPtr)
 	*/
 
 	//for not repeating rand function
-	srand(time(0));
+	//srand(time(0));
 
 	//if Propapility is False || is failed already Once
-	if (rand() % 100 >= 0 || isFailed) return;
+	if (rand() % 100 >= 1 || isFailed) return;
 
 	//print msg of failure and play music && set that the truck already failed
 	uiPtr->Output("Failure Happen : " + to_string(ID) + " is Failed and need maintaince.\n");
-	PlaySound(TEXT("WHY1.wav"), NULL, SND_FILENAME);
+	uiPtr->PlayMusic();
 	isFailed = true;
 	//print msg of failure and play music && set that the truck already failed
 

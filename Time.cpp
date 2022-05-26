@@ -12,7 +12,7 @@ Time::Time(int d, int h) {
 
 void Time::setHour(int h) {
 	// handelling  exceeding the 24 hours
-	while (h > 24)
+	while (h >= 24)
 	{
 		h -= 24;
 		day++;

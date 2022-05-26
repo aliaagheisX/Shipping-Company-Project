@@ -2,9 +2,7 @@
 #include "Time.h"
 #include "PriorityQueue.h"
 #include "Cargo.h"
-#include <windows.h>
-#include <mmsystem.h>
-#pragma comment(lib, "Winmm.lib")
+
 enum Types {Normal, Special, VIP  };
 class Truck
 {

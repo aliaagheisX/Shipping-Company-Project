@@ -34,7 +34,8 @@ int UI::Readmanual()
 
 void UI::Output(string s)
 {
-	cout << s;
+	if(mode != Silent)
+		cout << s;
 }
 
 void UI::Line()
@@ -150,9 +151,14 @@ void UI::Print(int n, char seperator)
 {
 	cout << n << seperator;
 }
+void UI::PlayMusic()
+{
+	if(mode != Silent)
+		PlaySound(TEXT("WHY1.wav"), NULL, SND_FILENAME);
+}
 void UI::Print(Company* cPtr) {
 	
-	(mode)
+	switch(mode)
 	{
 	case Interactive:
 		InterActiveMode(cPtr);

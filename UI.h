@@ -1,6 +1,9 @@
 #pragma once
 #include<string>
 #include<iostream>
+#include <windows.h>
+#include <mmsystem.h>
+#pragma comment(lib, "Winmm.lib")
 using std::cout; using std::cin;using std::string;
 
 class Cargo;
@@ -25,7 +28,7 @@ public:
 	void Print(Cargo* c, char seperator = ',');
 	void Print(Truck* t, char seprator = ' ');
 	void Print(int n, char seperator = ',');
-
+	void PlayMusic();
 	void Print(Company*);
 	~UI();
 };
