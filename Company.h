@@ -11,6 +11,8 @@ class UI;
 #include"Truck.h"
 #include"List.h"
 
+
+enum MODES { DAY, NIGHT };
 class Company
 {
 	//properties of similation
@@ -42,22 +44,19 @@ class Company
 
 	//Trucks Lists
 	//type of empty Trucks
-	PriorityQueue<Truck *> emptyTrucks [3];
-	PriorityQueue<Truck*> NightTrucks[3];
+	PriorityQueue<Truck *> emptyTrucks [2][3];
+	//PriorityQueue<Truck*> NightTrucks[3];
+	PriorityQueue<Truck *> maintainingTrucks[2][3];
 	
 	List<Truck *> loadingTrucks;
 	PriorityQueue< Truck*>* movingTrucks;
-	Queue<Truck *> maintainingTrucks[3];
 
 	//Cargos Lists
 	LinkedList<Cargo*> waitingNormalCargo;
 	Queue<Cargo*> waitingSpecialCargo;
 	PriorityQueue<Cargo*> waitingVIPCargo;
 
-	Queue<int> DeliveredCargos[3];
-	Queue<Cargo*> DeliveredCargos_temp; //temp store cargos that delivered in this hour
-										//to print it in OUTPUT_FILT.TXT
-										//then store it's ID in DeliveredCargos according to it's type
+	Queue<int> DeliveredCargos[3];		//then store it's ID in DeliveredCargos according to it's type
 										// to print it in UI
 	//..........................Lists..........................//
 
@@ -108,9 +107,9 @@ public:
 	int getWaitingCargosCount() const;
 	int getMovingCargosCount() const;
 	int getLoadingTrucksCount() const;
-	int getEmptyTrucksCount() const;
+	int* getEmptyTrucksCount() const;
 	int getNightTrucksCount() const;
-	int getMaintainingTrucksCount() const;
+	int* getMaintainingTrucksCount() const;
 	int getDeliveredCargosCount() const;
 
 	const Time& getCurrentTime() const;
@@ -123,11 +122,11 @@ public:
 	const Queue<int>* getDeliveredCargo() const;
 
 	//........Getters Of Trucks....//
-	const PriorityQueue<Truck*>* getEmptyTrucks() const;
+	const PriorityQueue<Truck*>* getEmptyTrucks(int) const;
+	const PriorityQueue< Truck*>* getMaintainingTrucks(int) const;
 	const PriorityQueue<Truck*>* getNightTrucks() const;
 	const List<Truck*>& getLoadingTrucks() const;
 	const PriorityQueue< Truck*>* getMovingTrucks() const;
-	const Queue< Truck*>* getMaintainingTrucks() const;
 	
 	~Company();
 };

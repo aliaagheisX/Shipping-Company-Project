@@ -16,8 +16,10 @@ class UI
 	void InterActiveMode(Company*);
 	void StepByStepMode(Company*);
 
+
 public:
 	UI();
+	int Readmanual();
 	void Line();
 	void Output(string s);
 	void Print(Cargo* c, char seperator = ',');

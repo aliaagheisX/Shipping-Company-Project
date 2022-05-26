@@ -56,9 +56,11 @@ public:
 
 	// Getters 
 	int GetCapcity() const;//Capacity of Truck
+	float GetSpeed() const;//Capacity of Truck
 	int getID() const;//ID
 	int getPriority() const;
 	bool getIsNightShift() const;
+	const Time& getFinishingCheckUPTime() const;
 
 	const Time& GetDi() const;//Delivery Interval
 	const Time& GetMt() const; //Moving Time

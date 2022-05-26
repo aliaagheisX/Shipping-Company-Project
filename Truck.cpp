@@ -24,8 +24,13 @@ void Truck::Read(ifstream& InFile)
 
 /////Getters of Properties Of Truck
 int Truck::GetCapcity() const {return Capcity;}
+float Truck::GetSpeed() const
+{
+	return Speed;
+}
 int Truck::getID() const { return ID; }
 bool Truck::getIsNightShift() const { return isNightShift; }
+const Time& Truck::getFinishingCheckUPTime() const { return FinishingCheckUPTime; }
 int Truck::getPriority() const { return -1 * (0.5 * Speed + 8 * Capcity); }
 
 ///getters of truck properties in journey
@@ -57,10 +62,7 @@ double Truck::getTruckUtilization(const Time& Tsim) const
 //Setters of Truck
 void Truck::setNowMoving(bool n) { NowMoving = n; }
 void Truck::SetSpeed(const float s){Speed = s;}
-
-
 ///DOs of Truck
-
 /**
  * @brief 
  * Truck Responsible for
@@ -162,7 +164,7 @@ void Truck::Failuer(const Time* t, UI * uiPtr)
 
 	/*
 	* @Summary Function
-	*	First : generate a random and check Probability
+	*	First : generate a random and check Probabilityfailuer
 	*	Second : if True set Truck to return home
 	*			 By change all cargos delivery Time
 	*			 set bool isFaild[means that ruck failed to deliver Cargos and return back to home]
@@ -173,7 +175,7 @@ void Truck::Failuer(const Time* t, UI * uiPtr)
 	srand(time(0));
 
 	//if Propapility is False || is failed already Once
-	if (rand() % 100 >= 5 || isFailed) return;
+	if (rand() % 100 >= 0 || isFailed) return;
 
 	//print msg of failure and play music && set that the truck already failed
 	uiPtr->Output("Failure Happen : " + to_string(ID) + " is Failed and need maintaince.\n");
@@ -213,10 +215,10 @@ void Truck::Failuer(const Time* t, UI * uiPtr)
 	delete loadedCargo;
 	loadedCargo = aux;
 
-	//set Moving Time of Truck with current Time
-	MT = *t;
 	//calculate Delivery Interval
 	DI  = (*t - MT) + prev;
+	//set Moving Time of Truck with current Time
+	MT = *t;
 }
 
 Cargo* Truck::DeliverCargos(const Time& currentTime)
@@ -254,18 +256,10 @@ void Truck::EndJourney() {
 }
 
 bool Truck::CheckUP(const Time & currentTime, int J , UI*uiptr) {
-	//BONUS : For Random CheckUP
-	srand(time(0));
-	bool maintainP;
-	maintainP = rand() % 100 < 5;
-	//check maintain propalitiy || if the truck failed || end number of journey
-	if (maintainP || isFailed || numberOfJourney >= J) {
+	//if the truck failed || end number of journey
+	if (isFailed || numberOfJourney >= J) {
 		//set finish checkup time of truck
 		FinishingCheckUPTime = currentTime + GetCheckUPTime();
-
-		//print Message to check if Bonus Work
-		if (maintainP)
-			uiptr->Output("Maintiance apart happened to truck Number:"+to_string(ID) + "\n");
 		return true;
 	}
 	return false;

@@ -23,6 +23,14 @@ void UI::StepByStepMode(Company* cPtr) {
 	Sleep(1000);
 }
 
+int UI::Readmanual()
+{
+	int x;
+	cout << "Enter Test Case Number: \n";
+	cin >> x;
+	return x;
+
+}
 
 void UI::Output(string s)
 {
@@ -74,86 +82,49 @@ void UI::PrintScreen(Company* Cptr) {
 	 
 	//							Empty Trucks:
 
-	Output(to_string(Cptr->getEmptyTrucksCount()) + " Empty Trucks: ");
 
-	if (Cptr->getEmptyTrucks()[Normal].getSize() != 0) {
-		cout << '[';
-		Cptr->getEmptyTrucks()[Normal].Print(this, ',');
-		cout << "] ";
+	for (int Truck_Mode = DAY; Truck_Mode <= NIGHT; Truck_Mode++) {
+		Output(to_string(Cptr->getEmptyTrucksCount()[Truck_Mode]) + " Empty " + (Truck_Mode ? "Night" : "Day") + " Trucks: ");
+		for (int Truck_Type = Normal; Truck_Type <= VIP; Truck_Type++) {
+			if (!Cptr->getEmptyTrucks(Truck_Mode)[Truck_Type].isEmpty()) {
+				cout << open[Truck_Type];
+				Cptr->getEmptyTrucks(Truck_Mode)[Truck_Type].Print(this);
+				cout << close[Truck_Type];
+			}
+		}
+		Line();
 	}
-	if (Cptr->getEmptyTrucks()[Special].getSize() != 0) {
-		cout << '(';
-		Cptr->getEmptyTrucks()[Special].Print(this, ',');
-		cout << ") ";
-	}
-	if (Cptr->getEmptyTrucks()[VIP].getSize() != 0) {
-		cout << '{';
-		Cptr->getEmptyTrucks()[VIP].Print(this, ',');
-		cout << "} ";
-	}
-	Line();
-	//							Night Trucks:
 
-	Output(to_string(Cptr->getNightTrucksCount()) + " Night Trucks: ");
 
-	if (Cptr->getNightTrucks()[Normal].getSize() != 0) {
-		cout << '[';
-		Cptr->getNightTrucks()[Normal].Print(this, ',');
-		cout << "] ";
-	}
-	if (Cptr->getNightTrucks()[Special].getSize() != 0) {
-		cout << '(';
-		Cptr->getNightTrucks()[Special].Print(this, ',');
-		cout << ") ";
-	}
-	if (Cptr->getNightTrucks()[VIP].getSize() != 0) {
-		cout << '{';
-		Cptr->getNightTrucks()[VIP].Print(this, ',');
-		cout << "} ";
-	}
-	Line();
-	//
 	//							Moving Cargos:
 	Output(to_string(Cptr->getMovingCargosCount()) + " Moving Cargos: ");
 	
 	Cptr->getMovingTrucks()->Print(this);
 	Line();
+
 	//							Check-up Trucks:
-	Output(to_string(Cptr->getMaintainingTrucksCount()) + " In-Checkup Trucks: ");
-	if (Cptr->getMaintainingTrucks()[Normal].getSize() != 0) {
-		cout << '[';
-		Cptr->getMaintainingTrucks()[Normal].Print(this);
-		cout << "] ";
+	for(int Truck_Mode = DAY; Truck_Mode <= NIGHT;Truck_Mode++){
+		Output(to_string(Cptr->getMaintainingTrucksCount()[Truck_Mode]) + " In-Checkup " + (Truck_Mode ? "Night" : "Day") + " Trucks: ");
+		for (int Truck_Type = Normal; Truck_Type <= VIP; Truck_Type++) {
+			if (!Cptr->getMaintainingTrucks(Truck_Mode)[Truck_Type].isEmpty()) {
+				cout << open[Truck_Type];
+				Cptr->getMaintainingTrucks(Truck_Mode)[Truck_Type].Print(this);
+				cout << close[Truck_Type];
+			}
+		}
+		Line();
 	}
-	if (Cptr->getMaintainingTrucks()[Special].getSize() != 0) {
-		cout << '(';
-		Cptr->getMaintainingTrucks()[Special].Print(this);
-		cout << ") ";
-	}
-	if (Cptr->getMaintainingTrucks()[VIP].getSize() != 0) {
-		cout << '{';
-		Cptr->getMaintainingTrucks()[VIP].Print(this);
-		cout << "} ";
-	}
-	Line();
 
 
 	//							Delivered Cargos:
 	Output(to_string(Cptr->getDeliveredCargosCount()) + " Delivered Cargos: ");
-	if(!Cptr->getDeliveredCargo()[0].isEmpty()){
-		cout << '[';
-		Cptr->getDeliveredCargo()[0].Print(this);
-		cout << ']';
-	}
-	if (!Cptr->getDeliveredCargo()[1].isEmpty()) {
-		cout << '(';
-		Cptr->getDeliveredCargo()[1].Print(this);
-		cout << ')';
-	}
-	if (!Cptr->getDeliveredCargo()[2].isEmpty()) {
-		cout << '{';
-		Cptr->getDeliveredCargo()[2].Print(this);
-		cout << '}';
+
+	for (int Truck_Type = Normal; Truck_Type <= VIP; Truck_Type++) {
+		if (!Cptr->getDeliveredCargo()[Truck_Type].isEmpty()) {
+			cout << open[Truck_Type];
+			Cptr->getDeliveredCargo()[Truck_Type].Print(this);
+			cout << close[Truck_Type];
+		}
 	}
 	Line();
 
@@ -180,7 +151,8 @@ void UI::Print(int n, char seperator)
 	cout << n << seperator;
 }
 void UI::Print(Company* cPtr) {
-	switch (mode)
+	
+	(mode)
 	{
 	case Interactive:
 		InterActiveMode(cPtr);

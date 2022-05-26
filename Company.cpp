@@ -12,9 +12,11 @@ using namespace std;
 Company::Company() {
 
 	//initalize IO & UI
-	 IN_PATH = "Input_File.txt";
-	 OUT_PATH="Output_File.txt";
 	 uiPtr = new UI;
+	 int x;
+	 x = uiPtr->Readmanual();
+	 IN_PATH = "Sample" + to_string(x) + ".txt";
+	 OUT_PATH="Output_File.txt";
 	 load();
 	//initalize IO & UI
 
@@ -72,27 +74,27 @@ void Company::TrucksReturnBack()
 		Types t= temp->getTruckType();
 
 		if (temp->CheckUP(currentTime, J,uiPtr))
-			maintainingTrucks[t].enqueue(temp);
-		else if(temp->getIsNightShift())
-			NightTrucks[t].enqueue(temp, temp->getPriority());
+			maintainingTrucks[temp->getIsNightShift()][t].enqueue(temp, temp->getFinishingCheckUPTime().ConvertToInt());
 		else
-			emptyTrucks[t].enqueue(temp, temp->getPriority());
+			emptyTrucks[temp->getIsNightShift()][t].enqueue(temp, temp->getPriority());
 	}
 	/// 
 }
 
 void Company::EndCheckUP() {
-	for (int trucktype = 0; trucktype <= VIP; trucktype++) {
+	for(int Truck_MODE = DAY; Truck_MODE <= NIGHT;Truck_MODE++){
+		for (int trucktype = Normal; trucktype <= VIP; trucktype++) {
 
-		while (!maintainingTrucks[trucktype].isEmpty() && maintainingTrucks[trucktype].peekFront()->isFinishedCheckUp(currentTime))
-		{
-			Truck* t = maintainingTrucks[trucktype].peekFront();
-			if(t->getIsNightShift())
-				NightTrucks[trucktype].enqueue(t, t->getPriority());
-			else
-				emptyTrucks[trucktype].enqueue(t, t->getPriority());
-			t->endCheckUp();
-			maintainingTrucks[trucktype].dequeue();
+			while (!maintainingTrucks[Truck_MODE][trucktype].isEmpty() && maintainingTrucks[Truck_MODE][trucktype].peekFront()->isFinishedCheckUp(currentTime))
+			{
+				Truck* t = maintainingTrucks[Truck_MODE][trucktype].peekFront();
+			
+				emptyTrucks[Truck_MODE][trucktype].enqueue(t, t->getPriority());
+			
+				t->endCheckUp();
+			
+				maintainingTrucks[Truck_MODE][trucktype].dequeue();
+			}
 		}
 	}
 }
@@ -136,31 +138,24 @@ void Company::load()
 	file >> NormalTruckCount; 
 	for (int i = 0; i < NormalTruckCount; i++) {
 		Truck* t = new NormalTruck(file);
-		if (t->getIsNightShift())
-			NightTrucks[Normal].enqueue(t, t->getPriority());
-		else
-			emptyTrucks[Normal].enqueue(t, t->getPriority());
+		emptyTrucks[t->getIsNightShift()][Normal].enqueue(t, t->getPriority());
 	}
 	file >> SpecialTruckCount;
 	for (int i = 0; i < SpecialTruckCount; i++) {
 		Truck* t = new SpecialTruck(file);
-		if (t->getIsNightShift())
-			NightTrucks[Special].enqueue(t, t->getPriority());
-		else
-			emptyTrucks[Special].enqueue(t, t->getPriority());
+		emptyTrucks[t->getIsNightShift()][Special].enqueue(t, t->getPriority());
 	}
 	file >> VIPTruckCount;	
 	for (int i = 0; i < VIPTruckCount; i++) {
 		Truck* t = new VIPTruck(file);
-		if (t->getIsNightShift())
-			NightTrucks[VIP].enqueue(t, t->getPriority());
-		else
-			emptyTrucks[VIP].enqueue(t, t->getPriority());
+		emptyTrucks[t->getIsNightShift()][VIP].enqueue(t, t->getPriority());
 	}
 
 	
+	file >> J;
 
 	int CheckUPTime;
+
 	file >> CheckUPTime;
 	NormalTruck::setCheckUPTime(CheckUPTime);
 
@@ -170,7 +165,6 @@ void Company::load()
 	file >> CheckUPTime;
 	VIPTruck::setCheckUPTime(CheckUPTime);
 
-	file >> J;
 
 	file >> AutoP;
 	file >> MaxW;
@@ -209,22 +203,14 @@ void Company::EndSimulation(){
 	* looping on the (empty & night) trucks to calculate the Total truck active time
 	* and the total truck utilization 
 	*/
-	for(int i = 0;i < 3;i++){
-		while (!emptyTrucks[i].isEmpty()) {
-			Truck* t = emptyTrucks[i].peekFront();
-			TotalTruckActiveTime += t->getTotalActiveTime();
-			TotalTruckUtilization += t->getTruckUtilization(currentTime);
-			emptyTrucks[i].dequeue();
-		}
-	}
-
-	for (int i = 0; i < 3; i++) {
-		while (!NightTrucks[i].isEmpty()) {
-			Truck* t = NightTrucks[i].peekFront();
-			TotalTruckActiveTime += t->getTotalActiveTime();
-			TotalTruckUtilization += t->getTruckUtilization(currentTime);
-			NightTrucks[i].dequeue();
-		}
+	for(int Truck_Mode = DAY;Truck_Mode <= NIGHT;Truck_Mode++)
+		for(int Truck_Type = Normal; Truck_Type <= VIP; Truck_Type++){
+			while (!emptyTrucks[Truck_Mode][Truck_Type].isEmpty()) {
+				Truck* t = emptyTrucks[Truck_Mode][Truck_Type].peekFront();
+				TotalTruckActiveTime += t->getTotalActiveTime();
+				TotalTruckUtilization += t->getTruckUtilization(currentTime);
+				emptyTrucks[Truck_Mode][Truck_Type].dequeue();
+			}
 	}
 
 	Out_End();
@@ -254,9 +240,8 @@ inline bool Company::isSimulationEnd() {
 		waitingVIPCargo.isEmpty() &&
 		!getLoadingTrucksCount() &&
 		movingTrucks->isEmpty() &&
-		maintainingTrucks[0].isEmpty() &&
-		maintainingTrucks[1].isEmpty() &&
-		maintainingTrucks[2].isEmpty()
+		!getMaintainingTrucksCount()[NIGHT] &&
+		!getMaintainingTrucksCount()[DAY] 
 		);
 }
 
@@ -294,11 +279,66 @@ void Company::checkLoadingTrucks()
 	/* PriorityQueue ChoosenList */
 	PriorityQueue<Truck*>* choosenList[3];
 	for (int i = 0; i <= 2; i++) {
-		if (emptyTrucks[i].isEmpty() || NightMode()) choosenList[i] = &NightTrucks[i];
-		else if (NightTrucks[i].isEmpty()) choosenList[i] = &emptyTrucks[i];
-		else if (NightTrucks[i].peekFront()->getPriority() < emptyTrucks[i].peekFront()->getPriority())
-			choosenList[i] = &NightTrucks[i];
-		else choosenList[i] = &emptyTrucks[i];
+		////if no ther list or Night 
+		//if (emptyTrucks[DAY][i].isEmpty() || NightMode()) choosenList[i] = &emptyTrucks[NIGHT][i];
+
+		//else if (emptyTrucks[NIGHT][i].isEmpty()) choosenList[i] = &emptyTrucks[DAY][i];
+
+		//else if (emptyTrucks[NIGHT][i].peekFront()->getPriority() < emptyTrucks[DAY][i].peekFront()->getPriority())
+		//	choosenList[i] = &emptyTrucks[NIGHT][i];
+		//else choosenList[i] = &emptyTrucks[DAY][i];
+		if (NightMode() || emptyTrucks[DAY][i].isEmpty()) {
+			if (emptyTrucks[NIGHT][i].isEmpty())
+				choosenList[i] = &maintainingTrucks[NightMode()][i];
+			else
+				choosenList[i] = &emptyTrucks[NIGHT][i];
+		}
+		//else if (emptyTrucks[NIGHT][i].isEmpty() && emptyTrucks[DAY][i].isEmpty()) {
+		//	if (maintainingTrucks[NIGHT][i].peekFront()->getPriority() < maintainingTrucks[DAY][i].peekFront()->getPriority())
+		//		choosenList[i] = &maintainingTrucks[NIGHT][i];
+		//	else choosenList[i] = &maintainingTrucks[DAY][i];
+		//}
+
+		if (!NightMode()) {
+			if (getEmptyTrucksCount()[0] + getEmptyTrucksCount()[1] == 0) {
+				if (maintainingTrucks[NIGHT][i].isEmpty()) choosenList[i] = &maintainingTrucks[DAY][i];
+				else if (maintainingTrucks[DAY][i].isEmpty())choosenList[i] = &maintainingTrucks[NIGHT][i];
+				else if (maintainingTrucks[NIGHT][i].peekFront()->getPriority() < maintainingTrucks[DAY][i].peekFront()->getPriority())
+					choosenList[i] = &maintainingTrucks[NIGHT][i];
+				else choosenList[i] = &maintainingTrucks[DAY][i];
+				
+				if (!choosenList[i]->isEmpty())
+				{
+					Truck* t = choosenList[i]->peekFront();
+					uiPtr->Output("Bonus The company need this truck ID: " +to_string(t->getID()) + " " + " The speed :" + to_string(t->GetSpeed()));
+					t->SetSpeed(choosenList[i]->peekFront()->GetSpeed() / 2);
+					uiPtr->Output("\nThen became :" + to_string(t->GetSpeed()));
+				}
+
+			}
+
+			else {
+				if (emptyTrucks[NIGHT][i].isEmpty()) choosenList[i] = &emptyTrucks[DAY][i];
+				else if (emptyTrucks[DAY][i].isEmpty())choosenList[i] = &emptyTrucks[NIGHT][i];
+				else if (emptyTrucks[NIGHT][i].peekFront()->getPriority() < emptyTrucks[DAY][i].peekFront()->getPriority())
+					choosenList[i] = &emptyTrucks[NIGHT][i];
+				else choosenList[i] = &emptyTrucks[DAY][i];
+			}
+		}
+		else {
+			if (getEmptyTrucksCount()[DAY] + getEmptyTrucksCount()[NIGHT] == 0){
+				choosenList[i] = &maintainingTrucks[NIGHT][i];
+				if (!choosenList[i]->isEmpty())
+				{
+					Truck* t = choosenList[i]->peekFront();
+					uiPtr->Output("Bonus The company need this truck ID: " + to_string(t->getID()) + " " + " The speed :" + to_string(t->GetSpeed()));
+					t->SetSpeed(choosenList[i]->peekFront()->GetSpeed() / 2);
+					uiPtr->Output("\nThen became :" + to_string(t->GetSpeed()));
+				}
+			}
+			else
+				choosenList[i] = &emptyTrucks[NIGHT][i];
+		}
 	}
 	/* PriorityQueue ChoosenList */
 
@@ -424,10 +464,10 @@ void Company::DeliverCargos()
 	*   taking the truck from the moving truk Pqueue
 	*	calling failuer function
 	*   and put the truck in the auxiliary Pqueue
-	*	handelling the failure and add cargo to waiting 
+	*	handelling the 
+	and add cargo to waiting 
 	*   or Dliver the cargo and update the Total cargo time
 	*/
-
 
 	PriorityQueue<Truck*>* aux = new PriorityQueue<Truck*>(getTotalTruckCount());
 	while (!movingTrucks->isEmpty()) {
@@ -468,12 +508,15 @@ int Company::getWaitingCargosCount() const {
 
 	return waitingNormalCargo.getSize() + waitingSpecialCargo.getSize() + waitingVIPCargo.getSize();
 }
-int Company::getEmptyTrucksCount() const {
-	return emptyTrucks[0].getSize() + emptyTrucks[1].getSize() + emptyTrucks[2].getSize();
+int* Company::getEmptyTrucksCount() const {
+	int arr[2] =
+	{ emptyTrucks[DAY][Normal].getSize() + emptyTrucks[DAY][Special].getSize() + emptyTrucks[DAY][VIP].getSize()
+		, emptyTrucks[NIGHT][Normal].getSize() + emptyTrucks[NIGHT][Special].getSize() + emptyTrucks[NIGHT][VIP].getSize() };
+	return arr;
 }
 int Company::getNightTrucksCount() const
 {
-	return NightTrucks[0].getSize() + NightTrucks[1].getSize() + NightTrucks[2].getSize();
+	return emptyTrucks[NIGHT][0].getSize() + emptyTrucks[NIGHT][1].getSize() + emptyTrucks[NIGHT][2].getSize();
 }
 int Company::getMovingCargosCount() const { return MovingCargoCount;}
 int Company::getLoadingTrucksCount() const { 
@@ -482,8 +525,11 @@ int Company::getLoadingTrucksCount() const {
 		count+= bool(loadingTrucks.getEntry(i));
 	return count;
 }
-int Company::getMaintainingTrucksCount() const {
-	return maintainingTrucks[Normal].getSize() + maintainingTrucks[Special].getSize() + maintainingTrucks[VIP].getSize();
+int* Company::getMaintainingTrucksCount() const {
+	int arr[2] =
+	{ maintainingTrucks[DAY][Normal].getSize() + maintainingTrucks[DAY][Special].getSize() + maintainingTrucks[DAY][VIP].getSize()
+		, maintainingTrucks[NIGHT][Normal].getSize() + maintainingTrucks[NIGHT][Special].getSize() + maintainingTrucks[NIGHT][VIP].getSize() };
+	return arr;
 }
 int Company::getDeliveredCargosCount() const { return DeliveredCargos[0].getSize() + DeliveredCargos[1].getSize() + DeliveredCargos[2].getSize(); }
 ////////////////////////Counters
@@ -502,11 +548,34 @@ const Queue<int>* Company::getDeliveredCargo()const { return DeliveredCargos; }
 
 
 ////////////////////////Trucks
-const PriorityQueue<Truck*>* Company::getEmptyTrucks() const { return emptyTrucks; }
-const PriorityQueue<Truck*>* Company::getNightTrucks() const{return NightTrucks;}
+const PriorityQueue<Truck*>* Company::getEmptyTrucks(int Truck_Mode) const {
+
+	switch (Truck_Mode)
+	{
+	case DAY:
+		return emptyTrucks[DAY];
+		break;
+	default:
+		return emptyTrucks[NIGHT];
+		break;
+	}
+}
+const PriorityQueue<Truck*>* Company::getNightTrucks() const{return emptyTrucks[NIGHT]; }
 const List<Truck*>& Company::getLoadingTrucks() const { return loadingTrucks; }
 const PriorityQueue< Truck*>* Company::getMovingTrucks() const { return movingTrucks; }
-const Queue< Truck*>* Company::getMaintainingTrucks() const { return maintainingTrucks; }
+
+const PriorityQueue< Truck*>* Company::getMaintainingTrucks (int Truck_Mode) const{ 
+
+	switch (Truck_Mode)
+	{
+		case DAY: 
+			return maintainingTrucks[DAY];
+			break;
+		default:
+			return maintainingTrucks[NIGHT];
+			break;
+	}
+}
 ////////////////////////Trucks
 int Company::getTotalTruckCount() const
 {
