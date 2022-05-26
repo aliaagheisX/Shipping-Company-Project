@@ -8,46 +8,52 @@ class Cargo
 	Time PT; //prep. time 
 	int LT; //loading time	
 	Time WT; //waiting time
-	Time CDT;
-	char types;
+	Time CDT; // cargo delivery time
+	char types; 
 
-	const int ID;
-	int DeliveryDist;
+	const int ID; 
+	int DeliveryDist; 
 
-	const Truck* Loadingtrcuk;
+	const Truck* Loadingtrcuk; 
 
 	int Cost;
 
 public:
+	// constructor
+	//inialize all data
 	Cargo(int i, char c, int Dst, int cst, int L,Time t);
-	//Cargo(int, char);
-	// Setters
+
+	//.......... Setters...........//
 	void SetPt(const Time& t); //truck call it
 	void SetLt(const int& t); //read from input
 	void SetWt(const Time& t); //truck call = Truck::MT - PT
-	void SetDeliveryDist(const int& dist);
+	void SetDeliveryDist(const int& dist); // 
 	void SetCost(const int& ct);
 	void setCDT(const Time&);
 	void setTypes(char c);
-	void setLoadingTruck(const Truck *);
-	// Getters 
+	void setLoadingTruck(const Truck *); // setting the holding truck
+	//......... Getters .........//
+	
+	//Get Time
 	const Time& GetPt() const;
 	const int GetLt() const;
 	const Time& GetWt() const;
 	const Time& getCDT() const;
-	int GetDist() const;
 
-	virtual int GetCost() const;
+	//Get Cargo Properties
+	int GetCost() const;
+	int GetDist() const;
 	int getType() const;
+	const int getID() const;
+	int getPriority() const;
 	const Truck* getLoadingTruck() const;
 
-	const int getID() const;
-	inline bool AutoPCheck(const Time & currentTime, int  AutoP);
-	int getPriority() const;
-	inline bool MaxWCheck(const Time & currentTime, int MaxW);
+	//Get Checkers
+	bool AutoPCheck(const Time & currentTime, int  AutoP) const; // checking the Auto-promotion
+	bool MaxWCheck(const Time & currentTime, int MaxW)const; //checking the Maximum weight
 
-	//virtual bool operator<(const Cargo& r);
-		// Waiting for the Priority Equation
+	//Output
+	void output(ofstream&) const;
 	
 };
 

@@ -7,8 +7,11 @@ Time::Time(int d, int h) {
 }
 
 
-//setters
+//.......setters......//
+
+
 void Time::setHour(int h) {
+	// handelling  exceeding the 24 hours
 	while (h > 24)
 	{
 		h -= 24;
@@ -21,7 +24,7 @@ void Time::setDay(int d) {
 	day = d;
 }
 
-//getters
+//......getters......//
 int Time::getHour() const { return hour; }
 int Time::getDay() const { return day; }
 
@@ -34,6 +37,7 @@ bool Time::operator<(const Time& t) const {
 	else return (day < t.day); // else compare day
 }
 
+// adding 2 times
 Time Time::operator+(const Time& t) const
 {
 	Time t1 = *this;
@@ -41,7 +45,7 @@ Time Time::operator+(const Time& t) const
 	t1.setHour(t.getHour() + hour);
 	return t1;
 }
-
+// adding time and hours
 Time Time::operator+(const int x) const
 {
 	Time t1 = *this;
@@ -58,12 +62,14 @@ bool Time::operator<=(const Time& t) const
 	return (*this < t) || (*this == t);
 }
 // return number of hours
-int Time::operator-(const Time& t)const {
+Time Time::operator-(const Time& t)const {
 	if (day > t.day) {
-		return((day - t.day) * 24 + hour - t.hour);
+		return Time(0, (day - t.day) * 24 + hour - t.hour);
 	}
-	return (hour - t.hour);
+	return Time(0, hour - t.hour);
 }
+
+
 
 // increase hour by 1 and 
 //if pass 24 hr increase the day 1
@@ -83,6 +89,7 @@ string Time::TimePrint() const
 	return (to_string(day) + ":" + to_string(hour));
 }
 
+// convert the time to hours(int)
 int Time::ConvertToInt() const
 {
 	return (day*24+hour);

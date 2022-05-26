@@ -13,49 +13,73 @@ class UI;
 
 class Company
 {
-	int NormalTruckCount, SpecialTruckCount, VIPTruckCount;
-	int NormalCargoCount, SpecialCargoCount, VIPCargoCount;
-	int MaxW, AutoP, J; // j no of journeys till maintaince
+	//properties of similation
 	Time currentTime;
+	string IN_PATH;
+	string OUT_PATH;
+	ofstream out_file;
+	UI* uiPtr;
 
-	//
-	Time TotalCargoWait; 
-	int TotalTruckActiveTime, PromotedCargoCount;double TotalTruckUtilization;
+	//counters
+	int NormalTruckCount, SpecialTruckCount, VIPTruckCount; //count all trucks in company
+	int MovingCargoCount;//count moving Cargos Count
+
+	int MaxW, AutoP, J; // j no of journeys till maintaince
 	
-	int MovingCargoCount;
+	
+	//Types of Trucks By Priority of assignment of [Normal-VIP	] cargos
+	const Types Cargo_VIP_PRIORITY[3] = { VIP, Normal, Special };
+	const Types Cargo_NORMAL_PRIORITY[2] = { Normal, VIP };
 
+	//Statitics
+	Time TotalCargoWait; 
+	int TotalTruckActiveTime, PromotedCargoCount;
+	double TotalTruckUtilization;
+
+	
+	//..........................Lists..........................//
 	Queue<Event *> EventList;
 
+	//Trucks Lists
+	//type of empty Trucks
 	PriorityQueue<Truck *> emptyTrucks [3];
+	PriorityQueue<Truck*> NightTrucks[3];
+	
 	List<Truck *> loadingTrucks;
 	PriorityQueue< Truck*>* movingTrucks;
-	PriorityQueue< Truck*>* returnHomeTrucks;
 	Queue<Truck *> maintainingTrucks[3];
 
+	//Cargos Lists
 	LinkedList<Cargo*> waitingNormalCargo;
 	Queue<Cargo*> waitingSpecialCargo;
 	PriorityQueue<Cargo*> waitingVIPCargo;
 
 	Queue<int> DeliveredCargos[3];
-	Queue<Cargo*> DeliveredCargos_temp;
+	Queue<Cargo*> DeliveredCargos_temp; //temp store cargos that delivered in this hour
+										//to print it in OUTPUT_FILT.TXT
+										//then store it's ID in DeliveredCargos according to it's type
+										// to print it in UI
+	//..........................Lists..........................//
 
-	string IN_PATH;
-	string OUT_PATH;
-	UI *uiPtr;
+	//..........................Function of Company..........................//
+	bool NightMode() const;//bool to konw if Company not in working hours
+	inline bool isSimulationEnd();//bool check if all trucks and cargos and events end
+	void load();//call it in Constructor
+				//read INPUT_FILE.txt 
+				//Inialize all Data Read in .txt 
+				//create new Trucks and pass input file to it
 
-	//bool isNightShift();
+	void EndSimulation();
+	void Out_End();
 
-	void load();
-	void Out_Start();
 	void ExecuteEvent();
 
 	//Loading Trucks & assign
-	bool addLoadingTruck(Truck *, Types, int MinCapacity, bool Now = false);
-	void assign();
-
+	void assign(bool isNight = false);
 
 	//moving
 	void moveTrucks();
+	void AddWaitingCargo(Cargo* temp);
 	void DeliverCargos();
 
 	//checkups
@@ -63,49 +87,44 @@ class Company
 
 	//Auto promotion
 	void AutoPromotion();
-	inline bool AutoPCheck(Cargo *);
+
 	void Promote(Cargo *);
 
-	void AddWaitingCargo(Cargo* temp);
-
-	//Max wait
-	inline bool MaxWCheck(Cargo* c);
 
 	//Trucks from move to checkUP || Empty
 	void checkLoadingTrucks();
+	bool addLoadingTruck(Truck* t, Types CargoType, int MinCapacity, bool Now, PriorityQueue<Truck*>* choosenTruckList);
 	void TrucksReturnBack();
 
-	void Out_Mid();
+	//
+	int getTotalTruckCount() const;
 
-	inline bool isSimulationEnd();
-	void EndSimulation();
-	void Out_End();
-
-	
 public:
 	Company();
 	void Simulate();
 
 
-	//Getters
+	//..........Getters......//
 	int getWaitingCargosCount() const;
 	int getMovingCargosCount() const;
 	int getLoadingTrucksCount() const;
 	int getEmptyTrucksCount() const;
+	int getNightTrucksCount() const;
 	int getMaintainingTrucksCount() const;
 	int getDeliveredCargosCount() const;
 
 	const Time& getCurrentTime() const;
 
 
-	//Getters Of Cargos
+	//........Getters Of Cargos.....//
 	 LinkedList<Cargo*>& getWaitingNormalCargo();
 	 Queue<Cargo*>& getWaitingSpecialCargo();
 	 PriorityQueue<Cargo*>& getWaitingVIPCargo();
 	const Queue<int>* getDeliveredCargo() const;
 
-
+	//........Getters Of Trucks....//
 	const PriorityQueue<Truck*>* getEmptyTrucks() const;
+	const PriorityQueue<Truck*>* getNightTrucks() const;
 	const List<Truck*>& getLoadingTrucks() const;
 	const PriorityQueue< Truck*>* getMovingTrucks() const;
 	const Queue< Truck*>* getMaintainingTrucks() const;

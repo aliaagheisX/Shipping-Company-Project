@@ -1,7 +1,7 @@
 #include "Cargo.h"
 using namespace std;
 #include<string>
-//Cargo::Cargo(int i, char c) : ID(i), Types(c) {}
+
 
 
 Cargo::Cargo(int i, char c, int Dst, int cst, int L,Time t) : ID(i), types(c)
@@ -12,7 +12,7 @@ Cargo::Cargo(int i, char c, int Dst, int cst, int L,Time t) : ID(i), types(c)
 	Loadingtrcuk = NULL;
 	PT = t;
 }
-
+//......Setters......//
 void Cargo ::  SetPt(const Time& t)
 {
 	PT = t;
@@ -54,6 +54,7 @@ void Cargo::setTypes(char c) {
 	types = c;
 }
 
+//......Getters......//
 const Time& Cargo:: GetPt() const
 {
 	return PT;
@@ -90,18 +91,29 @@ const int Cargo::getID() const
 {
 	return ID;
 }
-inline bool Cargo::AutoPCheck(const Time& currentTime, int  AutoP)
-{
-	return (currentTime.getDay() - GetPt().getDay() >= AutoP && currentTime.getHour() == this->GetPt().getHour());
-}
+
 const Time& Cargo::getCDT() const { return CDT; }
 
+// returning the priority of the cargo
+int Cargo::getPriority() const { return -1 * (0.5 * DeliveryDist + 0.3 * Cost + 2 * LT); }
 
-int Cargo::getPriority() const{ return -1*(0.5 * DeliveryDist + 0.3 * Cost + 2 * LT); }
 
-inline bool Cargo::MaxWCheck(const Time& currentTime, int MaxW)
+// Chechking if the the waiting days greater than the autopromotion duration
+ bool Cargo::AutoPCheck(const Time& currentTime, int  AutoP)const
 {
-	 return (currentTime - PT >= MaxW && !Loadingtrcuk); 
+	return (currentTime.getDay() -PT.getDay() >= AutoP && currentTime.getHour() == PT.getHour());
 }
+
+
+// Chechking if the the waiting days greater than the Maxmium weight duration
+ bool Cargo::MaxWCheck(const Time& currentTime, int MaxW)const
+{
+	 return ((currentTime - PT).ConvertToInt() >= MaxW && !Loadingtrcuk);
+}
+ // output data for the cargos
+ void Cargo::output(ofstream& outfile) const
+ {
+	 outfile << CDT.TimePrint() << '\t' << ID << '\t' << PT.TimePrint() << '\t' << WT.TimePrint() << '\t' << Loadingtrcuk->getID() << '\n';
+ }
 
 
